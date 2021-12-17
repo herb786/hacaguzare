@@ -1,0 +1,225 @@
+<!-- blog 0020-->
+<div class="blog" id="blog0020">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/curiosidades.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Generación de números aleatorios
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2019-02-05
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Está nueva publicación surge para responder cuestiones que rodean al origen secreto de los números
+                aleatorios.
+                Estos números tienen múltiples aplicaciones como simulaciones, finanzas, diseño experimental,
+                videojuegos o seguridad informática.
+            </p>
+            <p>
+                Es costumbre usar las librerías para cada lenguage de programación asumiendo que los números generados
+                son infinitos y que no se repetirán. Aquí veremos los mecanismos detrás de los números que generamos.
+            </p>
+            <h2>
+                <b>Números Pseudo-Aleatorios</b>
+            </h2>
+            <p>
+                Primero debemos distinguir entre números aleatorios y pseudo-aleatorios.
+            </p>
+            <p>
+                Los números aleatorios son generados por un proceso indeterminista y por tanto no podemos predecir los
+                números generados.</p>
+            <p>
+                Los números pseudo-aleatorios son generados por algoritmos usando un estado inicial o semilla.
+                Cada semilla producirá la misma serie de números,
+                por tanto siempre podemos conocer la secuencia de números generados si sabemos el algoritmo y el estado
+                inicial.
+                Estos números en general deben tener distribución uniforme, es decir, cada número tiene la misma
+                probabilidad.
+                Los números generados pueden usarse para crear otras distribuciones estadísticas (normal, exponencial,
+                poissoniana, etc)
+            </p>
+            <p>
+                En computación se trata de compensar este determinismo usando semillas en base al ruido eléctrico del
+                computador,
+                el número de teclas presionadas, los ficheros leídos, el tiempo del sistema entre otros, que no siguen
+                un patrón determinista.
+                Estas fuentes de entropía para la generación de números aleatorios son algunas de las tantas mencionadas
+                en el protocolo RFC 4086 por el IEEE.
+            </p>
+            <p>
+                Una característica importante de un algoritmo de generación
+                es su período que indica el mínimo número de guarismos generados antes de una repetición de la
+                secuencia.
+                En el transcurso de las últimas décadas han aparecido nuevos algoritmos de generación pero en su mayoría
+                de un corto periodo,
+                pero el primer algoritmo de período astronómico fue creado
+                por Matsumoto y Nishimura conocido como Mersenne Twister.
+            </p>
+            <p>
+                En general un buen algoritmo de generación tiene las siguientes cualidades:
+            <ul>
+                <li><i>Uniformidad</i> ya que los números deben obedecer la distribución uniforme.</li>
+                <li><i>Independencia</i> de una secuencia finita de números adyacentes de otra. Esta secuencia es una
+                    parte de la secuencia completa.</li>
+                <li><i>Período largo</i> para disminuir la notoriedad de las correlaciones entre números.</li>
+                <li><i>Inicialización correcta</i> con estados iniciales sin correlaciones (números aleatorios como
+                    semillas).</li>
+                <li><i>Impredecibilidad</i> de modo que no hay un algoritmo eficiente para predecir los números.</li>
+                <li><i>Eficiencia</i> en la generación de números. Sólo unas cuantas operaciones binarias o aritméticas
+                    son usadas por cada número.</li>
+                <li><i>Capacidad de repetición</i> de modo que podemos tener siempre la misma secuencia si conocemos el
+                    estado inicial. </li>
+                <li><i>Portabilidad</i> de modo la secuencia generada no depende de la arquitectura del computador.</li>
+            </ul>
+            </p>
+            <p>Ahora veámos los algoritmos de generación y sus períodos.</p>
+            <table class="blog-table">
+                <thead>
+                    <tr>
+                        <th>Algoritmo</th>
+                        <th>Período</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="50%">Park & Miller</td>
+                        <td width="50%">\(2^{31}-1\)</td>
+                    </tr>
+                    <tr>
+                        <td>Knuth</td>
+                        <td>\(2^{32}\)</td>
+                    </tr>
+                    <tr>
+                        <td>Mersenne-Twister</td>
+                        <td>\(2^{19937}-1\)</td>
+                    </tr>
+                    <tr>
+                        <td>KISS</td>
+                        <td>\(2^{127}\)</td>
+                    </tr>
+                    <tr>
+                        <td>COMBO</td>
+                        <td>\(2^{61}\)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>
+                <b>Algoritmos de generación en diferentes lenguages</b>
+            </h2>
+            <table class="blog-table">
+                <thead>
+                    <tr>
+                        <th>Lenguaje</th>
+                        <th>Por defecto</th>
+                        <th>Otros</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="20%">Java</td>
+                        <td width="30%">L'Ecuyer 99</td>
+                        <td width="50%"></td>
+                    </tr>
+                    <tr>
+                        <td>C++</td>
+                        <td>Mersenne Twister</td>
+                        <td>RANLUX, Linear Congruential, Lagged Fibonacci y más.</td>
+                    </tr>
+                    <tr>
+                        <td>Python</td>
+                        <td>Mersenne Twister</td>
+                        <td>Wichmann-Hill</td>
+                    </tr>
+                    <tr>
+                        <td>PHP</td>
+                        <td>Mersenne Twister</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>R</td>
+                        <td>Mersenne Twister</td>
+                        <td>Wichmann-Hill, Marsaglia-Multicarry, Super-Duper, Knuth-TAOCP, Knuth-TAOCP-2002 y más</td>
+                    </tr>
+                    <tr>
+                        <td>Fortran95</td>
+                        <td>Marsaglia's KISS</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/Pseudorandomness">
+                    Sobre pseudo-aleatoriedad.
+                </a>
+            </li>
+            <li>
+                <a href="http://www.pcg-random.org/rng-basics.html">
+                    Random Number Generation Basics
+                </a>
+            </li>
+            <li>
+                <a href="https://tools.ietf.org/html/rfc4086">
+                    Randomness Requirements for Security (RFC 4086)
+                </a>
+            </li>
+            <li>
+                <a href="https://maths-people.anu.edu.au/~brent/pd/rpb217.pdf">
+                    Fast and Reliable Random Number Generators for Scientific Computing
+                </a>
+            </li>
+            <li>
+                <a href="https://en.cppreference.com/w/cpp/numeric/random">
+                    C++ Pseudo-random number generation
+                </a>
+            </li>
+            </li>
+            <li>
+                <a href="https://cran.r-project.org/web/views/Distributions.html">
+                    R Probability Distributions
+                </a>
+            </li>
+            </li>
+            <li>
+                <a href="https://cran.r-project.org/web/packages/randtoolbox/vignettes/fullpres.pdf">
+                    A note on random number generation
+                </a>
+            </li>
+            </li>
+            <li>
+                <a href="https://maths-people.anu.edu.au/~brent/pd/rpb217.pdf">
+                    Fast and Reliable Random Number Generators for Scientific Computing
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Random Numbers, Computer Science
+    </div>
+</div>

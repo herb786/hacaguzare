@@ -1,0 +1,405 @@
+<!-- blog 0001-->
+<div class="blog" id="blog0001">
+    <div class="blog-title-image">
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/firsttutorial.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <span id="title">Un simple sitio web con Django y ReactJS</span>
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <span id="createdAt">2017-08-29</span>
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/pythonicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jsicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <p>
+                En este tutorial crearemos un sitio web con Django en el lado del servidor y ReactJS en el lado del
+                cliente. En este ocasión construiremos una galería de imágenes donde mostraremos un trio de ofidios.
+            </p>
+            <p>Django es un paquete de desarrollo muy versátil que es utilizado para contruir aplicacione de una única
+                página y tambien aplicaciones coorporativas. Django asimismo posee un sistema de plantillas web pero
+                podemos usar una alternativa mas actual como ReactJS para e lado del cliente.</p>
+            <p>En años recientes ha habido una explosión de paquetes de desarrollo basados en javascript que permiten
+                crear páginas interactivas,
+                siendo ReactJS uno de los que use recientemente debido ha su naturaleza modular al organizar el código,
+                siendo así posible crear componentes para cada tarea ya sea gráfica o lógica.</p>
+            <p>Este tutorial mostrará como usar este par de herramientas y conectarlas para crear una página web
+                moderna. Se asumirá que el lector tiene instalado django y nodejs, y si no fuera el caso puede encontrar
+                información detallada acerca de estás herramientas al final de este tutorial.</p>
+            <p>El tutorial consiste de dos secciones:
+            <ul>
+                <li><a href="#server-side">Sección 1: En el lado del servidor</a></li>
+                <li><a href="#client-side">Sección 2: En el lado del cliente</a></li>
+            </ul>
+            </p>
+            <p>Comenzaremos creando un directorio para nuestro proyecto y lo llamaremos <b>gallery-project</b>.</p>
+            <pre><code class="bash">mkdir gallery-project
+              </code></pre>
+            <p>Este es nuestro directorio de trabajo.</p>
+            <h3 id="server-side">
+                <b>Sección 1: En el lado del servidor</b>
+            </h3>
+            <p>El siguiente paso sería crear el proyecto en el lado del servidor en este directorio.
+                Con django usaremos el siguiente comando</p>
+            <pre>
+                  <code class="bash">django-admin startproject gallery</code>
+              </pre>
+            <p>
+                El resultado será un nuevo directorio llamado <b>gallery</b>. Explorando el directorio encontraremos la
+                organización básica del proyecto. Un proyecto para un sitio web en django consiste de aplicaciones, por
+                ejemplo, una aplicación para una bitácora, otra aplicación para una tienda y posiblemente alguna más
+                para el foro de consultas. Nuestro sitio web tendra sólo una aplicación correspondiente a la galería de
+                imágenes y la crearemos como sigue</p>
+            <pre>
+                  <code class="bash">python manage.py startapp snakes_gallery</code>
+              </pre>
+            <p>La ejecución de este comando creará el armazón de nuestra aplicación.
+                Luego necesitamos añadir esta aplicación al archivo de configuración del proyecto.
+                Este fichero se encuentra en un subdirectorio que lleva el nombre del proyecto.
+                Luego de abrir el archivo agregaremos la aplicación en la sección <b>INSTALLED_APPS</b>.
+                Ahora podemos echar un vistazo a nuestra primera página web ejecutando lo siguiente</p>
+            <pre>
+                  <code class="bash">python manage.py runserver</code>
+              </pre>
+            <p>Ignoremos por el momento la alerta sobre migraciones. Una migración es la creación o actualizacion de
+                nuestro banco de datos usando los modelos definidos por el programador en django. El siguiente enlace te
+                dirigirá a la página creada <a href='https://127.0.0.1:8000'>https://127.0.0.1:8000</a></p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-29+11_07_28-Greenshot.png' alt=''>
+            <p>Este sitio web mostrará imágenes de ofidios e la información para contacto. Considerando estos criterios
+                necesitamos un modelo para los ofidios y otro para los detalles de contacto.</p>
+            <p>
+                Procedamos abriendo el folder <b>snakes_gallery</b>. Aquí abrimos el fichero <b>models.py</b> e
+                insertaremos los siguientes modelos</p>
+            <pre><code class="python">
+              # Información sobre las serpientes
+              class Snake(models.Model):
+                id = models.IntegerField(primary_key=True, unique=True)
+                name = models.CharField(max_length=80)
+                imageUrl = models.CharField(max_length=250)
+                caption = models.CharField(max_length=250)
+              # Información para contacto
+              class AboutSite(models.Model):
+                id = models.IntegerField(primary_key=True, unique=True)
+                title = models.CharField(max_length=80)
+                author = models.CharField(max_length=80)
+                email = models.CharField(max_length=80)
+              </code></pre>
+            <p>
+                Ahora creemos vistas simples y fabriquemos algunos datos de prueba para probar nuestras vistas.
+                Por ahora sólo contendrán texto sin ningún estilo. Comencemos abriendo el fichero <b>views.py</b></p>
+            <p>Ahora creamos la vista para mostrar datos de cualquier ofidio usando el modelo Snake.</p>
+            <pre><code class="python">
+              def showSnakeList(request):
+                snake1 = Snake(
+                 id=1,
+                 name='Python',
+                 imageUrl='https://upload.wikimedia.org/wikipedia/commons/3/32/Python_molurus_molurus_2.jpg',
+                 caption='Pythons are a family of nonvenomous snakes found in Africa, Asia, and Australia')
+                snake2 = Snake(
+                  id=2,
+                  name='Viper',
+                  imageUrl='https://upload.wikimedia.org/wikipedia/commons/7/70/Crotalus-basiliscus-basiliskenklapperschlange.jpg',
+                  caption='Vipers are  a family of venomous snakes found in most parts of the world')
+                snake3 = Snake(
+                  id=3,
+                  name='Boa',
+                  imageUrl='https://upload.wikimedia.org/wikipedia/commons/a/a7/Boa_constrictor_%282%29.jpg',
+                  caption='Boas are a family of nonvenomous snakes found in America, Africa, Madagascar, Europe, Asia, and some Pacific Islands.')
+               data = serializers.serialize('json', [snake1, snake2, snake3])
+               return HttpResponse(data)
+              
+              </code></pre>
+            <p>
+                Luego creamos una vista para ver los detalles de contacto usando el modelo AboutSite.</p>
+            <pre><code class="python">
+              def showInfoAboutSite(request):
+                info = AboutSite(id=1, title='Snake Gallery', author='Calvin Hobbes', email='calvin.hobbes@@gmail.com')
+                data = serializers.serialize('json', [info])
+                return HttpResponse(data)
+              
+              </code></pre>
+            <p>Las vistas mostrarán una lista serializada de serpientes y una lista conteniendo información de contacto
+                usando el protocolo json.
+                Ahora necesitamos crear los puntos de entrada para acceder a este contenido. Crearemos entonces un
+                fichero con los puntos de entrada y lo llamaremos <b>urls.py</b> que tendrá las siguientes líneas</p>
+            <pre><code class="python">
+              from django.conf.urls import url
+              from . import views
+              urlpatterns = [
+                url(r'^$', views.index),
+                url(r'^api/info', views.showInfoAboutSite),
+                url(r'^api/snakes', views.showSnakeList),
+              ]
+              
+              </code></pre>
+
+            <p>La primera ruta es nuestra página de inicio. Las otras dos rutas suministran datos a nuestra aplicación
+                en el lado del cliente. También podemos tener una página de inicio en el lado del cliente pero usaremos
+                la cargada por parte del servidor.</p>
+            <p>Luego incluiremos los enlace en el fichero <b>urls.py</b> del folder raiz gallery</p>
+
+            <pre><code class="python">
+              from django.conf.urls import url, include
+              from django.contrib import admin
+              urlpatterns = [
+                url(r'^admin/', admin.site.urls),
+                url(r'^', include('snakes_gallery.urls')),
+              ]
+              
+              </code></pre>
+            <p>Ahora puedes arrancar tu aplicación y verás los resultados en estos enlaces</p>
+            <p>
+            <ul>
+                <li><a href=”http://127.0.0.1:8000”>http://127.0.0.1:8000/</a></li>
+                <li><a href=”http://127.0.0.1:8000/api/info”>http://127.0.0.1:8000/api/info</a></li>
+                <li><a href=”http://127.0.0.1:8000/api/snakes”>http://127.0.0.1:8000/api/snakes</a></li>
+            </ul>
+            </p>
+            <p>
+                <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-29+16_07_06-Greenshot.png'
+                    alt=''><br />
+                <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-29+16_07_01-Greenshot.png'
+                    alt=''><br />
+                <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-29+16_06_52-Greenshot.png' alt=''>
+            </p>
+            <p>Para finalizar recordemos que cualquier cambio durante el desarrollo se reflejará automáticamente
+                mientras el servidor este corriendo.
+                Antes de comenzar con el lado del cliente debemos habilitar la funcionalidad <b>CORS</b> para ejecutar
+                llamadas con ajax. El siguiente módulo será de ayuda para esta tarea</p>
+
+            <pre><code class="bash">pip install django-cors-headers
+              </code></pre>
+
+            <p>Ahora añadimos el módulo a nuestra configuración en la sección</p>
+
+            <pre><code class="python">
+              INSTALLED_APPS = (
+                ...
+                'pipeline',
+                'corsheaders'
+              )
+              MIDDLEWARE_CLASSES = (
+                'corsheaders.middleware.CorsMiddleware',
+                'django.middleware.common.CommonMiddleware',
+                ...
+              )
+              CORS_ORIGIN_WHITELIST = (
+                'localhost:3000',
+                '127.0.0.1:3000'
+              )
+              </code></pre>
+
+            <p>EL zócalo <a href='http://127.0.0.1:3000'>127.0.0.1:3000</a> será el canal de comunicación con nuestro
+                cliente. </p>
+            <div id="client-side"></div>
+            <h3>
+                <b>Sección 2: En el lado del cliente</b>
+            </h3>
+
+            <p>En esta parte veremos como consumir los datos de nuestra api en una aplicación ReactJS.</p>
+            <p>Antes que nada, debemos crear el armazón para nuestra aplicación cliente. El paquete
+                <b>create-react-app</b> se encargará de esta tarea y lo instalaremos de esta manera</p>
+
+            <pre><code class="bash">npm install -g create-react-app
+              </code></pre>
+
+            <p>Procedamos ahora con nuestra aplicación cliente. Dirijamonos a nuestro directorio de trabajo
+                <b>gallery-project</b> y ejecutemos la siguiente línea</p>
+
+            <pre><code class="bash">create-react-app gallery-client
+              </code></pre>
+
+            <p>Esperamos la creación de la aplicación react y luego accedemos a su directorio donde arrancaremos nuestro
+                cliente con</p>
+
+            <pre><code class="bash">npm start
+              </code></pre>
+
+            <p>Nuestro navegador abrirá una pestaña con el enlace <a
+                    href='https://127.0.0.1:3000'>https://127.0.0.1:3000</a>.</p>
+            <p>Ahora incluiremos un paquete para gestionar las rutas</p>
+
+            <pre><code class="bash">npm install react-router-dom
+              </code></pre>
+
+            <p>Nuestra primera componente será la barra de navegación. Crearemo el fichero para este propósito
+                <b>Navbar.js</b> en el folder <b>src</b>. Luego inseertamos las siguientes líneas</p>
+
+            <pre><code class="javascript">
+              import { BrowserRouter, Route, Link } from 'react-router-dom';
+              import Gallery from './Gallery';
+              import About from './About';
+              class Navbar extends Component {
+                render() {
+                  return (
+                    &lt;BrowserRouter>
+                    &lt;div>
+                    &lt;div>
+                      &lt;div>&lt;a>&lt;Link to="/">Home&lt;/Link>&lt;/a>&lt;/div>
+                      &lt;div>&lt;a href="">&lt;Link to="/gallery">Gallery&lt;/Link>&lt;/a>&lt;/div>
+                      &lt;div>&lt;a href="">&lt;Link to="/about">About&lt;/Link>&lt;/a>&lt;/div>
+                    &lt;/div>
+                    &lt;Route exact path="/" render={(props) => (&lt;Gallery />)} />
+                    &lt;Route path="/gallery" render={(props) => (&lt;Gallery />)}/>
+                    &lt;Route path="/about" render={(props) => (&lt;About />)}/>
+                    &lt;/div>
+                  &lt;/BrowserRouter>
+                  );
+                }
+              }
+              export default Navbar;
+              
+              </code></pre>
+            <p>Esta componente está compuesta por la componente Gallery y la componente About que crearemos en breve.
+                La componente About contiene información de nuestro sitio web. Creemos entonces el fichero
+                <b>About.js</b> con este código</p>
+
+            <pre><code class="javascript">
+              import React, { Component } from 'react';
+              class About extends Component {
+                render() {
+                  return (
+                    &lt;div>
+                    &lt;h1>About&lt;/h1>
+                    &lt;/div>
+                  );
+                }
+              }
+              export default About;
+              
+              </code></pre>
+
+            <p>Este fichero sólo mostrará una página en blanco con una cabecera.
+                Los datos que queremos mostrar lo extraeremos de nuestro aplicación en el lado del servidor.
+                Las peticiones al servidor necesitan el siguiente módulo</p>
+            <pre><code class="javascript">
+              import request from 'request';
+              </code></pre>
+            <p>Ahora definamos dos funciones para hacer las llamadas al servidor</p>
+            <pre><code class="javascript">
+              constructor(props) {
+                super(props);
+                this.state = {info : {}};
+              }
+              componentDidMount() {
+                var self = this;
+                request('https://127.0.0.1:8000/api/info', function (error, response, body) {
+                  var data = JSON.parse(body);
+                  self.setState({ info : data[0].fields });
+                });
+              }
+              
+              </code></pre>
+            <p>
+                La propiedad <b>state</b> contiene los objetos que se visualizarán en nuestro sitio web.
+                Actualicemos ahora la función <b>render</b> para mostrar la información del servidor</p>
+            <pre><code class="javascript">
+              render() {
+                return (
+                  &lt;div>
+                  &lt;h1>About</h1>
+                  &lt;h3>Site Name: {this.state.info.title}&lt;/h3>
+                  &lt;h3>Author: {this.state.info.author}&lt;/h3>
+                  &lt;h3>E-mail: {this.state.info.email}&lt;/h3>
+                  &lt;/div>
+                );
+               }
+              
+              </code></pre>
+            <p>Finalmente crearemos la componente Gallery. Para ello creamos el fichero <b>Gallery.js</b> en el folder
+                <b>src</b> y añadimos el siguiente código</p>
+            <pre><code class="javascript">
+              import React, { Component } from 'react';
+              import request from 'request';
+              class Gallery extends Component {
+                constructor(props) {
+                  super(props);
+                  const snake = {'name':'name','imageUrl':'url','caption':'caps'};
+                  this.state = {snakes : [snake,snake,snake]};
+                }
+                componentDidMount() {
+                  var self = this;
+                  request('http://127.0.0.1:8000/api/snakes', function (error, response, body) {
+                    var data = JSON.parse(body);
+                    const snake1 = data[0].fields;
+                    const snake2 = data[1].fields;
+                    const snake3 = data[2].fields;
+                    self.setState({snakes : [snake1, snake2, snake3]});
+                  });
+                }
+                render() {
+                  const snakes = this.state.snakes;
+                  return (
+                    &lt;div>
+                    &lt;h1>Snake Gallery&lt;/h1>
+                    &lt;div>Name: {snakes[0].name}&lt;br/>
+                      &lt;img src={snakes[0].imageUrl} alt={snakes[0].caption} />
+                    &lt;/div>
+                    &lt;div>Name: {snakes[1].name}&lt;br/>
+                      &lt;img src={snakes[1].imageUrl} alt={snakes[1].caption} />
+                    &lt;/div>
+                    &lt;div>Name: {snakes[2].name}&lt;br/>
+                      &lt;img src={snakes[2].imageUrl} alt={snakes[2].caption} />
+                    &lt;/div>
+                   &lt;/div>
+                  );
+                }
+              }
+              export default Gallery;
+              
+              </code></pre>
+            <p>Así terminamos con nuestro pequeño proyecto. Ahora veámos el resultado. Primero que nada inciamos nuestro
+                servidor con django en nuestro terminal y abrimos otro terminal para iniciar nuestra aplicación
+                React<br /></p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-31+16_05_27-Greenshot.png' alt=''
+                class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-31+16_05_19-Greenshot.png' alt=''
+                class="blog-image-md">
+            <p>
+                Podemos estilizar un poco nuestro sitio web con paquetes de estilo como <b>Bootstrap</b> o
+                <b>Foundation</b>.
+                Aquí usare otro paquete poco conocido llamado <b>Bulma</b> y los resultados se verán así<br />
+                <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-31+18_22_56-Greenshot.png' alt=''
+                    class="blog-image-md"><br />
+                <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-31+18_23_08-Greenshot.png' alt=''
+                    class="blog-image-md"><br />
+                <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/2017-08-31+18_23_18-Greenshot.png' alt=''
+                    class="blog-image-md">
+            </p>
+
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <ol>
+            <li><a href='https://www.djangoproject.com/start/'>https://www.djangoproject.com/start</a></il>
+            <li><a href='https://facebook.github.io/react/'>https://facebook.github.io/react</a></il>
+            <li><a
+                    href='https://github.com/facebookincubator/create-react-app'>https://github.com/facebookincubator/create-react-app</a>
+                </il>
+            <li><a
+                    href='https://reacttraining.com/react-router/web/guides/philosophy'>https://reacttraining.com/react-router/web/guides/philosophy</a>
+                </il>
+            <li><a href='http://bulma.io'>http://bulma.io</a></il>
+        </ol>
+        You can get the source for this example
+        <a
+            href='https://github.com/herb787/tutorial-django-gallery'>https://github.com/herb787/tutorial-django-gallery</a>
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        Django, Python, ReactJS, JavaScript, Website
+    </div>
+</div>

@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css?family=Scada');
+@import url('https://fonts.googleapis.com/css?family=Cabin+Sketch:700');
+
+
+.stash {
+    margin: auto;
+    width:80%;
+    font-family: 'Scada', sans-serif;
+}
+
+.stash-tagline {
+    margin:2em 0;
+    padding:1em 3em;
+    font-weight: 500;
+    text-align: justify;
+    color: rgb(180, 180, 180);
+    border-color: rgba(120,120,200,1);
+    background-color: rgba(250,250,250,0.1);
+    box-shadow: -12px 12px 2px 1px rgba(20,0,20,0.5)
+}
+
+.stash-app {
+    width: 240px;
+    min-height: 300px;
+    max-height:800px;
+    font-weight: 500;
+    display: inline-table;
+    margin: 10px 30px;
+    font-family: 'Scada', sans-serif;
+    text-align: justify;
+    background-color: rgba(255, 102, 0, 0.4);
+    box-shadow: -12px 12px 2px 1px rgba(29, 3, 3, 0.5)
+}
+
+.stash-app h2 {
+    font-size: 2em;
+    margin: 0px 0px;
+    color: goldenrod;
+    font-family: 'Cabin Sketch', cursive;
+}
+
+.stash-app p {
+    color: lightgrey;
+    font-family: 'Scada', sans-serif;
+    white-space: pre;
+}
+
+.stash-app-left {
+    display: inline-block;
+    vertical-align: top;
+    width: 25%;
+    left: 0%;
+}
+
+.stash-app-right {
+    display: inline-block;
+    vertical-align: top;
+    width: 70%;
+    left: 30%;
+    margin-left: 2em;
+}
+
+.stash-app-image {
+    padding: 5px 5px;
+}
+
+.stash-app-image img {
+    width: 50%;
+    height: auto;
+    margin: auto;
+    display: block;
+    border: 2px solid goldenrod;
+}
+
+.stash-app-google {
+    height: 80px;
+    text-align: center;
+}
+
+.stash-app-google img {
+    height: 100%;
+    width: auto;
+}
+
+.app-content {
+    text-align: center;
+    display: block;
+    color: aliceblue;
+    padding: 5px 5px;
+    font-size: 0.9em;
+}
+
+.app-title {
+    text-align: center;
+    display: block;
+    padding: 5px 5px;
+    color: goldenrod;
+}
+
+.app-store {
+    text-align: center;
+    display: block;
+}
+
+.app-store img {
+    margin: 5px 5px;
+    width: 80%;
+}

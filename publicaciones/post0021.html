@@ -1,0 +1,155 @@
+<!-- blog 0021-->
+<div class="blog" id="blog0021">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/curiosidades.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Los 12 factores para aplicativos en la nube
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2019-02-10
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                En esta publicación veremos un series de pautas que algunos desarrolladores siguen cuando
+                necesitan una aplicación que será desplegada en la nube digital. Este tipo de aplicaciones usan la
+                infrastructura
+                preconfigurada por los servicios de alojamiento y son conocidos como PaaS de sus siglas &laquo;Platform
+                as a service&raquo;
+                traducida literalmente en plataforma como servicio.
+                Este conjunto de pautas recopiladas es llamada doce-factores del inglés
+                &laquo;twelve-factor&raquo;.
+            </p>
+            <p>
+                Compañías que ofrecen este tipo de infraestructurada que permite el escalamiento de los recursos según
+                el tráfico y concurrencia de las aplicaciones son Amazon AWS, Google Cloud Engine, Azure PaaS, Cloud
+                Foundry, PythonAnywhere y otros.
+            </p>
+            <p>
+                Estas pautas sirven en general para dar un punto de partida a los nuevos desarrolladores mientras
+                adquieren un visión más completa del funcionamiento de las aplicaciones en una nube que servirá para
+                desarrollar sus propias propuestas de implementación de acuerdo a los requerimientos. Algunos autores
+                han sugerido adiciones en está lista de pautas y pueden ser encontradas en la literatura.
+            </p>
+            <p>
+                Estás pautas las resumimos a continuación:
+            </p>
+            <dl>
+                <dt><strong>Código fuente</strong></dt>
+                <dd>Evitar códigos fuentes específicos para desarrollo, pruebas y producción. Debería tambíen existir un
+                    código fuente por aplicación y evitar un código fuente de múltiples aplicaciones. Por ejemplo
+                    podemos separar tener una aplicación específica para servico al consumidor y otra aplicación para la
+                    tienda. En caso de que existe dependencias comunes, se debería crear una librería.</dd>
+                <dt><strong>Dependencias</strong></dt>
+                <dd>Dado que usamos infraestructura externa, debemos asumir que ciertas librerías no estarán instaladas.
+                    En desarrollo deberíamos trabajar en un entorno aislado simulando la infraestructura externa y crear
+                    los ficheros de inicialización requeridos por la aplicación. Por ejemplo en python podemos crear un
+                    entorno aislado con <em>virtualenv</em> y crear un fichero <em>requirements.txt</em> con las
+                    librerías que se instalarán con <em>pip</em>. Luegos de crear el entorno aislado podemos crear el
+                    proyecto base de nuestra aplicación.</dd>
+                <dt><strong>Configuración</strong></dt>
+                <dd>Siguiendo este razonamiento, la configuración de las rutas para conectar a la base de datos o los
+                    puerto de entrada para cada ambiente de trabajo deberían ser guardados como variables del sistema.
+                    En desarrollo con máquinas <em>Unix</em> usamos por ejemplo <em>export POSTGRESQL=...</em>,
+                    <em>export BUCKET_S3=..</em>, <em>export MAPS_API_KEY=..</em> o en la nube donde usualmente existe
+                    una consola de configuración.</dd>
+                <dt><strong>Servicios de respaldo</strong></dt>
+                <dd>Todo servicio externo a la aplicación sería un recurso como bases de datos, servidores de correo,
+                    sistemas de memoria. En el desarrollo, la aplicación sólo consume estos recursos y se conecta con
+                    los ficheros de configuración. Su configuración y disponibilidad es tarea de los operadores de estos
+                    servicios.</dd>
+                <dt><strong>Compilación, despliegue y ejecución</strong></dt>
+                <dd>La compilación generará una aplicación lista para el despliegue a los diferentes entornos y su
+                    ejecución en diferentes máquinas virtuales o instancias. Cada uno de estás tareas son
+                    independientes. En python usualmente se generan ficheros binarios con extensión <em>pyc</em>. Estos
+                    ficheros serán interpretados por la máquina virtual de python.</dd>
+                <dt><strong>Procesos independientes</strong></dt>
+                <dd>Cada vez que una instancia de la aplicación se ejecuta, un proceso es creado. En la nube los
+                    procesos son creados y destruídos a demanda. Por eso no debería guardarse datos o crear ficheros
+                    temporales para usarse en futuros procesos. Si es necesario usar tales datos, deberíamos tratarlos
+                    como recursos externos. Así los procesos no tienen un estado previo del cuál pudiera depender la
+                    aplicación.</dd>
+                <dt><strong>Puertos vinculantes</strong></dt>
+                <dd>Aplicaciones suelen ejecutarse en un servidor web los cuales se encargan de los dominios y puertos
+                    donde se servirán las aplicaciones así como llamar el lenguaje correspondiente para ejecutar la
+                    aplicación. Por ejemplo <em>Nginx</em> llamará <em>java -jar webapp.war ...</em>, <em>Apache</em>
+                    llamará <em>php index.php</em>, <em>Puma</em> llamará <em>ruby webapp.rb</em> y veremos este mismo
+                    patrón en otros lenguajes. Ahora con la nube, el servidor es una librería o dependencia adicional
+                    donde la aplicación elige el puerto donde se recibirá conexiones. Por ejemplo <em>django</em> tiene
+                    su propio servidor y podemos vincular un puerto por medio de la orden <em>python manage.py runserver
+                        8080</em> o para aplicaciones en java usando <em>jetty</em> y sus ficheros de configuración.
+                </dd>
+                <dt><strong>Concurrencia</strong></dt>
+                <dd>Algunas aplicaciones necesitan tareas y procesos que se ejecuten periódicamente como crear
+                    servidores web, enviar notificaciones, mensajes, crear copias de respaldo, consolidar base de datos
+                    entre otras. Es ideal que estás tareas sean escalables y cada una tenga un proceso diferente que
+                    pueda reiniciarse en caso de falla o interrupciones repentinas. En python tenemos el fichero
+                    <em>Procfile</em> que permite indicar los procesos que se deben ejecutar y el gestor de procesos
+                    sería <em>Foreman</em>.</dd>
+                <dt><strong>Descarte</strong></dt>
+                <dd>Los procesos pueden ser iniciados o descartados rápidamente sin producir fallas o corrupción de
+                    datos.</dd>
+                <dt><strong>Similaridad</strong></dt>
+                <dd>Está idea surge tras encontrar diferencias entre los recursos usados en ambientes de prueba,
+                    desarrollo y producción, el personal, y el tiempo del despliegue. Por ejemplo usar una base de datos
+                    local como sqlite en desarrollo y postgres en producción. El objetivo de la nube es recortar estos
+                    tiempos entre el desarrollo y producción además de reducir las diferencias entre os recursos usados
+                    por cada ambiente.</dd>
+                <dt><strong>Trazas</strong></dt>
+                <dd>Este factor indica que las trazas no deberían ser guardadas en archivos si no que debemos dejar que
+                    la aplicación en ejecucíon produzca las traza continuamente y con herramientas de la consola
+                    capturar las trazas cuando su análisis sea requerido.</dd>
+                <dt><strong>Gestión de procesos</strong></dt>
+                <dd>En el caso de procesos infrecuentes como migrar bases de datos, ejecución de tareas de inpección y
+                    mantenimiento, es bueno trabajar en un entorno aislado que permita ejecutar estos procesos como se
+                    hace en el caso de <em>ruby</em> o <em>python</em>. Estas tareas administrativas deberían ser
+                    incluídas en la aplicación misma y hacer uso de la misma configuración de recursos que la aplicación
+                    usa en el ambiente donde se desplega.</dd>
+            </dl>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://12factor.net/">
+                    The twelve-factor App.
+                </a>
+            </li>
+            <li>
+                <a href="http://pivotal.io/beyond-the-twelve-factor-app">
+                    Beyond the Twelve-Factor App
+                </a>
+            </li>
+            <li>
+                <a href="https://adam.herokuapp.com/past/2011/5/9/applying_the_unix_process_model_to_web_apps/">
+                    Applying the Unix Process Model to Web Apps
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Cloud, Mobile Architecture, Computer Science
+    </div>
+</div>

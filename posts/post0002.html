@@ -1,0 +1,175 @@
+<!-- blog 0002-->
+<div class="blog" id="blog0002">
+    <div class="blog-title-image">
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/post_header_0002.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <span id="title">Deploying a Django application with AWS</span>
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <span id="createdAt">2017-10-29</span>
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/pythonicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/postgreicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <p>In this tutorial I want to share my list of steps to deploy a django website with amazon web services.
+                This will be a brief summary to help you to deploy a python website right away.
+                I will also provide some information you will need when you want to manage the database provided for
+                AWS.
+                Finally I will show how to link your domain to your website with AWS.</p>
+            <p>There is a lot of detailed guides which you can find in the documentation offered by AWS.
+                In this tutorial I just want to give the basis path to run your website.
+                A few steps will require you to do some additional reading and I will provide some useful links in that
+                case.</p>
+            <p>This tutorial has been structured as follows</p>
+            <ul>
+                <li><a href="#sec1">Launching an environment with Elastic Beanstalk</a></li>
+                <li><a href="#sec2">Setting up AWS CLI and deploying django application</a></li>
+                <li><a href="#sec3">Managing PostgreSQL database</a></li>
+                <li><a href="#sec4">Setting up domains</a></li>
+            </ul>
+
+            <div class="post-subtitle" id="sec1">
+                Launching an environment with Elastic Beanstalk
+            </div>
+            <p>
+                From now on, I will assume you have an account in Amazon Web Services and
+                you know how to access the management console.
+                The first step to deploy a web application is to create the environment where the application will live.
+                Elastic Beanstalk lets you to create a virtual machine with Linux as their operative system
+                and install the language you require to build your application.
+                Since we are creating a Django website I will choose python, in particular the version 2.7.
+                You can also run an environment using EC2 instances.
+                We start opening the management console and picking <b>Elastic Beanstalk</b> in the top menu.
+                You will see the first window of the wizard. This window will show how to start an environment.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/step-01.png' alt='' class="blog-image-md">
+
+            <p>Here we choose the option <b>Web Server Environment</b>.
+                Then you will choose the option <b>python language</b> in the next screen.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/step-02.png' alt='' class="blog-image-md">
+
+            <p>Now you will need to give a name to your environment.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/step-03.png' alt='' class="blog-image-md">
+
+            <p>In the following steps you can leave untouched the default configuration.
+                When you land in the window shown below, you need to choose your database.
+                In my case I will be using a PostgreSQL database.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/step-04.png' alt='' class="blog-image-md"><br />
+
+            <p>Finally you can check your configuration and launch the environment.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/step-05.png' alt='' class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/step-06.png' alt='' class="blog-image-md"><br />
+
+            <p>After a successful launching you will redirected to this window</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/last-step-aws.png' alt=''
+                class="blog-image-md"><br />
+
+            <div class="post-subtitle" id="sec2">
+                Setting up AWS CLI
+            </div>
+            <p>After creating an environment we can deploy our application.
+                AWS has an utility to deploy your websites from the command line.
+                This utility is known as <b>awsebcli</b>. You can install this script executing the following command
+            </p>
+            <pre><code class="bash">pip install awsebcli
+</code></pre>
+            <p>You can find more details <a
+                    href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html">here</a>. Now you
+                will need to configure the script with your credentials. You can create credentials in the management
+                console with the option <b>My Security Credentials</b>. You will find more information in this <a
+                    href="http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html">link</a></p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/eb-conf.png' alt='' class="blog-image-md"><br />
+            <p>Now you can deploy your python website. Before deploying you will need to create a virtual environment.
+                This task is described in this <a
+                    href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html">link</a>.
+                I should mention that we can deploy our website to multiple environments.</p>
+            <p>Sometimes we need to create environment variables which are used by our application.
+                For instance you might use an environment variable to save the endpoint of your database.
+                Environment variables can be created using the management console.
+                You must enter your application dashboard and then go to the side menu and choose the option
+                <b>Configuration</b>. The you must look for the section <b>Environment Properties</b>.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/set-env-01.png' alt='' class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/set-env-02.png' alt='' class="blog-image-md"><br />
+
+            <div class="post-subtitle" id="sec3">
+                Managing PostgreSQL database
+            </div>
+            <p>A daily task we need to do is maintenance, changing a record, or any kind of operation in a database.
+                You might access your database created by AWS using your favourite database manager.
+                There exists an utility to manage PostgreSql database with a nice graphical interface.
+                This utility is pgAdmin and their last version is 2.0. Before we can use this utility
+                we need to allow the access to our database from our computer home.
+                You can do that through the management console. This time you must go to <b>VPC Dashboard</b>.
+                There you should select the group Id assigned to your RDS database.
+                Lastly you should add inbound and outbound rules.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/db-conf-01.png' alt='' class="blog-image-md"><br />
+            </p>You must proceed with caution since you can allow access to your database from any computer.
+            You should limit the rules to your ip address.</p>
+            Then you need to collect some information about your database.
+            Information details of your database can be found in your <b>RDS Dashboard</b>.
+            You will need endpoint, port, database name, database instance, username and password.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/db-conf-02.png' alt='' class="blog-image-md"><br />
+            <p>After collecting these details you can create a server for this database in pgAdmin.
+                Firstly you must add a new server</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/pg-admin-01.png' alt=''
+                class="blog-image-md"><br />
+            <p>Then you will see a window dialog where you will give a name to your server.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/pg-admin-02.png' alt=''
+                class="blog-image-md"><br />
+            <p>Lastly you must fill the form with the information above.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/pg-admin-03.png' alt=''
+                class="blog-image-md"><br />
+
+            <div class="post-subtitle" id="sec3">
+                Setting up domains
+            </div>
+            <p>This the final lap of this long race. After deploying with success your website,
+                you might want to use your own domain instead of the awful url assigned by AWS.
+                Once you have acquired a domain you can access the management console and link your domain to your
+                environment.
+                In this case you must go to your <b>Route 53 Dashboard</b>. You can buy a domain here if you do not own
+                one.</p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/domain-01.png' alt='' class="blog-image-md"><br />
+            <p>Then you must go to <b>Hosted Zones</b>. There you can create a type A Record Set which will assign the
+                domain to your environment.
+                For more information follow this <a
+                    href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customdomains.html">link</a>.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/domain-02.png' alt='' class="blog-image-md"><br />
+            <p>We arrive to the end of this tutorial after walking through different roads.
+                Sometimes those roads turn into big mazes where we keep going around without find an escape.
+                I hope this tutorial be your breadcrumb trail to put your website online and alive.
+            </p>
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <ol>
+            <li><a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html">
+                    http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html</a></li>
+            <li><a href="http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html">
+                    http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html</a></li>
+            <li><a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customdomains.html">
+                    http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customdomains.html</a></li>
+            <li><a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html">
+                    http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html</a></li>
+        </ol>
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        AWS, Elastic Beanstalk, Django, Cloud, PostgreSQL
+    </div>
+</div>

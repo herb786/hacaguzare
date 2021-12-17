@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-72135203-5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-72135203-5');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" >
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link href="/static/css/main-theme/alasdair-resources.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/main-theme/alasdair-content.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/main-theme/alasdair-top-bar.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/error.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            font-family: 'Lato';
+        }
+
+        .fa-btn {
+            margin-right: 6px;
+        }
+        a {
+            font-size: 1.5em
+        }
+    </style>
+    <title>Heriberto's Site</title>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div>
+        <div class="econtainer" >
+            <div class="resources">
+                <div class="content-resources">
+                    <p>
+                        The next list of links can help you with the configuration
+                        and installation of different resources and tools. 
+                        You can also find links to interesting posts.
+                    </p>
+                    <h3><u>About mobile trends</u></h3>
+                    <!-- http://smartceo.com/efficiency-vs-effectiveness-dont-sacrifice-outcomes/ -->
+                    <lo>
+                        <li><a href="https://academy.realm.io/posts/swift-on-android/">
+                            Swift on Android</a></li>
+                        <li><a href="https://flutter.io">Flutter official web site</a></li>
+                        <li><a href="https://fuchsia.googlesource.com">Fucsia OS github.</a></li>                    
+                    </lo>
+                    <h3><u>Google Cloud and Spring</u></h3>
+                    <lo>
+                        <li><a href="https://cloud.google.com/sdk/">
+                            https://cloud.google.com/sdk/</a></li>
+                        <li><a href="https://cloud.google.com/appengine/docs/standard/java/tools/maven">
+                            https://cloud.google.com/appengine/docs/standard/java/tools/maven</a></li>
+                        <li><a href="https://github.com/GoogleCloudPlatform/getting-started-java/tree/master/helloworld-springboot">
+                            https://github.com/GoogleCloudPlatform/getting-started-java/tree/master/helloworld-springboot</a></li>
+                        <li><a href="https://cloud.google.com/appengine/docs/flexible/custom-runtimes/configuring-your-app-with-app-yaml">
+                            https://cloud.google.com/appengine/docs/flexible/custom-runtimes/configuring-your-app-with-app-yaml</a></li>
+                        <li><a href="https://github.com/GoogleCloudPlatform/getting-started-java/tree/master/appengine-standard-java8/helloworld-gae-javasdk-tools">
+                            https://github.com/GoogleCloudPlatform/getting-started-java/tree/master/appengine-standard-java8/helloworld-gae-javasdk-tools</a></li>
+                        <li><a href="https://github.com/GoogleCloudPlatform/getting-started-java/tree/master/appengine-standard-java8/springboot-appengine-standard">
+                            https://github.com/GoogleCloudPlatform/getting-started-java/tree/master/appengine-standard-java8/springboot-appengine-standard</a></li>
+                        <li><a href="https://cloud.google.com/community/tutorials/kotlin-springboot-compute-engine">
+                            https://cloud.google.com/community/tutorials/kotlin-springboot-compute-engine</a></li>
+                    </lo>
+                    <h3><u>Google Analytics</u></h3>
+                    <lo>
+                        <li><a href="https://support.google.com/firebase/topic/6317484?hl=en&ref_topic=6386699">
+                            Firebase Events and properties</a></li>
+                        <li><a href="https://firebase.google.com/docs/analytics/android/start/">
+                            Get Started with Analytics for Android</a></li>
+                        <li><a href="https://developers.google.com/tag-manager/android/v5/">
+                            Tag Manager + Firebase: Getting Started
+                        </a></li>
+                        <li><a href="https://developers.google.com/android/guides/setup">
+                            https://developers.google.com/android/guides/setup
+                        </a></li>
+                    </lo>
+                    <h3><u>Spring embedded databases</u></h3>
+                    <lo>
+                        <li><a href="http://www.springboottutorial.com/spring-boot-and-h2-in-memory-database">Using H2 database with Spring</a></li>
+                    </lo>
+                </div>
+            </div>
+            <!--div class="content" id="centering">
+                <div class="title">Coming Soon</div>
+                <img th:src="@{/img/coder.svg}" alt="" id="image"/>
+                <div class="title">Working on it...</div>
+            </div-->
+        </div>
+    </div>
+
+    <script>
+      $(document).ready(function(){
+        $("#locales").change(function () {
+            var lang = $('#locales').val();
+            if (lang != ''){
+                window.location.replace('?lang=' + lang);
+            }
+        });
+          var img = document.getElementById('image');
+          img.onload = function() {
+            var toolbar = document.getElementById('toolbar')
+            var box = document.getElementById('centering');
+            var body = document.documentElement;
+            var bodyHeight = body.clientHeight;
+            var boxHeight = box.clientHeight;
+            var barHeight = toolbar.clientHeight;
+            var y = Math.ceil((bodyHeight-boxHeight)/2)-barHeight;
+            console.log(bodyHeight);
+            console.log(boxHeight);
+            box.style.position = "relative";
+            box.style.top = y + "px";
+          };
+      });
+    </script>
+</body>
+</html>

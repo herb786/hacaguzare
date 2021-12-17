@@ -1,0 +1,245 @@
+<!-- blog 0018-->
+<div class="blog" id="blog0018">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Knowing Your Followers with Firestore
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-10-25
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Information about our followers or costumers is important to improve the service
+                or content we provide them.</p>
+            <p>
+                In the age of information we are not short in tools that can help us to collect this data.
+                We can design surveys, quizzes, questionnaires, polls to capture the current mood and preferences
+                of our target population.
+            </p>
+            <p>
+                Collecting live information give us the opportunity to react immediately to future events
+                and be in the top of innovation creating cutting edge solutions to any situation.
+            </p>
+            <p>
+                This time I will focus in create a poll application using a real-time database hosted
+                in the cloud to collect information about the mobile platform preferences of our friends.
+                I will assume you know how to create a project in the firebase console.
+            </p>
+            <h3>
+                <b>Setting Up the Project</b>
+            </h3>
+            <p>
+                Before creating the application, I will need to generate a database where we store the votes
+                from our poll. I will use a new service provide by google call <b>Firestore</b>. This is
+                a real-time NoSQL database in the cloud.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-create-project.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                After creating a project in the console we need to address to the left panel and find the item call
+                <b>database</b>
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-find-database.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                We will use the test mode such we can modify our database without any additonal configuration.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-database-rules.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                Then we need to update the rules to allow public access, otherwise we must add support for
+                authentication.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-update-rules.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                We also need to create a configuration file for this service which will be stored in the app folder of
+                the application.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-get-google-json.png' alt=''
+                class="blog-image-md"><br />
+            <h3>
+                <b>Creating a NoSQL Database</b>
+            </h3>
+            <p>
+                Now we will design our database. Our database is a collection of documents.
+                The documents will enclosed any data we want to collect.
+                In this case I want a collection of platforms.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-create-platform-collection.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                We will add two documents for each platform.
+                We change the auto generated key for the name of the platforms.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-create-ios-doc.png' alt=''
+                class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-db-platforms.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                The previous documents might also be collections. For example a collection of devices using android or
+                a collection of followers using android. We want to collect some information about people.
+                Then we should add customer documents like the next one
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-add-android-customer.png' alt=''
+                class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-ios-customer.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                The most important variable in our platform collection is the field <b>count</b>.
+                This field will be updated anytime a vote has been registered.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-add-field-count.png' alt=''
+                class="blog-image-md"><br />
+            <h3>
+                <b>Building a Polling App</b>
+            </h3>
+            <p>
+                In our new project we will add two dependencies for firebase and firestore.
+                We must not forget to add internet permissions in our manifest
+                and check the file <b>google-services</b> is in the root folder for our app module.
+            </p>
+            <pre><code class="gradle">
+            implementation 'com.google.firebase:firebase-core:16.0.4'
+            implementation 'com.google.firebase:firebase-firestore:17.1.1'
+            </code></pre>
+            <p>
+                After setting up our project, we can instantiate firestore to connect to the cloud and
+                get a reference to our collection of platforms.
+            </p>
+            <pre><code class="kotlin">
+            ...
+            var mDatabase: FirebaseFirestore? = null
+            var mPlatformsCollection: CollectionReference? = null
+            ...
+            mDatabase = FirebaseFirestore.getInstance()
+            val settings = FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build()
+            mDatabase!!.firestoreSettings = settings
+            mPlatformsCollection = mDatabase?.collection("platforms")
+            ...
+            </code></pre>
+            <h3>
+                <b>Realtime Catch-Up</b>
+            </h3>
+            <p>
+                We can read data from our database in real-time using the reference to the documents.
+                After connecting to our document we can listen for changes in their content and
+                trigger updates in our application. The code looks as follows
+            </p>
+            <pre><code class="kotlin">
+            ...
+            val androidRef = mPlatformsCollection?.document("Android")
+            androidRef?.addSnapshotListener(object : EventListener&lt;DocumentSnapshot> {
+                override fun onEvent(snapshot: DocumentSnapshot?, e : FirebaseFirestoreException?) {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e)
+                        return
+                    }
+                    if (snapshot != null && snapshot.exists()) {
+                        Log.d(TAG, "Current data: " + snapshot.data!!)
+                        androidVotes = snapshot.data!!["count"] as Long
+                        showVotes()
+                    } else {
+                        Log.d(TAG, "Current data: null")
+                    }
+                }
+            })
+            ...
+            </code></pre>
+            <h3>
+                <b>Casting a vote</b>
+            </h3>
+            <p>
+                First we need to retrieve the document with their identification name in the database.
+                In our case we use the name of the platform.
+                Then we need to create a map of the field with the values we want to update.
+                Then we can send the map to our database as follows
+            </p>
+            <pre><code class="kotlin">
+            ...
+            val vote = HashMap&lt;String, Any>()
+            vote.put("count", platformVotes+1)
+            mPlatformsCollection?.document(platformName)?.set(vote)?.
+                addOnSuccessListener(object: OnSuccessListener&lt;Void> {
+                    override fun onSuccess(aVoid : Void?) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!")
+                    }
+                })?.
+                addOnFailureListener(object: OnFailureListener {
+                    override fun onFailure(e : Exception) {
+                        Log.w(TAG, "Error writing document", e)
+                    }
+                })
+            ...
+            </code></pre>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-poll-results.png' alt=''
+                class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-poll-app.png' alt=''
+                class="blog-image-md"><br />
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://github.com/herb786/tutorial-firebase-database-poll">
+                    Github repository for this tutorial.
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/NoSQL">
+                    Wikipedia article on NoSQL databases.
+                </a>
+            </li>
+            <li>
+                <a href="https://firebase.google.com/docs/firestore/">
+                    Guide for Cloud Firestore.
+                </a>
+            </li>
+            <li>
+                <a href="https://firebase.google.com/docs/database/">
+                    Guide for Firebase Realtime Database.
+                </a>
+            </li>
+            <li>
+                <a href="https://codelabs.developers.google.com/codelabs/firebase-android/index.html">
+                    A simple chat with firebase database.
+                </a>
+            </li>
+            <li>
+                <a href="https://codelabs.developers.google.com/codelabs/firebase-android/index.html">
+                    A recommendation app with firestore.
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Firebase, Firestore, Realtime Database, NoSQL
+    </div>
+</div>

@@ -1,0 +1,279 @@
+<!-- blog 0016-->
+<div class="blog" id="blog0016">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Beacons and the Nearby Message API
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-08-15
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/bluetooth.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                The last time we learn how to recognize bluetooth devices as beacons or eddystones and
+                we know how far we are from them. This can help you to probe your environment and
+                get very insightful data.
+            </p>
+            <p>
+                Besides we can also provide some clues and information in real time
+                attached to beacons in well established location.
+            </p>
+            <p>
+                The Beacon Proximity API will be used for this purpose.
+                We can attached some headlines or messages to our beacons.
+                These beacons are identified by their proximity UUID.
+                Since these messages are in the cloud we can edit any time
+                and we can doctor our messages according to the season.
+                Therefore we might not need to flash or configure the beacons to include new data
+                but we just need to change the attachments using the Beacon Proximity API.
+            </p>
+            <p>
+                Once we added attachments to our beacons we want to fetch them in our Android App.
+                We can use the Nearby Messages API for the purpose.
+                We might also use the Beacon Proximity API.
+            </p>
+            <h3>
+                <b>
+                    Getting started with the Beacon Proximity API
+                </b>
+            </h3>
+            <p>
+                I will show you how to add attachments to your beacons using the Beacon Proximity API.
+                I am assuming you already have OAuth credentials to use the google APIs
+                and you know how to generate an authorization token.
+            </p>
+            <p>
+                First of all, you will need to create an identification for your beacon.
+                You will need the proximity UUID, the major and the minor.
+                As you know the minor is used to get a more precise location of a beacon.
+                For example the minor of a beacon will tell you in which bed in a ward of an hospital you are.
+                The major will be less precise. For example the major of a beacon will only tell you
+                that you are in the ward of the hospital.
+            </p>
+            <p>
+                The id of the beacon is the result of joining the proximity uuid,
+                the major and the minor and encoding the result in base64.
+                The next command will help you with this task.
+                Here <b>$hexuid</b> is the concatenation of the proximity uuid, the major and the minor.
+            </p>
+            <pre><code class="bash">
+            echo -ne $hexuid | xxd -r -p | base64
+            </code></pre>
+            <p>
+                Then you can register your beacon with the Beacon Proximity API.
+                The next request with <b>curl</b> will do the job.
+            </p>
+            <pre><code class="bash">
+            curl -d '{"advertisedId":{"type":"IBEACON","id":"'$uid'"},"status":"ACTIVE","placeId":"ChIJTxax6NoSkFQRWPvFXI1LypQ","latLng":{"latitude":"47.6693771","longitude":"-122.1966037"},"indoorLevel":{"name":"1"},"expectedStability":"STABLE","description":"Farm beacon.","properties":{"position":"entryway"}}' -H 'Content-Type: application/json' -H "Authorization: Bearer $token" https://proximitybeacon.googleapis.com/v1beta1/beacons:register
+            </code></pre>
+            <p>
+                Here <b>$uid</b> is the previous id we have just generated
+                and <b>$token</b> is the access token for the google APIs.
+            </p>
+            <h3>
+                <b>
+                    Linking a message with a proximity UUID
+                </b>
+            </h3>
+            <p>
+                Once we have registered a beacon we can link messages known as attachments.
+                The attachment might be added using the dashboard for beacons
+                or doing the respective request to the Google Proximity API.
+            </p>
+            <p>
+                For the request you will need namespace of your project,
+                the beacon name which you got after registration and the message encoded in base64.
+                The request with <b>curl</b> is done as follows
+            </p>
+            <pre><code class="bash">
+            curl -d '{"namespacedType":"'$namespaceName'/string","data":"UmlwZSBqdWljeSBwbHVtcw=="}' -H "Authorization: Bearer $token" -H 'Content-Type: application/json' https://proximitybeacon.googleapis.com/v1beta1/$beaconName/attachments?key=$apikey
+            </code></pre>
+            <p>
+                The data that I have encoded in base64 is <i>"Ripe juicy plums"</i>.
+                You can do it as follows
+            </p>
+            <p>
+                echo -n "Ripe juicy plums" | base64
+            </p>
+            <b>
+                Now you can get the messages with the Nearby Messages API.
+            </b>
+            <h3>
+                <b>
+                    Fetching attachments for beacons in an Android App
+                </b>
+            </h3>
+            <p>
+                I am going to create an app to get information about my farm.
+                My farm grows different variety of fruits as grapes, plums and apples.
+                I have a beacon for each plot in my farm.
+                Each plot only have one kind of fruit.
+                Since I am in the harvest season for plums I want to show a message saying
+                that we have ripe juicy plums.
+            </p>
+            <p>
+                We have already attached a message for the beacon in the plot for plums.
+                Then we can use the nearby message API to get the message.
+                You must create an authorization key to access this API in android devices.
+            </p>
+            <p>
+                Once you have the authorization key,
+                you can add Nearby Message module to your android project.
+                In the gradle build you need to insert in your dependencies
+            </p>
+            <pre><code class="java">
+                implementation 'com.google.android.gms:play-services-nearby:15.0.1'
+            </code></pre>
+            <p>
+                You also need to modify your manifest
+            </p>
+            <pre><code class="xml">
+            ...
+            &lt;uses-permission android:name="android.permission.BLUETOOTH" />
+            &lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+            &lt;uses-permission android:name="android.permission.INTERNET" />
+            ...
+            &lt;uses-feature
+                    android:name="android.hardware.bluetooth_le"
+                    android:required="false" />
+            ...
+            &lt;application>
+                &lt;meta-data
+                        android:name="com.google.android.nearby.messages.API_KEY"
+                        android:value="your_authorization_key" />
+            &lt;/application>
+            ...
+            </code></pre>
+            <p>
+                The activity can subscribe to the nearby message API as follows
+            </p>
+            <pre><code class="java">
+            ...
+            public final String IBEACON = "fda50693-a4e2-4fb1-afcf-c6eb07647825";
+            ...
+            MessageListener mMessageListener = new MessageListener() {
+                @Override
+                public void onFound(Message message) {
+                    Log.println(Log.ASSERT, TAG, "Message found: " + message);
+                    imgNotification.setImageResource(R.drawable.plums1);
+                    if (!message.getNamespace().equals(NAMESPACE)){
+                        new ProximityAsyncTask().execute();
+                    } else{
+                        txtNotification.setText(new String(message.getContent()));
+                    }
+                }
+            
+                @Override
+                public void onLost(Message message) {
+                    Log.println(Log.ASSERT, TAG, "Lost sight of message.");
+                    imgNotification.setImageResource(R.drawable.farm);
+                    txtNotification.setText("Welcome to my Farm! ");
+                }
+            
+            };
+            ...
+            @Override
+            public void onStart() {
+                super.onStart();
+                MessageFilter messageFilter = new MessageFilter.Builder()
+                        .includeIBeaconIds(UUID.fromString(IBEACON), null, null)
+                        .includeAllMyTypes()
+                        .build();
+                SubscribeOptions options = new SubscribeOptions.Builder()
+                        .setStrategy(Strategy.DEFAULT)
+                        .setFilter(messageFilter)
+                        .build();
+                Nearby.getMessagesClient(this).subscribe(mMessageListener, options);
+            }
+            ...
+            @Override
+            public void onStop() {
+                Nearby.getMessagesClient(this).unsubscribe(mMessageListener);
+                super.onStop();
+            }
+            ...
+            </code></pre>
+            <p>
+                Now we receive a message anytime we approach to the parcel of plums.
+            </p>
+            <p>
+                We can also make a request to the beacon proximity api to get this message.
+                You can use this curl request to get the message
+            </p>
+            <pre><code class="bash">
+            curl -d '{"observations":[{"advertisedId":{"type":"IBEACON","id":"your_base64_beacon_id"}}],"namespacedTypes":["your_namespace/data_type"]}' -H 'Content-Type: application/json'
+                https://proximitybeacon.googleapis.com/v1beta1/beaconinfo:getforobserved?key=your_authorization_key
+            </code></pre>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-08-25.gif" type="image/gif">
+
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://developers.google.com/beacons/proximity/guides">
+                    https://developers.google.com/beacons/proximity/guides
+                </a>
+            </li>
+            <li>
+                <a
+                    href="https://developers.google.com/beacons/proximity/reference/rest/v1beta1/beacons.attachments/list">
+                    https://developers.google.com/beacons/proximity/reference/rest/v1beta1/beacons.attachments/list
+                </a>
+            </li>
+            <li>
+                <a href="https://developers.google.com/beacons/dashboard/">
+                    https://developers.google.com/beacons/dashboard/
+                </a>
+            </li>
+            <li>
+                <a href="https://developers.google.com/nearby/messages/android/get-started">
+                    https://developers.google.com/nearby/messages/android/get-started
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/IBeacon">
+                    https://en.wikipedia.org/wiki/IBeacon
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/google/eddystone/tree/master/eddystone-uid">
+                    https://github.com/google/eddystone/tree/master/eddystone-uid
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/herb786/tutorial-beacon-farm-message">
+                    Source code for the tutorial
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, BLE, Beacons, Eddystone, Nearby Messages API, Proximity Beacon API
+    </div>
+</div>

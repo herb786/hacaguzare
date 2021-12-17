@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-72135203-5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-72135203-5');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/main-theme/alasdair-top-bar.css">
+    <link rel="stylesheet" type="text/css" href="/static//css/main-theme/alasdair-stash.css">
+    <link rel="stylesheet" type="text/css" href="/static//css/main-theme/alasdair-blog.css">
+    <link rel="stylesheet" type="text/css" href="/static//css/main-theme/alasdair-content.css">
+    <!-- Styles -->
+    <style>
+            body {
+                font-family: 'Lato';
+            }
+    
+            .fa-btn {
+                margin-right: 6px;
+            }
+        </style>
+    <title>Sitio Web de Hacagusae</title>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="header" id="header">
+        <div class="title">Hacagusae</div>
+        <div class="owner"><span id="tagline"></span></div>
+    </div>
+    <div class="stash">
+        <div class="stash-tagline">
+            I have been working in the mobile scene since a couple of years ago and gained a handful of experience
+            to create apps for Android and iOS. In my spare time I love to design and build applications
+            that might help to make many of my tasks easier. Since I mainly interested in electronics and science,
+            my apps are addressed to people who share my interests. I am not a professional graphic designer,
+            so you will find some screens are pretty amateurish.
+        </div>
+        <div id="app-list"><span id="list"></span></div>
+    </div>
+    <div id="footer"></div>
+    </body>
+    <script>
+        $(document).ready(function(){
+            $("#locales").change(function () {
+                var lang = $('#locales').val();
+                if (lang != ''){
+                    window.location.replace('?lang=' + lang);
+                }
+            });
+            img = document.getElementById('appbckg4');
+            img.style.backgroundImage = "url(/static/img/common-bckg.png)";
+            img = document.getElementById('appbckg3');
+            img.style.backgroundImage = "url(/static/img/common-bckg.png)";
+            img = document.getElementById('appbckg2');
+            img.style.backgroundImage = "url(/static/img/morse-bckg.png)";
+            img = document.getElementById('appbckg');
+            img.style.backgroundImage = "url(/static/img/arxiv-bckg.png)";
+        });
+    </script>
+</html>

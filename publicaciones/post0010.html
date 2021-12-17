@@ -1,0 +1,190 @@
+<!-- blog 0010-->
+<div class="blog" id="blog0010">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Servidor para ensayos en Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-05-20
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Usualmente usamos servidores locales con respuestas simuladas para faciliar el desarrollo.
+                Ya no es necesario esperar por un desarrollo a destiempo para probar un aplicativo
+                tanto como no haya algún cambio en los requerimientos.
+            </p>
+            <p>
+                Este servidor local puede ejecutarse en la computadora de desarrollo y los dispositivos pueden
+                conectarse a este servidor sin problemas siempre
+                que no exista un cortafuegos o quizás un filtro que corte la conexión.
+                Si fuera el caso este tutorial da a conocer una solución que
+                puede usarse para instalar un servidor en el propio dispositivo.
+            </p>
+            <p>
+                En las secciones consecuentes veremos como crear un servidor en un dispositvo con Android.
+                Si estás familiarizado creando servidores en Java, puede reutilizar tu código y crear un servidor
+                en Android.
+            </p>
+            <h3><b>Servidor</b></h3>
+            <p>
+                Creemos un nuevo aplicativo en Android Studio. Aquí sólo necesitamos una simple actividad donde
+                progrmaremos el servidor. El servidor debe ejecutarse en un hilo de procesos diferente al hilo por
+                defecto.
+                Usaremos como punto de partida las clases <b>ServerSocket</b> y <b>Socket</b>.
+            </p>
+            <pre><code class="java">
+            public class MainActivity extends Activity {
+            
+                ServerThread serverThread;
+            
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    setContentView(R.layout.activity_main);
+            
+                    serverThread = new ServerThread();
+                    serverThread.start();
+                }
+            
+                public class ServerThread extends Thread {
+            
+                    @Override
+                    public void run() {
+                        int port = 3000;
+                        try {
+                            ServerSocket serverSocket = new ServerSocket(port);
+                            serverLog(port);
+                            while (true) {
+                                Socket clientSocket = serverSocket.accept();
+                                ...
+                                clientSocket.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+            
+                    }
+            
+                }
+            
+            }
+            </code></pre>
+            <p>
+                El zócalo recibe la petición del cliente por tanto necesitamos una instancia de <b>InputStream</b>
+                y para enviar la respuesta una instancia de <b>OutputStream</b>.
+                El procesamiento de la petición con HTTP considera las cabecera y la carga.
+                Una petición con HTTP divide las cabeceras de los datos con una línea en blanco.
+                La carga es solamente usada por peticiones del tipo POST.
+                Luego de procesar la petición y enviar la respuesta cerraremos el zocálo.
+            </p>
+            <pre><code class="java">
+            InputStream in = clientSocket.getInputStream();
+            
+            OutputStreamWriter out = new OutputStreamWriter(clientSocket.getOutputStream());
+            BufferedWriter outBuffer = new BufferedWriter(out);
+            
+            byte[] bytes = new byte[2048];
+            in.read(bytes, 0, 2048);
+            String request = new String(bytes);
+            request = request.trim();
+            String[] splitRequest = request.split("\r\n\r\n");
+            if (splitRequest.length > 1) {
+                processRequest(splitRequest[0], splitRequest[1], outBuffer);
+            } else {
+                processRequest(splitRequest[0], "", outBuffer);
+            }
+            out.write();
+            </code></pre>
+            <h3><b>Consultas con JSON</b></h3>
+            <p>
+                Podemos diferenciar una petición del tipo POST de una GET usando la primera línea de datos.
+                Luego podemos inspeccionar el contenido de la carga y enviar una respuesta.
+                En el siguiente ejemplo enviamos una respuesta con estándar JSON y también procesamos
+                la carga de datos con estándar JSON.
+                Aquí debemos observar el tipo de llamada HTTP y el punto de entrada del a petición en la cabecera.
+            </p>
+            <pre><code class="java">
+            if (header.startsWith("GET /data.json")) {
+                out.write("HTTP/1.1 200 OK\r\n");
+                out.write("Content-Type: application/json\r\n");
+                out.write("\r\n");
+                out.write("{ \"data\": \"Hello World\"}");
+                out.flush();
+            } else if (header.startsWith("POST /data.json")) {
+                JSONObject json = new JSONObject(body);
+                String date = json.get("date").toString();
+                String user = json.get("user").toString();
+                out.write("HTTP/1.1 200 OK\r\n");
+                out.write("Content-Type: application/json\r\n");
+                out.write("\r\n");
+                out.write("{ \"message\": \"Hello " + user + ", today is " + date + "\"}");
+                out.flush();
+            }
+            </code></pre>
+            <h3><b>Consultas con XML</b></h3>
+            <p>Haremos lo mismo para consultas con datos usando el lenguaje XML</p>
+            <pre><code class="java">
+            if (header.startsWith("GET /data.xml")) {
+                out.write("HTTP/1.1 200 OK\r\n");
+                out.write("Content-Type: application/xml\r\n");
+                out.write("\r\n");
+                out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
+                "<data>Hello World</data>");
+                out.flush();
+            } else if (header.startsWith("POST /data.xml")) {
+                JSONObject json = new JSONObject(body);
+                String date = json.get("date").toString();
+                String user = json.get("user").toString();
+                out.write("HTTP/1.1 200 OK\r\n");
+                out.write("Content-Type: application/xml\r\n");
+                out.write("\r\n");
+                out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                        "<message>Hello " + user + ", today is " + date + "</message>");
+                out.flush();
+            }
+            </code></pre>
+            <p>
+                Podemos ajustar el programa para enviar ficheros o imágenes.
+                Esos ficheros puedesen ser colocados en directorio <b>assets</b> del proyecto.
+                Este servidor puede ser usado por cualquier aplicativo usando las
+                líbrerias okHttp3, Retrofit or HttpUrlConnection.
+                Este vez sólo necesitamos fijar la url raíz como <b>localhost</b>.
+            </p>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://github.com/herb786/tutorial-android-mock-server">
+                    https://github.com/herb786/tutorial-android-mock-server
+                </a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Dev Tools, Web services
+    </div>
+</div>

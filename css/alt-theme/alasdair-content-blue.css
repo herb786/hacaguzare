@@ -1,0 +1,95 @@
+body{
+	position: absolute;
+	margin:0 ;
+	width:100%;
+	height:100%;
+	background-color: rgba(158,192,210,1);
+}
+
+.toolbar{
+	width:100%;
+	display: table;
+	font-size: 1em;
+	font-family: 'Fira Sans', sans-serif;
+	background-color: rgba(79,165,210,1);
+}
+
+.toolbar .item{
+	width: 16.5%;
+	padding:0.4em;
+	text-align: center;
+	border: 1px solid rgba(0,60,60,0);
+    background-color: rgba(79,165,210,1);
+	display: table-cell;
+}
+
+
+.toolbar .item:hover{
+	color: #000;
+    background-color: rgba(234,144,65,1);
+	border: 0px solid #fff;
+}
+
+.toolbar .item a:link{
+	color: #fff;
+	text-decoration: none;
+}
+
+.toolbar .item a:visited{
+	color: #fff;
+	text-decoration: none;
+}
+
+.toolbar .item a:hover{
+	color: #fff;
+	text-decoration: none;
+}
+
+.header{
+    color: #fff;
+	margin: 0 0 2em 0;
+	padding: 1em 4em;
+	font-family: 'Fira Sans', sans-serif;
+	background-color: rgba(61,127,162,1);
+}
+
+.header .title{
+	font-size: 3em;
+}
+
+.header .owner{
+	font-size: 1em;
+	text-align: right; 
+}
+
+
+.footer{
+	position:relative;
+	bottom: 0;
+	width:100%;
+	font-size: 1em;
+    color: #fff;
+	margin: 4em 0 0 0;
+	font-family: 'Fira Sans', sans-serif;
+	background-color: rgba(61,127,162,1);
+}
+
+
+.footer .info{
+	line-height: 0.5;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-left: 4em;
+}
+
+.footer .thanks{
+	text-align: right; 
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-right: 4em;
+}
+
+
+
+
+        

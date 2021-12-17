@@ -1,0 +1,98 @@
+<!-- blog 0008-->
+<div class="blog" id="blog0008">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Working with the Android Debugger
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-04-29
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                One of the most important tools helping many developers to remove issues and bugs in the code
+                is the debugger.
+            </p>
+            <p>In this short post I will spend some lines explaining how to use this fab tool in Android Studio.</p>
+            <h3><u>Start the debugger</u></h3>
+            <p>You can access the debugger through the <b>Run</b> menu, choosing the option <b>Debug</b>.
+                The debugger is also available in the toolbar, you will notice a bug with a small triangle.
+                The other way to launch the debugger is using the shortcut keys <b>SHIFT + F9</b>.</p>
+            <p>This will bind the debugger while launching the application.
+                Then a new <b>Debug</b> tab will appear at the bottom of the IDE.
+                You will notice the window tab is split in two panels. The left panel contains the running processes.
+                The right panel contains variable of the code that you are tracking.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-panels.png" type="image/png">
+            <p>If you miss to start the debugger after launching your application you should read the next section.</p>
+            <h3><u>Attach the debugger to process</u></h3>
+            <p>You still can attach the debugger after launching your application.
+                You need to look for the option <b>Attach to local process...</b> in the menu <b>Run</b>.
+                There is an quick access to this option by clicking the icon with a phone and a bug in the toolbar.
+                Then you will see a small window where you must choose the process started by your application.
+                The process has tje same name of the application package.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-process.png" type="image/png">
+            <h3><u>Controlling the debugger</u></h3>
+            <p>After binding your application to the debugger you can explore the internal workings of your code
+                by setting breakpoint in your code. Breakpoint are usually added to the lines of your code doing
+                a double click at the left side of the editor next to the column number.
+                You can also add a breakpoint by placing the cursor
+                at the line to be analyzed. The shortcut keys <b>CTRL + F8</b> can do the job too.
+                You can jump from a breakpoint to another one using the Resume icon
+                in the window debug or by using the hotkey <b>F9</b>.</p>
+            <p>You can get a list of all the breakpoints in the project when
+                you expand the tab <b>Favorites</b> at the left side of the IDE. This panel will appear
+                below the panel project.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-favorites.png" type="image/png">
+            <p>There is also possible to visualize a sorted list of breakpoint
+                with the option <b>View Breakpoints...</b> in the <b>Run</b> menu.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-breakpoints.png" type="image/png">
+            <h3><u>Watching variables</u></h3>
+            <p>Sometimes you will need to keep a track of internal fields or variables of the instances created by our
+                applications.
+                This variables are usually not explicit in the code and you can assign a breakpoint.
+                You still can watch to this implicit variables using the feature <b>New watch...</b>.
+                This option can be accessed by doing double click in the panel of variables or clicking the
+                sunglass icon. Then you can choose the variable you want to analyze.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-watcher.png" type="image/png">
+            <h3><u>Change values</u></h3>
+            <p>It is possible to change the values of the variables at runtime. This feature will let you
+                to test in-flight different scenarios for you application. This option can be enabled with
+                the hotkey <b>F2</b>. Another way to change a variable is with the option <b>Evaluate Expression...</b>.
+                This option is accessible with the shortcut keys <b>ALT + F8</b> or in the <b>Run</b> menu.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-evaluate.png" type="image/png">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://developer.android.com/studio/debug/">
+                    https://developer.android.com/studio/debug/</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Debugging, Dev Tools
+    </div>
+</div>

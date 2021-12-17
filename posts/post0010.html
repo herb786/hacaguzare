@@ -1,0 +1,193 @@
+<!-- blog 0010-->
+<div class="blog" id="blog0010">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Mock server with Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-05-20
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                We usually run local servers with dummy responses to ease and test our current development.
+                We no longer need to wait for the last implementation of the API
+                to assess our application as far as there is not any change in the API response.
+            </p>
+            <p>
+                This local server often run in our development machine and
+                we can easily connect our devices as far as
+                there is not any firewall or internal filter preventing us of connecting.
+                This might be really annoying if you need to do paperwork to get the technical support
+                to configure your devices to get access to the protected network.
+                However we are not short in solutions since
+                we can still run a local server in our own smart device.
+            </p>
+            <p>
+                The next sections will explain how to set up a local server in an Android device.
+                If your are familiar implementing servers with Java, you can recycle your code and
+                make a server application in Android.
+            </p>
+            <h3><b>Server</b></h3>
+            <p>
+                We will start making a new application with Android Studio without any additional paraphernalia.
+                We just need a single activity to start our server so we include our code in the main activity.
+                This server must run in a separated thread. We will use the classes <b>ServerSocket</b> and
+                <b>Socket</b>.
+            </p>
+            <pre><code class="java">
+            public class MainActivity extends Activity {
+            
+                ServerThread serverThread;
+            
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    setContentView(R.layout.activity_main);
+            
+                    serverThread = new ServerThread();
+                    serverThread.start();
+                }
+            
+                public class ServerThread extends Thread {
+            
+                    @Override
+                    public void run() {
+                        int port = 3000;
+                        try {
+                            ServerSocket serverSocket = new ServerSocket(port);
+                            serverLog(port);
+                            while (true) {
+                                Socket clientSocket = serverSocket.accept();
+                                ...
+                                clientSocket.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+            
+                    }
+            
+                }
+            
+            }
+            </code></pre>
+            <p>
+                The socket will receive a request so we need an <b>InputStream</b> and
+                we want to send a response so we will initialize an <b>OutputStream</b>.
+                We will process the HTTP request with the headers and the payload.
+                HTTP requests split the header and the payload with an empty line. We do not
+                need the payload for GET request but POST requests.
+                After processing and sending the response we will close the socket.
+            </p>
+            <pre><code class="java">
+            InputStream in = clientSocket.getInputStream();
+            
+            OutputStreamWriter out = new OutputStreamWriter(clientSocket.getOutputStream());
+            BufferedWriter outBuffer = new BufferedWriter(out);
+            
+            byte[] bytes = new byte[2048];
+            in.read(bytes, 0, 2048);
+            String request = new String(bytes);
+            request = request.trim();
+            String[] splitRequest = request.split("\r\n\r\n");
+            if (splitRequest.length > 1) {
+                processRequest(splitRequest[0], splitRequest[1], outBuffer);
+            } else {
+                processRequest(splitRequest[0], "", outBuffer);
+            }
+            out.write();
+            </code></pre>
+            <h3><b>Handling JSON</b></h3>
+            <p>
+                We can identify a POST or GET request with the first line of the stream.
+                Then we can process the content of the payload and send a response.
+                In the next example we send a JSON response and process some JSON payload.
+                You will notice the method along with the endpoint of the request in the header.
+                We just feed the output stream with whole response.
+            </p>
+            <pre><code class="java">
+            if (header.startsWith("GET /data.json")) {
+                out.write("HTTP/1.1 200 OK\r\n");
+                out.write("Content-Type: application/json\r\n");
+                out.write("\r\n");
+                out.write("{ \"data\": \"Hello World\"}");
+                out.flush();
+            } else if (header.startsWith("POST /data.json")) {
+                JSONObject json = new JSONObject(body);
+                String date = json.get("date").toString();
+                String user = json.get("user").toString();
+                out.write("HTTP/1.1 200 OK\r\n");
+                out.write("Content-Type: application/json\r\n");
+                out.write("\r\n");
+                out.write("{ \"message\": \"Hello " + user + ", today is " + date + "\"}");
+                out.flush();
+            }
+            </code></pre>
+            <h3><b>Handling XML</b></h3>
+            <p>We can do the same for XML requests</p>
+            <pre><code class="java">
+            if (header.startsWith("GET /data.xml")) {
+                out.write("HTTP/1.1 200 OK\r\n");
+                out.write("Content-Type: application/xml\r\n");
+                out.write("\r\n");
+                out.write("<?xml version="1.0" encoding="UTF-8"?>"+
+            "<data>Hello World</data>");
+                out.flush();
+            } else if (header.startsWith("POST /data.xml")) {
+                JSONObject json = new JSONObject(body);
+                String date = json.get("date").toString();
+                String user = json.get("user").toString();
+                out.write("HTTP/1.1 200 OK\r\n");
+                out.write("Content-Type: application/xml\r\n");
+                out.write("\r\n");
+                out.write("<?xml version="1.0" encoding="UTF-8"?>" +
+                        "<message>Hello " + user + ", today is " + date + "</message>");
+                out.flush();
+            }
+            </code></pre>
+            <p>Don't forget to escape double quotes in Java.</p>
+            <p>
+                We can reshape the code to send files and images.
+                You can store such files in the <b>assets</b> folder of the project.
+                This server can be tested with any client application
+                using libraries like okHttp3, Retrofit or HttpUrlConnection.
+                This time you just need to set the base url as <b>localhost</b>.
+            </p>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://github.com/herb786/tutorial-android-mock-server">
+                    https://github.com/herb786/tutorial-android-mock-server
+                </a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Dev Tools, Web services
+    </div>
+</div>

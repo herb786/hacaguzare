@@ -1,0 +1,51 @@
+.about .title {  
+    margin: auto;
+    font-size: 20px;
+    padding: 20px;
+    color: #fff;
+    line-height: 3;
+    text-align: center; 
+	font-family: 'Fredoka One', cursive;	
+	font-weight: 300;
+}
+
+.about p {
+	font-family: 'Fira Sans', sans-serif;
+	font-family: 'Special Elite', cursive;
+}
+
+.about h1{
+	font-family: 'Averia Sans Libre', cursive;
+}
+
+.about h2 {
+	font-family: 'UnifrakturMaguntia', cursive;
+}
+
+.about h3 {
+	font-family: 'Lobster', cursive;
+}
+
+.about h5 {
+	font-family: 'Ultra', serif;
+}
+
+.about h6 {
+	font-family: 'Fugaz One', cursive;
+}
+
+.about li {
+	font-family: 'Karla', sans-serif;
+}
+
+.about ul {
+	font-family: 'Fira Sans', sans-serif;
+}
+
+.about a {
+	font-family: 'Scada', sans-serif;
+}
+
+.about a {
+	font-family: 'Signika Negative', sans-serif;
+}

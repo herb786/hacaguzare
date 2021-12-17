@@ -1,0 +1,181 @@
+<!-- blog 0014-->
+<div class="blog" id="blog0014">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Tipografías variadas en Google Fonts
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-07-07
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                La fuente común de muchos aplicativos en Android es <b>Roboto</b>.
+                Esta tipografía del tipo San Serif puede ser algo tediosa ye inadecuada para
+                llevar la idea del contenido en nuestro aplicativo.
+                Sin embargo tenemos fuentes adicionales libre de regalías en <i>Google Fonts</i> o <i>Typekit</i>.
+            </p>
+            <p>
+                Podemos cambiar la fuente usando diferente herramientas en la plataforma Android.
+                Algunas imitan la carga de fuente en sitios web de modo que no necesitamos tener los recursos
+                en el aplicativo y hacer el binario más grande.
+                En este caso el aplicativo descarga las fuentes usando los repositorios de <b>cdnjs</b>.
+            </p>
+
+            <h3>
+                <b>
+                    Cómo cargar las fuentes en Google Fonts
+                </b>
+            </h3>
+            <p>
+                Hay dos maneras de cambiar las fuentes por defecto en nuestro aplicativo.
+                La primera es usando el asistente en la interfaz integrada de desarrollo (Android Studio)
+                y la segunda es con código.
+            </p>
+            <p>
+                Cuando usamos Android Studio debemos acceder al modo diseño en nuestra plantilla gráfica y
+                escogiendo la componente que debemos modificar.
+                Luego debemos desplegar el panel <b>Attributes</b> en el lado derecho de la ventana.
+                Aquí escogemos el atributo <b>fontFamily</b> y desplegamos las opciones.
+                Finalmente elegimos la opción <b>More fonts...</b>.
+                Allí podemos elegir cualquier fuente del catálogo.
+            </p>
+            <p>
+                El asistente creará una nueva carpeta <b>fonts</b> dentro de la carpeta <i>resources</i>.
+                También encontraremos un nuevo fichero <b>font_certs.xml</b> dentro de la carpeta <i>values</i>.
+                Este archivo será usado para obtener los certificados del proveedor de fuentes, que es Google Fonts.
+            </p>
+            <p>
+                También podemos agregar fuentes usando código.
+                Siguiendo el código aquí debajo usaremos la fuente <i>Wendy One</i>.
+            </p>
+            <pre>
+            <code class=”java”>
+            TextView helloWorld = findViewById(R.id.helloWorld);
+            String wendyOne400 = "name=Wendy One&weight=400";
+            String providerAuthority = "com.google.android.gms.fonts";
+            String providerPackage = "com.google.android.gms";
+            int certificates = R.array.com_google_android_gms_fonts_certs;
+            FontRequest request1 = new FontRequest(providerAuthority, providerPackage, wendyOne400, certificates);
+            FontsContractCompat.FontRequestCallback callback1 = new FontsContractCompat.FontRequestCallback() {
+                @Override
+                public void onTypefaceRetrieved(Typeface typeface) {
+                    helloWorld.setTypeface(typeface);
+                }
+            };
+            FontsContractCompat.requestFont(this, request1, callback1, new Handler());
+            
+            </code>
+            </pre>
+            <p>
+                En este pedazo de código necesitamos cambiar la consulta como se describe en la guía
+                para la API de Google Fonts. Los identifcadores certificados han sido generados y guardados en
+                el archivo <b>font_certs.xml</b>.
+            <p>
+
+            <h3>
+                <b>
+                    Formato y colores de fuente
+                </b>
+            </h3>
+            <p>
+                Aparte de usar una nueva tipografía también queremos agregar elementos decorativos como viñetas.
+                En lugar de sobrecomplicar las plantillas gráficas podemos usar algo de código para alcanzar el diseño
+                propuesto.
+            </p>
+            <p>
+                Para este propósito usaremos subclases de <b>CharacterStyle</b>.
+                Ahí podemos encontrar rutinas para la fuente, el fondo, el tamaño y otros estilos.
+            </p>
+            <p>
+                Por ejemplo podemos cambiar el color de algunas letras en el texto.
+                Está pieza de código hace el trabajo
+            </p>
+            <pre>
+            <code class=”java”>
+            TextView exclusiveExclusive= findViewById(R.id.exclusiveExclusive);
+            String example = "0123456789";
+            SpannableStringBuilder builder = new SpannableStringBuilder(example);
+            builder.setSpan(new StyleSpan(Typeface.BOLD), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            exclusiveExclusive.setText(builder);
+            </code>
+            </pre>
+
+            <p>
+                Aquí notamos la señal <b>Spanned.SPAN_EXCLUSIVE_EXCLUSIVE</b> que es usada cuando insertamos nuevos
+                carácteres.
+                Esta señal particular no aplicará estilos cuando insertamos texto al inicio
+                o final de la cadena de texto definida por los indices del constructor.
+            </p>
+
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/typefaces.png" type="image/gif">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href=”https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts”>
+                    https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts
+                </a>
+            </li>
+            <li>
+                <a href=”https://developers.google.com/fonts/docs/android”>
+                    https://developers.google.com/fonts/docs/android
+                </a>
+            </li>
+            <li>
+                <a href=”https://developer.android.com/reference/android/text/style/CharacterStyle”>
+                    https://developer.android.com/reference/android/text/style/CharacterStyle
+                </a>
+            </li>
+            <li>
+                <a href=”https://fonts.google.com/”>
+                    https://fonts.google.com/
+                </a>
+            </li>
+            <li>
+                <a href=”https://en.wikipedia.org/wiki/Roboto”>
+                    https://en.wikipedia.org/wiki/Roboto
+                </a>
+            </li>
+            <li>
+                <a href=”https://github.com/herb786/tutorial-typefaces”>
+                    Source code for this tutorial
+                </a>
+            </li>
+            <li>
+                <a
+                    href=”https://www.adobe.io/apis/creativecloud/creativesdk/docs/androidsdk/adobe-creative-sdk-for-android_master/typekit.html”>
+                    Adobe Typekit for android
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Typefaces, UX Design
+    </div>
+</div>

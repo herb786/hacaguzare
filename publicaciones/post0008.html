@@ -1,0 +1,96 @@
+<!-- blog 0008-->
+<div class="blog" id="blog0008">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Una rápida mirada al depurador de Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-04-29
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Una herramienta important para el desarrollo y el mantenimiento de aplicativos es el depurador.
+            </p>
+            <p>
+                En este breve tutorial explicaremos como utilizar esta herramienta en Android Studio.</p>
+            <h3><u>Cómo iniciar el depurador.</u></h3>
+            <p>El depurador puede encontrarse a través del menú <b>Run</b>, eligiendo la opción <b>Debug</b>.
+                El depurador es también visible en la barra de herramientas.
+                Su símbolo es una bicho con un triángulo.
+                Otro modo de abrirlo es usando el atajo <b>SHIFT + F9</b>.</p>
+            <p>Así podemos conectar el depurador cuando la aplicación arranque.
+                Luego veremos una nueva pestaña <b>Debug</b> adosada en la parte inferior.
+                Esta pestaña esta dividida en dos paneles. El panel izquierdo tiene los procesos en ejecución.
+                El panel derecho contiene variables que están siendo inspeccionadas.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-panels.png" type="image/png">
+            <p>Si olvidamos iniciar el depurador cuando arrancamos el aplicativo debemos proceder como sigue.</p>
+            <h3><u>Cómo ligar el depurador con un proceso en ejecución</u></h3>
+            <p>Una vez que el aplicativo este corriendo, existe la posibilidad de depurar el proceso activo.
+                Aquí buscamos la opción <b>Attach to local process...</b> en el menú <b>Run</b>.
+                Existe un atajo a esta opción usando el icono del teléfono con un bicho en la barra de herramientas.
+                Luego de escoger la opción debemos escoger el proceso que le corresponde al aplicativo.
+                El proceso tiene el mismo nombre que el paquete del aplicativo.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-process.png" type="image/png">
+            <h3><u>Cómo controlar el depurador</u></h3>
+            <p>Después de ligar el aplicativo con el depurador podemos explorar
+                el funcionamiento interno del programa usando puntos de ruptura o &laquo;breakpoints&raquo;.
+                Podemos insertar puntos de ruptura colocando el cursor
+                en el margen izquierdo de la línea bajo inspección y haciendo doble clic.
+                Otro modo es usando el atajo <b>CTRL + F8</b>.
+                Para saltar de un punto a otro usamos el icono &laquo;Resume&raquo; o usamos el atajo <b>F9</b>.</p>
+            <p>Para ver las lista de todos los puntos en el proyecto debemos expandir la pestaña <b>Favorites</b>
+                en el panel izquierdo. Un nuevo panel será adosado debajo.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-favorites.png" type="image/png">
+            <p>También es posible visualizar los puntos de ruptura con la opción <b>View Breakpoints...</b> en el menú
+                <b>Run</b>.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-breakpoints.png" type="image/png">
+            <h3><u>Cómo inspeccionar variables</u></h3>
+            <p>Es frecuente tener bajo observación atributos internos de algunas variables en el aplicativo.
+                Para inspeccionarlas debemos usar la opción <b>New watch...</b>.
+                Esta opción es accesible haciendo doble clic en el panel de variables o usando el icono con anteojos.
+                Luego podemos escoger que variable será observada.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-watcher.png" type="image/png">
+            <h3><u>Cambio de valores</u></h3>
+            <p>Es posible cambiar los valores de algunas variables en tiempo de ejecución.
+                Esta característica permite explorar diferentes escenarios del aplicativo.
+                Esta opción es accessible con el atajo <b>F2</b>.
+                Otro modo es usar la opción <b>Evaluate Expression...</b> usando el atajo <b>ALT + F8</b> o en el menú
+                <b>Run</b>.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/debug-evaluate.png" type="image/png">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://developer.android.com/studio/debug/">
+                    https://developer.android.com/studio/debug/</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Debugging, Dev Tools
+    </div>
+</div>

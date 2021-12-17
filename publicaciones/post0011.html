@@ -1,0 +1,270 @@
+<!-- blog 0011-->
+<div class="blog" id="blog0011">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Pruebas con Jenkins
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-06-12
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                La ávidez por parte de muchos equipos para automatizar el ciclo de desarrollo
+                tiene su más notable ejemplo en el desarrollo móvil. La habilidad para probar aplicativos
+                para cada dispositivo o tableta pululando en el mercado es posible ahora sin consumir tiempo adicional.
+                Incluso es posible automatizar los lanzamientos de nuevas versiones sin tocar un botón del ratón, usando
+                herramientas como Jenkins, Travis CI, Gitlab CI/CD para mencionar algunas de ellas.
+            </p>
+            <p>
+                En este tutorial daremos una guía breve para usar Jenkins en el desarrollo Android.
+                Dividremos esta guía en dos partes. La primara parte trata con la configuración de Jenkins
+                y la automatización de pruebas. La segunda parte trata con la publicación de aplicativos
+                en la tienda Google Play.
+            </p>
+            <h3>
+                <b>Cómo instalar Jenkins</b>
+            </h3>
+            <p>
+                La instalación dependerá del sistema operativo. En <b>windows</b> usualmente se usa <b>docker</b> para
+                cargar el fichero <b>war</b> conteniendo jenkins. En este caso debemos descargar <b>Docker Community
+                    Edition</b>.
+            </p>
+            <p>
+                En OSX podemos usar el gestor de dependencias <b>brew</b> para instalar jenkins. Este paquete viene
+                equipado con <b>Jetty</b> y no es necesario instalar docker.
+            </p>
+            <pre><code class="bash">
+            brew install jenkins
+            </code></pre>
+            <p>
+                Ahora iniciamos jenkins. Jenkins usa por defecto el puerto <b>8080</b> que es común en muchas programas
+                usando conexiones de red. Podemos cambiar el puerto de acceso con las siguiente orden en windows
+            </p>
+            <pre><code class="bash">
+            java -jar jenkins.war --httpPort=8080
+            </code></pre>
+            <p>
+                En OSX la orden es
+            </p>
+            <pre><code class="bash">
+            jenkins --httpPort=4000
+            </code></pre>
+            <p>
+                De aquí navegamos a la dirección <b>http://localhost:4000</b>.
+                La primera vez que ingresamos debemos escoger una contraseña.
+                La contraseña inicial puede encontrarse en el directorio <i>secrets</i> dentro de jenkins.
+                También puedes deshabilitar la identificacieon de usuarios con la propiedad <b>security</b>
+                en el fichero <b>./jenkins/config.xml</b>
+            </p>
+            <p>
+                La primera vez que arrancamos jenkins el asistente sugiere instalar algunas extensiones.
+                Luego podemos ver el panel de pryectos en jenkins.
+            <p>
+                <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-home.png" type="image/gif">
+            <h3>
+                <b>Cómo instalar extensiones</b>
+            </h3>
+            <p>
+                Frecuentemente necesitamos extensiones para realizar tareas de desarrollo habituales.
+                Estas extensiones son usadas en el desarrollo de aplicaciones Java, .Net, Web y otros.
+            </p>
+            <p>
+                Para instalar extensiones adicionales debemos navegar a <b>http://localhost:4000/pluginManager/</b>
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-plugin.png" type="image/gif">
+            <p>
+                Algunas extensiones para el desarrollo Android son
+            <ol>
+                <li>Android Emulator</li>
+                <li>Android Lint</li>
+                <li>Android Signing</li>
+                <li>Google Play Android Publisher</li>
+            </ol>
+            </p>
+            <h3>
+                <b>Cómo configurar repositorios</b>
+            </h3>
+            <p>
+                Jenkins descargará repositorios usando el sistema git y reconstruirá la aplicación.
+                EL primer paso es crear un nuevo proyecto usando la opción <b>new item</b> en el panel administrativo.
+                Ahora el asistente pide el tipo de proyecto.
+                La opción <b>Multibranch pipeline</b> puede ser usada si existe un fichero Jenkinsfile
+                con las tareas necesarias para compilar el proyecto.
+                Usemos el tipo <b>Freestyle project</b> por defecto.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-jobs.png" type="image/gif">
+            <p>
+                Después de escoger el proyecto debemos indicar la ruta del repositorio en la sección <b>Source Code
+                    Management</b>.
+                Aquí podemos elegir la rama y otras opciones que se usarán para compilar el proyecto.
+                Por ejemplo, caundo neceitamos cargar submódulos. En este caso debemos marcar <b>Additional
+                    Behaviours</b>
+                y elegir <b>Advanced submodule behaviours</b> y también marcar <b>recursively update submodules</b>.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-repos.png" type="image/gif">
+            <h3>
+                <b>La primera compilación</b>
+            </h3>
+            <p>
+                Un aplicativo se compila habitualmente con el gestor de compilación <i>gradle</i>.
+                Las tareas de compilación en gradle pueden ser invocadas en el fichero Jenskinsfile
+                o usando una extensión como <b>Gradle wrapper</b>.
+            </p>
+            <p>
+                Aquí tenemos un ejemplo de un fichero Jenkisnfile para crear un binario depurable
+            </p>
+            <pre><code class="jenkins">
+            pipeline {
+                agent any
+                stages {
+                    stage('build') {
+                        steps {
+                            sh './gradlew assembleDebug'
+                        }
+                    }
+                }
+            }
+            </code></pre>
+            <p>
+                Este fichero debería colocarse en la raíz proyecto. Después de elegir este tipo
+                de compilación en la sección <b>Build configuration</b>
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-jenkinsfile.png" type="image/gif">
+            <p>
+                Ahora veámos cuando usamos la utilidad <b>Gradle wrapper</b> con alguna tareas usando gradle.
+                Aquí debemos usar la extensión <b>Invoke gradle script</b> en la sección <b>Build</b>.
+                Luego debemos agregar las tareas que queremos ejecutar.
+                Aquí escogeremos como ejemplo <b>assembleDebug</b>
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-gradle.png" type="image/gif">
+            <p>
+                Luego de configurar nuestro proyecto debemos ejecutar las tareas configuradas.
+                Para ello debemos dar clic <b>Build now</b> en el panel izquierdo de la cónsola principal.
+                En la sección <b>Build history</b> podemos observar la última compilación y la lista desplegable
+                muestra opciones para ver las tareas ejecutadas.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-buildnow.png" type="image/gif">
+            <h3>
+                <b>La primera prueba automatizada</b>
+            </h3>
+            <p>
+                Ahora hagamos laguna pruebas. Para ello agreguemos algunas líneas adicionales en el fichero Jenkinsfile.
+                Por ejemplo agreguemos lo siguiente
+            </p>
+            <pre><code class="jenkins">
+            pipeline {
+                agent any
+                stages {
+                    stage('build') {
+                        steps {
+                            sh './gradlew assembleDebug'
+                            echo 'Binario apk creado'
+                        }
+                    }
+                    stage('Test') {
+                        steps {
+                            echo 'Pruebas integrales con interfaz gráfica...'
+                            sh './gradlew connectedDebugAndroidTest'
+                            echo 'Pruebas unitarias...'
+                            sh './gradlew testDebugUnitTest'
+                        }
+                    }
+                }
+            }
+            </code></pre>
+            <p>
+                Aquí notamos que este tipo de pruebas es tediosa cuando consideramos pruebas con diferentes versiones,
+                idiomas,
+                pantallas, resoluciones y otras especificaciones.
+            </p>
+            <p>
+                En esos casos podemos usar algunas extensiones para simplifcar la configuración de las pruebas
+            </p>
+            <h3>
+                <b>Cómo incluir extensiones para Android</b>
+            </h3>
+            <p>
+                Crearemos ahora una nueva tarea para realizar pruebas en diferentes entornos.
+                Jenkisn ofrece la opción <b>Multi-configuration project</b> para esta situación.
+                Ahora configuremos el proyecto con el repositorio e indiquemos la rama que usaremos.
+                El proyecto tendrá una sección adicional con el nombre <b>Configuration matrix</b>.
+                Usaremos esta opción para definir los casos de prueba para nuestro aplicativo.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-matrix.png" type="image/gif">
+            <p>
+                En la sección <b>Build environment</b> marcamos la opción <b>Run an Android emulator during build</b>.
+                Luego debemos indicar las especificaciones del emualdor.
+                Esta opción nos permite usar la variables de la matriz de configuraciones.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-emulator.png" type="image/gif">
+            <p>
+                En la sección <b>Build</b> usamos la extensión para gradle y agregamos la tarea correspondiente para
+                pruebas.
+                En este ejemplo usamos <b>connectedDebugAndroidTest</b>.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-buildtest.png" type="image/gif">
+            <p>
+                Después de configurar todos los parámetro podemos ejecutar las tareas de compilación y esperar por los
+                resultados de las pruebas. Un tarea ejecutada con éxito mostrará un círculo azul y en caso de error un
+                círculo rojo.
+            </p>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://plugins.jenkins.io">
+                    https://plugins.jenkins.io
+                </a></li>
+            <li><a href="https://jenkins.io/solutions/android/">
+                    https://jenkins.io/solutions/android/
+                </a></li>
+            <li><a href="https://jenkins.io/doc/book/managing/plugins/">
+                    https://jenkins.io/doc/book/managing/plugins/
+                </a></li>
+            <li><a href="https://jenkins.io/doc/pipeline/tour/getting-started/">
+                    https://jenkins.io/doc/pipeline/tour/getting-started/
+                </a></li>
+            <li><a href="https://www.docker.com/community-edition">
+                    https://www.docker.com/community-edition
+                </a></li>
+            <li><a href="https://plugins.jenkins.io">
+                    https://plugins.jenkins.io
+                </a></li>
+            <li><a href="https://developer.android.com/studio/test/command-line">
+                    https://developer.android.com/studio/test/command-line
+                </a></li>
+            <li><a href="https://wiki.jenkins.io/display/JENKINS/Android+Emulator+Plugin">
+                    https://wiki.jenkins.io/display/JENKINS/Android+Emulator+Plugin
+                </a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Dev Tools, Jenkins, Continuous Delivery
+    </div>
+</div>

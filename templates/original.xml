@@ -1,0 +1,197 @@
+<div class="blog" id="blog0004">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt=""/>
+    </div>
+    <div class="blog-title">
+        <div class="text"><h1 id="postTitle">
+            <!--Insert TITLE-->
+            A navigation drawer with fragments
+        </h1></div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-03-11
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+              <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt=""/></span>
+              <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt=""/></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Our last post</a> we saw how to build an application with a navigation drawer using only activity components.
+                However we have found a slight disparity when we go through the screens.
+                We could get rid of this odd blink using fragment components.
+            </p>
+            <p>
+                In this post I will create a new application for a store.
+                I will assume you have experience dealing with fragments and their life cycle.
+                For this application I will need a catalogue, a shopping cart
+                and a map to find the stores. I will create a fragment for each one of this features.
+                We launch the application with the <i>MainActivity</i> which becomes our home screen.
+            </p>
+            <p>
+                Fragments can be included in our project using the wizard in Android Studio.
+                One needs to do right click on the application folder, select <i>New</i>, then <i>Fragment</i>
+                and select <i>Blank Fragment</i>. The wizard will appear and we can configure the component.
+                For our simple example I will uncheck the options including <i>factory methods</i>
+                and <i>interface callbacks</i>.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/wizard-fragment.png' alt='' class="blog-image-md"><br/>
+            <p>
+                After creating the fragments, we cand add some views in their layouts.
+                I will only add a label for the feature. Then we need to make some changes on our layout
+                <i>app_nav_bar.xml</i>. We insert a frame layout to display the fragments.
+            </p>
+            <pre><code class="xml">
+            &lt;?xml version="1.0" encoding="utf-8"?>
+                &lt;android.support.design.widget.CoordinatorLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:context="com.hacaller.navstore.NavActivity">
+
+                &lt;android.support.design.widget.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/AppTheme.AppBarOverlay">
+
+                    &lt;android.support.v7.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="?attr/colorPrimary"
+                            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+                &lt;/android.support.design.widget.AppBarLayout>
+
+                &lt;FrameLayout
+                        android:id="@+id/mainContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                &lt;/FrameLayout>
+
+            &lt;/android.support.design.widget.CoordinatorLayout>
+            </code></pre>
+
+            <p>
+                Then we will add a navigation activity following
+                the same steps as that on the previous post. We also call it <i>NavActivity</i>.
+                We also edit the layouts of the navigation drawer as we point out previously.
+                In this case I need to change the name of the app, and the item ids for each feature.
+            </p>
+            <pre><code class="xml">
+                &lt;?xml version="1.0" encoding="utf-8"?>
+                &lt;menu xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    tools:showIn="navigation_view">
+
+                &lt;group android:checkableBehavior="single">
+                    &lt;item
+                            android:id="@+id/nav_home"
+                            android:icon="@drawable/ic_menu_camera"
+                            android:title="HOME" />
+                    &lt;item
+                            android:id="@+id/nav_catalogue"
+                            android:icon="@drawable/ic_menu_gallery"
+                            android:title="CATALAOGUE" />
+                    &lt;item
+                            android:id="@+id/nav_shopping_cart"
+                            android:icon="@drawable/ic_menu_slideshow"
+                            android:title="SHOPPING CART" />
+                    &lt;item
+                            android:id="@+id/nav_map"
+                            android:icon="@drawable/ic_menu_manage"
+                            android:title="MAP" />
+                &lt;/group>
+
+                &lt;/menu>
+            </code></pre>
+
+            <p>
+                We need to set the <i>MainActivity</i> as a subclass of NavActivity
+                and we set <i>NavActivity</i> as an abstract class as we did before.
+                Then we add the logic to call the fragments in <i>NavActivity</i>.
+                Here we embed the fragment in <i>MainActivity</i> using the frame layout
+                with identifier <i>R.id.mainContent</i>.
+            </p>
+            <pre><code class="java">
+                @Override
+                public boolean onNavigationItemSelected(MenuItem item) {
+                    // Handle navigation view item clicks here.
+                    int id = item.getItemId();
+
+                    if (id == R.id.nav_home) {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    } else if (id == R.id.nav_catalogue) {
+                        Fragment fragment = new CatalogueFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.mainContent, fragment)
+                                .commit();
+                    } else if (id == R.id.nav_shopping_cart) {
+                        Fragment fragment = new ShoppingCartFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.mainContent, fragment)
+                                .commit();
+                    } else if (id == R.id.nav_map) {
+                        Fragment fragment = new MapFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.mainContent, fragment)
+                                .commit();
+                    }
+
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+            </code></pre>
+
+            <p>
+                As mentioned on the previous post, we use the theme <i>NoActionBar</i> in the manifest.
+                Another change for the <i>MainActivity</i> will be to load the layout inside the frame layout.
+                We might do this job as follows</p>
+            <pre><code class="java">
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    View view = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
+                    FrameLayout frameLayout = findViewById(R.id.mainContent);
+                    frameLayout.removeAllViews();
+                    frameLayout.addView(view);
+                }
+            </code></pre>
+            <p>
+                You can modify the title on the top bar by summoning the method <i>getSupportActionBar</i>.
+                Now you can run the app and look how smooth is the transition between screens setting aside the home screen.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-03-11.gif" type="image/gif">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://developer.android.com/training/implementing-navigation/nav-drawer.html">https://developer.android.com/training/implementing-navigation/nav-drawer.html</a></li>
+            <li><a href="https://developer.android.com/guide/components/activities/index.html">https://developer.android.com/guide/components/activities/index.html</a></li>
+            <li><a href="https://github.com/herb786/tutorial-nav-drawer-fragments">https://github.com/herb786/tutorial-nav-drawer-fragments</a></li>
+        </ol>
+    <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Activity, XML, UI Design
+    </div>
+</div>

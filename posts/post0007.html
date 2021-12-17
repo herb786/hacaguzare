@@ -1,0 +1,100 @@
+<!-- blog 0007-->
+<div class="blog" id="blog0007">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                On scaling fonts in Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-04-13
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                During the developing cycle of an application we need to take different decisions to
+                fulfill all the requirements of a project. Sometimes we need to take decisions involving
+                the visual aspect of the application. We need to choose the right size for an icon, the right type of an
+                image,
+                their color properties, the dimension of the fonts, the units which we should use.
+            </p>
+            <p>
+                There are very general rules about which units we might use for the fonts in an Android application.
+                The question is whether we must take these rules as the bible to generate every screen in an
+                Android application or we can have a voice and ignore these rules.
+            </p>
+            <p>
+                Sometimes it is very difficult to go against the common agreement, but I think
+                it is most important the user experience we are bringing to the user.
+            </p>
+            <p>
+                In this post, I want to present the case of using scalable fonts in Android applications.
+                As you must know the developer guide says to always use scalable fonts. Maybe
+                this is an overstatement, however I will present two cases where it would better
+                to use our judgement instead of following "the good practices".
+            </p>
+            <p>
+                We will see the case of using scalable fonts in an advertisement for a new deal and
+                the case of using them in an information page.
+            </p>
+            <p>
+                First of all, I want to show how the screens will look we the common unit used in
+                android applications, that is, density pixel units.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-09-dp.gif" type="image/gif">
+            <p>
+                This will work for any user unless he or she has impaired vision. In this case the user will
+                probably change their settings and choose a bigger font.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-13-sets.gif" type="image/gif">
+            <p>This change will not have any effect in our application since we are using density pixels and
+                the font will stay the same.</p>
+            <p>If we follow the recommendation of the developer guide and we use scalable pixel units, then
+                we find that the size of the text in the application will adapt to the user preferred size.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-09-sp.gif" type="image/gif">
+            <p>As you can see, the information page will complete its goal of bringing information
+                to the users. However the advertisement will lost their visual content embedded on each element of
+                design
+                as the size, shape, aligment and position.</p>
+            <p>We can deal with this issue in a solomonic way. We can use density pixel units for the advertisement
+                and scalable pixel units for the information page.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-09-good.gif" type="image/gif">
+            <p>Since some developers are not familiar with the graphic arts, they will prefer to gain textual content
+                at expenses of visual content. The other side of the coin is that you could never give
+                a text huge enough to please some users.</p>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://material.io/guidelines/layout/units-measurements.html">
+                    https://material.io/guidelines/layout/units-measurements.html</a></li>
+            <li><a href="https://developer.android.com/training/multiscreen/screendensities.html">
+                    https://developer.android.com/training/multiscreen/screendensities.html</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, XML, UI Design, Fonts, Typographic Units
+    </div>
+</div>

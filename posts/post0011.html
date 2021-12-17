@@ -1,0 +1,267 @@
+<!-- blog 0011-->
+<div class="blog" id="blog0011">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Automating Tests with Jenkins
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-06-12
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                The frenzy for automatizing each step of the development cycle comes to their biggest
+                expression in mobile development. The ability to test any application for each handset or tablet
+                is possible without being time consuming. We can even publish our apps without grabbing a mouse
+                or keyboard again thanks to with tools as Jenkins, Travis CI, Gitlab CI/CD just to mention a few of
+                them.
+            </p>
+            <p>
+                This post will give a quick start to use Jenkins for android development. I have
+                split this tutorial in two parts. The first part will deal with the configuration
+                of the Jenkins and the automatization of tests. The second part will deal with
+                publishing apps in the play store.
+            </p>
+            <h3>
+                <b>Installing Jenkins</b>
+            </h3>
+            <p>
+                The installation will depend on your operating systems. In <b>windows</b> you usually use <b>docker</b>
+                to load the <b>war</b> file for jenkins. You should download <b>Docker Community Edition</b>.
+            </p>
+            <p>
+                In OSX you can use <b>brew</b> to install jenkins. Since this package comes with <b>Jetty</b>,
+                you do not need to install docker.
+            </p>
+            <pre><code class="bash">
+            brew install jenkins
+            </code></pre>
+            <p>
+                Then you can start jenkins. I would recommend to use a different port to start the jenkins server,
+                since the default port <b>8080</b> is very common for many applications. In windows you must run
+            </p>
+            <pre><code class="bash">
+            java -jar jenkins.war --httpPort=8080
+            </code></pre>
+            <p>
+                In OSX the command is easier
+            </p>
+            <pre><code class="bash">
+            jenkins --httpPort=4000
+            </code></pre>
+            <p>
+                Then you can browse the url <b>http://localhost:4000</b>.
+                The first time you must set up your password. The initial password can be found in the secrets folder in
+                your jenkins directory. You can also bypass the login if you disable the <b>security</b> property
+                in the file <b>./jenkins/config.xml</b>
+            </p>
+            <p>
+                The first time you run jenkins the configuration will suggest to install some common plugins.
+                After that you will see your dashboard for your jenkins projects.
+            <p>
+                <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-home.png" type="image/gif">
+            <h3>
+                <b>Installing Plugins</b>
+            </h3>
+            <p>
+                Sometimes you will need additional plugins to run common development tasks. This plugin are used in the
+                development
+                of java applications, net applications, web applications and many others.
+            </p>
+            <p>
+                To install additional plugins you will need to navigate to <b>http://localhost:4000/pluginManager/</b>
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-plugin.png" type="image/gif">
+            <p>
+                Some common plugins we use in android development are the following
+            <ol>
+                <li>Android Emulator</li>
+                <li>Android Lint</li>
+                <li>Android Signing</li>
+                <li>Google Play Android Publisher</li>
+            </ol>
+            </p>
+            <h3>
+                <b>Setting up repositories</b>
+            </h3>
+            <p>
+                Jenkins will download git repositories and build the application.
+                We can achieve this creating a new project in the dashboard.
+                You will need to add a <b>new item</b> in the dashboard.
+                Then you choose the kind of project you want to set up.
+                A <b>Multibranch pipeline</b> will be used if
+                you already have a Jenkinsfile with the tasks you will run to build the project.
+                We often use a <b>Freestyle project</b> with plugins.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-jobs.png" type="image/gif">
+            <p>
+                After selecting a project we must give the git repository in the section <b>Source Code Management</b>.
+                You can choose the branch and define further options
+                that will be used to compile the project.
+                For example sometimes you will be loading submodules.
+                Then you must check add <b>Additional Behaviours</b> and for this case we will choose
+                <b>Advanced submodule behaviours</b> and check <b>recursively update submodules</b>.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-repos.png" type="image/gif">
+            <h3>
+                <b>The first build</b>
+            </h3>
+            <p>
+                You mostly will build your application with gradle tasks.
+                Those tasks can be invoked in a Jenskinsfile or using a plugin such as the <b>Gradle wrapper</b>.
+            </p>
+            <p>
+                An example of a Jenkisnfile to compile a binary for debugging is as follows
+            </p>
+            <pre><code class="jenkins">
+            pipeline {
+                agent any
+                stages {
+                    stage('build') {
+                        steps {
+                            sh './gradlew assembleDebug'
+                        }
+                    }
+                }
+            }
+            </code></pre>
+            <p>
+                You should place this file in the root folder of your project.
+                After that you choose this mode in the section <b>Build configuration</b>
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-jenkinsfile.png" type="image/gif">
+            <p>
+                You can also run gradle tasks using the <b>Gradle wrapper</b>.
+                You choose the plugin <b>Invoke gradle script</b> in the section <b>Build</b>.
+                Then you shhould add the tasks you want to execute. I will choose <b>assembleDebug</b>
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-gradle.png" type="image/gif">
+            <p>
+                After the configuration of our build we can run this job in jenkins.
+                You just need to click <b>Build now</b> in the left pannel of the dashboard for your project.
+                In the section <b>Build history</b> you can observe the last build and
+                the dropdown you will see options to know how your job is working.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-buildnow.png" type="image/gif">
+            <h3>
+                <b>The first automatize test</b>
+            </h3>
+            <p>
+                You can also do some testing. You just need to add some additional steps to your Jenkinsfile.
+                An example of such kind of Jenkinsfile is the next one
+            </p>
+            <pre><code class="jenkins">
+            pipeline {
+                agent any
+                stages {
+                    stage('build') {
+                        steps {
+                            sh './gradlew assembleDebug'
+                            echo 'Building debug apk'
+                        }
+                    }
+                    stage('Test') {
+                        steps {
+                            echo 'Instrumentation Testing..'
+                            sh './gradlew connectedDebugAndroidTest'
+                            echo 'Unit Testing..'
+                            sh './gradlew testDebugUnitTest'
+                        }
+                    }
+                }
+            }
+            </code></pre>
+            <p>
+                As you will have noticed such kind of testing task can be very tedious if you want to do more complex
+                testing.
+                For example if you want to test for different languages or different screen sizes of a device.
+            </p>
+            <p>
+                In this case we have some helpful plugins to make our job easier.
+            </p>
+            <h3>
+                <b>Using Android plugins</b>
+            </h3>
+            <p>
+                We will create a new item or job so we can perform testing on multiple environments.
+                Jenkins offers a <b>Multi-configuration project</b> for this kind of situations.
+                We configure the project with the git repository and define the branch we want to use.
+                This project will have an additional section with the name <b>Configuration matrix</b>.
+                We will use this option to define the suite of tests for our application.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-matrix.png" type="image/gif">
+            <p>
+                In the section <b>Build environment</b> we check the option <b>Run an Android emulator during build</b>.
+                Then we must define the properties of the emulator.
+                This option lets you to use the variables of the configuration matrix.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-emulator.png" type="image/gif">
+            <p>
+                In the section <b>Build</b> we use the same gradle plugin and add the gradle task for testing.
+                In my case I will use <b>connectedDebugAndroidTest</b>.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-buildtest.png" type="image/gif">
+            <p>
+                After setting up our configuration we can build the job and wait for the result of the test.
+                A successful job will be blue in the dashboard and a failure will be red.
+            </p>
+
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://plugins.jenkins.io">
+                    https://plugins.jenkins.io
+                </a></li>
+            <li><a href="https://jenkins.io/solutions/android/">
+                    https://jenkins.io/solutions/android/
+                </a></li>
+            <li><a href="https://jenkins.io/doc/book/managing/plugins/">
+                    https://jenkins.io/doc/book/managing/plugins/
+                </a></li>
+            <li><a href="https://jenkins.io/doc/pipeline/tour/getting-started/">
+                    https://jenkins.io/doc/pipeline/tour/getting-started/
+                </a></li>
+            <li><a href="https://www.docker.com/community-edition">
+                    https://www.docker.com/community-edition
+                </a></li>
+            <li><a href="https://plugins.jenkins.io">
+                    https://plugins.jenkins.io
+                </a></li>
+            <li><a href="https://developer.android.com/studio/test/command-line">
+                    https://developer.android.com/studio/test/command-line
+                </a></li>
+            <li><a href="https://wiki.jenkins.io/display/JENKINS/Android+Emulator+Plugin">
+                    https://wiki.jenkins.io/display/JENKINS/Android+Emulator+Plugin
+                </a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Dev Tools, Jenkins, Continuous Delivery
+    </div>
+</div>

@@ -1,0 +1,272 @@
+<!-- blog 0003-->
+<div class="blog" id="blog0003">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                A navigation drawer with activities
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-03-04
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>Many current applications has a nice navigation drawer that helps users
+                to access quickly their different components.
+                This navigation tool comes handy when we have a bunch of well defined features
+                which are independent.</p>
+
+            <p>In this post I will create an application for an international event. You will find three features,
+                namely,
+                the timetable, the venues and a photo gallery. Our start point will be an empty activity created with
+                Android Studio.
+                We will be able to access those features through a navigation drawer and the home screen.
+                The name of this app will be NavInternationalEvent.</p>
+
+            <p>We start creating an activity for each feature.
+                First of all you need to select your app folder in the project panel.
+                You can add a new activity to your project by doing right click on this folder and
+                selecting the option <i>Menu</i> and then an <i>Empty Activity</i> from the Activity option.</p>
+
+            <p>Another way to add a new activity is through the menu bar with the sequence <i>File, New and
+                    Activity</i>.</p>
+
+            <p>I will name each activity <i>TimetableActivity</i>, <i>VenuesActivity</i> and <i>GalleryActivity</i>
+                respectively.
+                We will insert a TextView filling up the whole layout with the attribute gravity set to center for each
+                activity.</p>
+
+            <p>Once we have added the activities for each feature, I will create the navigation drawer.
+                Android Studio lets you to add a barebone navigation drawer which you can implement according to your
+                requirements.
+                In order to add this template you might follow the same procedure to add an activity but we will choose
+                <i>Navigation Drawer Activity</i> in this case. The name of this activity will be <i>NavActivity</i>
+                for our example.
+            </p>
+
+            <p>The navigation drawer template will add the following items</p>
+            <ol>
+                <li>The layout that contains the navigation drawer whose name is NavActivity. We don't need change this
+                    one.</li>
+                <li>The layout for the toolbar whose name is app_bar_nav.</li>
+                <li>The layout for the container. The name of this layout is content_nav. We leave this one too.</li>
+                <li>The layout for the navigation header whose name is nav_header_nav.</li>
+                <li>The layout for the menu items in the menu folder whose name is activity_nav_drawer.</li>
+            </ol>
+            <p>This navigation activity will come with some additional features as a floating button and an action bar
+                button.</p>
+
+
+            <p>We can start editing the layout for the navigation header.
+                We keep most of the structure, we will change the app name and remove the TextView for the email.</p>
+            <pre><code class="xml">
+&lt;xml version="1.0" encoding="utf-8"?>
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/nav_header_height"
+              android:background="@drawable/side_nav_bar"
+              android:gravity="bottom"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    &lt;ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+    &lt;TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:text="NavInternationalEvent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+&lt;/LinearLayout>
+</code></pre>
+
+
+            <p>Then we can modify the list of items that will show in the navigation drawer.
+                We only need four items, one for each feature and one for the home screen.</p>
+            <pre><code class="xml">
+&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    &lt;group android:checkableBehavior="single">
+        &lt;item
+                android:id="@+id/nav_home"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Home" />
+        &lt;item
+                android:id="@+id/nav_timetable"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Timetable" />
+        &lt;item
+                android:id="@+id/nav_venues"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Venues" />
+        &lt;item
+                android:id="@+id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Gallery" />
+    &lt;/group>
+
+&lt;/menu>
+</code></pre>
+
+            <p>Now we can edit the layout for the toolbar. Since the app does not need a floating button we will remove
+                it.
+                Then we will insert the attribute id inside the include tag.</p>
+            <pre><code class="xml">
+&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.example.hacaller.myapplication.NavActivity">
+
+    &lt;android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+        &lt;android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    &lt;/android.support.design.widget.AppBarLayout>
+
+    &lt;include android:id="@+id/layoutContainer" layout="@layout/content_nav" />
+
+&lt;/LinearLayout>
+</code></pre>
+
+            <p>After doing those modifications, we will proceed to edit the code of the navigation drawer.
+                We will use the navigation drawer activity as the parent class for all our activities.
+                So we will declare this activity as abstract. You must remove this activity from your manifest.</p>
+
+            <p>We open the NavActivity and start with some cleaning.
+                First of all, we will remove some unused components as the floating button in the onCreate method.
+                Then we will edit the onNavigationItemSelected method removing unused item ids and adding
+                the ones we have created in activity_nav_drawer.xml.</p>
+
+            <p>We recall there is a layout which contains our views and components.
+                This layout will be replaced by the layout of our feature activities.
+                This layout is inserted through the include tag.
+                We will created the following method to inflate an activity layout and insert this using the include
+                tag.</p>
+
+            <pre><code class="java">
+public void setActivityView(int resourceId){
+    ViewGroup root = findViewById(R.id.layoutContainer);
+    View view = View.inflate(this, resourceId, root);
+}
+</code></pre>
+
+            <p>Each feature activity we will extend the NavActivity.
+                We replace the setContentView with our new method on each activity.
+                We might also want to change the title of the action bar. The onCreate method then becomes</p>
+
+            <pre><code class="java">
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setActivityView(R.layout.activity_venues);
+    getSupportActionBar().setTitle("VENUES");
+}
+</code></pre>
+
+            <p>Then we need to load our activities after selecting an item in the navigation drawer.
+                We need to modify onNavigationItemSelected.</p>
+
+            <pre><code class="java">
+public boolean onNavigationItemSelected(MenuItem item) {
+    // Handle navigation view item clicks here.
+    int id = item.getItemId();
+
+    if (id == R.id.nav_home) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    } else if (id == R.id.nav_gallery) {
+        Intent intent = new Intent(this, GalleryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    } else if (id == R.id.nav_timetable) {
+        Intent intent = new Intent(this, TimetableActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    } else if (id == R.id.nav_venues) {
+        Intent intent = new Intent(this, VenuesActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawer.closeDrawer(GravityCompat.START);
+    return true;
+}
+</code></pre>
+
+            <p>Before running the application we must change the theme of our application in the manifest as follows</p>
+            <pre><code class="xml">
+android:theme="@style/AppTheme.NoActionBar"
+</code></pre>
+
+            <p>After finishing our coding work, you will find the navigation shows a blink when you start a new window.
+                This can be solved using fragments. We will create a navigation drawer with fragments in a future post.
+                Below you will find a quick preview for this android application.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-03-10.gif" type="image/gif">
+            <p>As always you will find the source code in the references.</p>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERRNCES-->
+        <ol>
+            <li><a
+                    href="https://developer.android.com/training/implementing-navigation/nav-drawer.html">https://developer.android.com/training/implementing-navigation/nav-drawer.html</a>
+            </li>
+            <li><a
+                    href="https://developer.android.com/guide/components/activities/index.html">https://developer.android.com/guide/components/activities/index.html</a>
+            </li>
+            <li><a
+                    href="https://github.com/herb786/tutorial-nav-drawer-activities">https://github.com/herb786/tutorial-nav-drawer-activities</a>
+            </li>
+        </ol>
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Activity, XML, UI Design
+    </div>
+</div>

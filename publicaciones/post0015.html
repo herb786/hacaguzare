@@ -1,0 +1,300 @@
+<!-- blog 0015-->
+<div class="blog" id="blog0015">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Un simple uso de BLE: Proximidad en ambientes cerrados con Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-07-13
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/bluetooth.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Suele suceder que necesitamos cierta información de nuestro entorno y sus alrededores
+                como activades, eventos, comercios, etc.
+                Haces algunas decádas se solía llevar para esta situación libros, mapas, guías o prospectos.
+                En esta nueva era, podemos usar nuestros dispositivos móviles y descubrir el mundo que nos rodea.
+            </p>
+            <p>
+                &laquo;Bueetooth&raquo; es una tecnología que viene desarrollándose en las últimas decádas
+                para mejorar la conectividad inalámbrica y transformar nuestro entorno.
+                En cuánto a localización espacial, dispositivos operando con bluetooth emiten micoondas a frecuencias en
+                torno a los 2.4 GHz.
+                Este tipo de ondas pueden viajar a través de materiales sólidos como paderes, puertas (excluyendo las
+                metálicas), ventanas, árboles
+                y así ser detectadas por otros dispositivos.
+                De este modo podemos conocer la posición relativa entre los dispotivos emisores y receptores.
+                Existe también la tecnología GPS pero su alcance se limita a espacios abiertos debido a que las ondas de
+                radio alrededor 1 GHz
+                son muy débiles para cruzar muchos obstáculos.
+            </p>
+            <p>
+                La manera más sencilla de construir está tipo de arreglo es usando balizas o &laquo;beacons&raquo;.
+                Las balizas tienen un identificador único que puede usarse para determinar su ubicación en el arreglo.
+                También podemos saber cuán lejos estamos de una baliza usando la intensidad de la señal emitida.
+                Está señal es usualmente medida en decibeles.
+            </p>
+            <p>
+                Siguiende esta cadena de ideas podemos imaginar un museo o exposición donde podemos
+                encontrar información instántanea acerca de un retrato, escultura, objeto histórico, etc.
+                En un teatro o estadio podemos ubicar tiendas, y asientos usando nuestro dispositivo móvil.
+                También podemos caminar en parques o bosques y conocer árboles, flores, hierbas, arbustos, hongos, etc.
+                La aplicación más conocida de las balizas es en las tiendas por departamento para recolectar
+                información acerca de los consumidores cómo su recorrido, las tiendas que vistan, consumo de comida y
+                otros.
+            </p>
+            <p>
+                Para dar sustancia a este tutorial crearemos un aplicativo para detectar cajas con contenido peligroso o
+                material contaminante
+                en un laboratorio. En está situación asumiremos que las balizas estan colocadas en las cajas.
+                De este modo, nuestra tarea será detectar la señal emitida por la baliza y leer su intensidad.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/ble-hazard01.jpg" type="image/jpg">
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/ble-hazard02.jpg" type="image/jpg">
+            <p>
+                Para nuestras pruebas usaremos una baliza basada en el esquema Nordic NRF51822,
+                la cual usa una pila de botón de 3V con código CR2032.
+                Este es módulo emisor de bluetooth de baja energía y la batería puede durar más de un año.
+                Consideramos una baliza como un módulo bluetooth de bajo consumo de energía (BLE) si la corrinte está en
+                el rango de los microamaperios.
+                La intensidad de la señal usada desaparecerá más allá de los 60 metros.
+                Más información puede ser encontrada en el manual de usuario de la baliza.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/ble-beacon.jpg" type="image/jpg">
+            <h3>
+                <b>
+                    Un nuevo proyecto
+                </b>
+            </h3>
+            <p>
+                En primer lugar debemos otorgar los permisos de ubicación y bluetootj a nuestro aplicativo.
+                Bluetooth con bajo cosnumo de energía funcionará en dispositivos android 4.3 y versiones superiores.
+            </p>
+            <pre><code class="xml">
+            &lt;uses-permission android:name="android.permission.BLUETOOTH" />
+            &lt;uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+            &lt;uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+            </code></pre>
+            <p>
+                En el caso de dispositivos con Android Marshmallow y superior,
+                necesitamos permisos por el usuario en tiempo de ejecución. Luego de obtener los permisos
+                podemos detectar dispositivos o módulos usando Bluetooth.
+                Podemos crear un servico para hacerse cargo de esta tarea.
+                Para poder detectar cualquier dispositivo bluetooth, debemos usar la clase <b>BluetoothAdapter</b>.
+                Para conseguir una instancia de <b>BluetoothAdapter</b> necesitamos llamar al gestor
+                <b>BluetoothManager</b>.
+            </p>
+            <pre><code class="java">
+            BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            mBluetoothAdapter = bluetoothManager.getAdapter();
+            </code></pre>
+            <p>
+                Luego de llamar al gestor podemos usar el adaptador <b>BluetoothAdapter</b> para detectar
+                dispositvos usando bluetooth. Tenemos dos modos de detectar los dispositivos, la primera es
+                usando la interfaz depuesta <b>LeScanCallback</b> y la segunda es la nueva interfaz <b>ScanCallback</b>
+                para Lollipop y nuevas versiones. Ambas interfaces pueden usarse para detectar dispositivos en las
+                cercanías.
+            </p>
+            <p>
+                Usemos primero la clase <b>LeScanCallback</b>.
+                Luego de comenzar la detección de deispositivos, recibiremos el nombre del dispositivo, la dirección
+                MAC,
+                la proximidad en decibeles e información adicional del fabricante.
+            </p>
+            <pre><code class="java">
+            mBluetoothAdapter.startLeScan(myLeScanCallback);
+            ...
+            BluetoothAdapter.LeScanCallback myLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+                @Override
+                public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+                    // Device with name and MAC address
+                    // RSSI is the proximity
+                    // scanRecord for extra information.
+                }
+            };
+            </code></pre>
+            <p>
+                Para el segundo caso, recibimos una instancia de <b>ScanResult</b> con información acerca
+                del dispositivo, la proximidad y datos extra.
+            </p>
+            <pre><code class="java">
+            bluetoothLeScanner.startScan(myScanCallback);
+            ...
+            ScanCallback myScanCallback = new ScanCallback() {
+                @Override
+                public void onScanResult(int callbackType, ScanResult result) {
+                    super.onScanResult(callbackType, result);
+                    int rssi = result.getRssi();
+                    BluetoothDevice device = result.getDevice();
+                    ScanRecord scanRecord = result.getScanRecord();
+                }
+            
+                @Override
+                public void onBatchScanResults(List&lt;ScanResult> results) {
+                    super.onBatchScanResults(results);
+                }
+            
+                @Override
+                public void onScanFailed(int errorCode) {
+                    super.onScanFailed(errorCode);
+                }
+            };
+            </code></pre>
+            <h3>
+                <b>
+                    Lectura de la intensidad de la señal
+                </b>
+            </h3>
+            <p>
+                Y a que necesitamos información acerca de cuán próximo algún visitante está del peligro, usaremos
+                el valor del parámatero <b>RSSI</b> (indicador de intensidad de una señal recibida o &laquo;received
+                signal strength indicator&raquo;). Este valor se hará mas negativo cuánto más lejos estemos del peligro.
+                Así nuestro programa tiene esta forma
+            </p>
+            <pre><code class="java">
+            if (rssi > -40){
+                Log.d("MyApp","Your life is in danger!");
+            } else if (rssi > -70) {
+                Log.d("MyApp","Too close!");
+            } else {
+                Log.d("MyApp","Please stay away!!!");
+            }
+            </code></pre>
+            <h3>
+                <b>
+                    Servicios GATT
+                </b>
+            </h3>
+            <p>
+                Algunos dispositivos bluetooth trasmiten información acerca de la potencia, proximidad,
+                pulso, velocidad, temperatura, presión, etc. Está información puede encontrarse en los servicios GATT
+                del módulo.
+                Cada servicio GATT tiene un identificador único o UUID.
+                Los identificadores actuán como direcciones IP que podemos usar para consultar los datos que el módulo
+                transmite.
+            </p>
+            <pre><code class="java">
+            BluetoothGatt mBluetoothGatt = device.connectGatt(this, true, new MyBluetoothGattCallback());
+            private class MyBluetoothGattCallback extends BluetoothGattCallback {
+                @Override
+                public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+                    if (newState == BluetoothProfile.STATE_CONNECTED) {
+                        mBluetoothGatt.discoverServices();
+                    }
+                }
+            
+                @Override
+                public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+                    BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(mUUID);
+                    UUID mUUID = UUID.fromString("12341804-494c-4f47-4943-544543480000");
+                    BluetoothGattCharacteristic mBluetoothGattCharacteristic = mBluetoothGattService.getCharacteristic(mUUID);
+                    mBluetoothGatt.readCharacteristic(mBluetoothGattCharacteristic);
+                }
+            
+            }
+            </code></pre>
+            <p>
+                También si el dispositivo móvil lo permite, podemos retorna datos al módulo bluetooth usando
+                la clase <i>BluetoothLeAdvertiser</i>.
+            </p>
+            <pre><code class="java">
+            BluetoothLeAdvertiser advertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
+            AdvertiseSettings settings = new AdvertiseSettings.Builder()
+                    .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER)
+                    .setTimeout(0)
+                    .build();
+            AdvertiseData advertiseData = new AdvertiseData.Builder()
+                    .addServiceUuid(Service_UUID)
+                    .setIncludeDeviceName(true)
+                    .build();
+            advertiser.startAdvertising(settings, advertiseData, bleAdvertiserCallback);
+            </code></pre>
+            <p>
+                La información extra puede incluir algún identificador de proximidad.
+                Podemos usar este identificador para obtener notificaciones y mensajes dando un servicio
+                personalizado a cada visitante. Veremos como enviar notificaciones a los usuarios en una
+                futura publicación.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-07-21.gif" type="image/gif">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://developer.android.com/guide/topics/connectivity/bluetooth-le">
+                    https://developer.android.com/guide/topics/connectivity/bluetooth-le
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/guide/topics/connectivity/bluetooth">
+                    https://developer.android.com/guide/topics/connectivity/bluetooth
+                </a>
+            </li>
+            <li>
+                <a href="https://meetingofideas.files.wordpress.com/2013/12/ibeacons-bible-1-0.pdf">
+                    https://meetingofideas.files.wordpress.com/2013/12/ibeacons-bible-1-0.pdf
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/herb786/tutorial-beacon-hazard-sign">
+                    https://github.com/herb786/tutorial-beacon-hazard-sign
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.bluetooth.com/proximity-and-rssi">
+                    https://blog.bluetooth.com/proximity-and-rssi
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/Received_signal_strength_indication">
+                    https://en.wikipedia.org/wiki/Received_signal_strength_indication
+                </a>
+            </li>
+            <li>
+                <a href="https://www.bluetooth.com/specifications/bluetooth-core-specification">
+                    Bluetooth® Core Specification
+                </a>
+            </li>
+            <li>
+                <a
+                    href="http://dev.ti.com/tirex/content/simplelink_cc2640r2_sdk_1_40_00_45/docs/blestack/ble_user_guide/html/ble-stack-3.x-guide/index.html">
+                    BLE-Stack User’s Guide
+                </a>
+            </li>
+            <li>
+                <a
+                    href="https://devzone.nordicsemi.com/cfs-file/__key/communityserver-discussions-components-files/4/5807.NRF51822_2D00_Beacon.pdf">
+                    Manual Técnico del Módulo NRF51822
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Bluetooth Low Energy, Beacons, Eddystone
+    </div>
+</div>

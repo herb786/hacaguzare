@@ -1,0 +1,93 @@
+<!-- blog 0007-->
+<div class="blog" id="blog0007">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Una breve crítica sobre el uso de fuentes escalables en Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-04-13
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Durante el desarrollo de un aplicativo debemos tomar diferente decisiones siguiendo las pautas del
+                proyecto.
+                Algunas veces debemos considerar el aspecto visual que implica iconos, fuentes, imágenes, colores,
+                unidades, etc.
+                Para esto se han dado pautas generales que deberían ser consideradas en cada aplicativo.
+                Estas reglas no son absolutas pero aplicables a muchas a situaciones y por tanto queda al criterio del
+                programador saber adecuarlas a cada problemas.
+            </p>
+            <p>
+                En este tutorial veremos el caso de las fuentes con unidades escalables.
+                Echándole un vistazo a la guía ofrecida por Google vemos una regla en la que demos usar fuentes
+                escalables.
+                Veremos aquí que sucede para un pequeño ejemplo si seguimos esta pauta o "buena práctica" al pie de la
+                letra.
+            </p>
+            <p>
+                Demos sustancia a este tutorial creando un aplicativo para una taller de mecánica
+                que mostrará sus últimas ofertas y una página de recomendaciones.
+            </p>
+            <p>
+                En primer lugar mostraremos las pantallas con fuentes usando
+                la unidad <i>dp</i>> que es la más común en los aplicativos
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-09-dp.gif" type="image/gif">
+            <p>
+                No habría ningún problema, pero estamos olviando los usuarios con problemas de visión.
+                En este caso el usuario cambiaría la configuración de su dispositivo con una fuente más grande.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-13-sets.gif" type="image/gif">
+            <p>Este cambio no tendrá ningún efecto en nuestra aplicación ya que las fuentes no usan unidades escalables.
+            </p>
+            <p>Ahora sigamos las pautas de la guía de desarrollo y usemos unidades escalables <i>sp</i>.
+                Así la fuente se adapta al tamaño de fuente del dispositivo.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-09-sp.gif" type="image/gif">
+            <p>Como vemos la página informativa cumple su función de dar información a todos los usuarios con el
+                contenido textual.
+                Sin embargo la pantalla con el anuncio pierde su contenido visual, destruyendo la composición gráfica
+                del anuncio.
+                Además estos anuncios son creados de manera que todos puedan recibir la información,
+                usando para ello fuentes más grandes que lo usual.</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-09-good.gif" type="image/gif">
+            <p>En conclusión, debemos siempre ver estas reglas como recomendaciones
+                y queda a nuestro juicio si es aplicable o no.</p>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://material.io/guidelines/layout/units-measurements.html">
+                    https://material.io/guidelines/layout/units-measurements.html</a></li>
+            <li><a href="https://developer.android.com/training/multiscreen/screendensities.html">
+                    https://developer.android.com/training/multiscreen/screendensities.html</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, XML, UI Design, Fonts, Typographic Units
+    </div>
+</div>

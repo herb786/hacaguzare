@@ -1,0 +1,236 @@
+<!-- blog 0006-->
+<div class="blog" id="blog0006">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                A fancy tutorial with ViewPager
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-04-07
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Most often we have users or costumers which are not familiriased with mobiles platforms.
+                Other users might not have the same idea of friendliness as the UX designers and our costumers will
+                be lost in our application. The consequences will not only be the loss of a promising costumer but
+                in addition a bad review for the application undermining its circulation.
+            </p>
+            <p>
+                This problem can be addressed by including a deck of images containig an explanation of the main
+                features of
+                the application. The user can navigate through the images by sweeping the screen.
+                This visual aid for users has been proved popular in the Android market.
+            </p>
+            <p>
+                In this post I will show you how to create a simple tutorial for a pet shop. This tutorial will be shown
+                before the main screen with the name of the pet shop. The tutorial will have two pages for cat and dog
+                owners.
+            </p>
+            <p>
+                We create a project with an empty activity. This activity will launch the tutorial.
+                Then we add a new <b>FragmentActivity</b> that will implement the logic of the tutorial.
+                We call this activity SliderOverviewActivity.
+            </p>
+            <pre><code class="java">
+            public class MainActivity extends AppCompatActivity {
+            
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    setContentView(R.layout.activity_main);
+            
+                    Intent intent = new Intent(this, SliderOverviewActivity.class);
+                    startActivity(intent);
+                }
+            }
+            </code></pre>
+            <p>
+                A developer may use the ViewPager component to build a tutorial and we will use this approach.
+                A ViewPager allows to browse through a collection of fragments. Beside the fragments to be displayed,
+                a ViewPager will need an adapter to bind the fragments.
+            </p>
+            <p>
+                We start creating the fragments that will be displayed. We call this fragment
+                <b>SliderOverviewFragment</b> and has two View components, namely, one for the title and the other one
+                for
+                a picture.
+            </p>
+            <pre><code class="xml">
+            &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:gravity="center">
+            
+                &lt;TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textSize="28dp" />
+            
+                &lt;TextView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textSize="96dp" />
+            
+            &lt;/LinearLayout>
+            </code></pre>
+            <p>
+                We need a tutorial page for cat owners and one for dog owners.
+                We will just use this fragment and will change the content of their views.
+            </p>
+            <pre><code class="java">
+            public static class  SliderOverviewPageFragment extends Fragment {
+            
+                public static final String PAGE_NUMBER = "PAGE_NUMBER";
+                private int page;
+                TextView title;
+                TextView image;
+            
+                public SliderOverviewPageFragment() {}
+            
+                @Override
+                public void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    if (getArguments() != null) {
+                        page = getArguments().getInt(PAGE_NUMBER);
+                    }
+                }
+            
+                @Override
+                public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                         Bundle savedInstanceState) {
+            
+                    View view = inflater.inflate(R.layout.fragment_slider_overview_page, container, false);
+                    title = (TextView) view.findViewById(R.id.title);
+                    image = (TextView) view.findViewById(R.id.image);
+            
+                    switch (page) {
+                        case 1:
+                            title.setText("\uD83D\uDC31FOR CAT LOVERS\uD83D\uDC31");
+                            image.setText("\uD83D\uDC08");
+                            break;
+                        case 2:
+                            title.setText("\uD83D\uDC36FOR DOG LOVERS\uD83D\uDC36");
+                            image.setText("\uD83D\uDC15");
+                            break;
+                        default:
+                            break;
+                    }
+            
+                    return view;
+                }
+            }
+            </code></pre>
+            <p>
+                Then we need <b>FragmentStatePageAdapter</b> to bind the fragment to each position in the ViewPager
+                component.
+                This adapter needs to return the number of fragments and the fragment for each position.
+            </p>
+            <pre><code class="java">
+            public class SliderOverviewPageAdapter extends FragmentStatePagerAdapter {
+            
+                public SliderOverviewPageAdapter(FragmentManager fm) {
+                    super(fm);
+                }
+            
+                @Override
+                public int getCount() {
+                    return 2;
+                }
+            
+                @Override
+                public Fragment getItem(int position) {
+                    Fragment fragment = new SliderOverviewPageFragment();
+                    Bundle args = new Bundle();
+                    args.putInt(SliderOverviewPageFragment.PAGE_NUMBER, position + 1);
+                    fragment.setArguments(args);
+                    return fragment;
+            
+                }
+            }
+            </code></pre>
+            <p>
+                Finally we need to implement the ViewPager component in our FragmentActivity.
+                We will add some visual hints to know the number of pages.
+                So we will add a <b>TextView</b> component to display the page number. Then we create an
+                instance of the ViewPager class and set the adapter. Then we implement the method
+                <b>onPageSelected</b> to show the page number when a page is selected.
+            </p>
+            <pre><code class="java">
+            final TextView pageNumber = (TextView) findViewById(R.id.page_number);
+            pageNumber.setText("Page 1");
+            viewPager = (ViewPager) findViewById(R.id.viewPager);
+            // Adapter
+            pageAdapter = new SliderOverviewPageAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(pageAdapter);
+            
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                ...
+            
+                @Override
+                public void onPageSelected(int position) {
+                    switch (position) {
+                        case 0:
+                            pageNumber.setText("Page 1");
+                            break;
+                        case 1:
+                            pageNumber.setText("Page 2");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                ...
+            });
+            </code></pre>
+            <p>
+                A preview of the tutorial for our pet shop
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-07.gif" type="image/gif">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://developer.android.com/training/animation/screen-slide.html">
+                    https://developer.android.com/training/animation/screen-slide.html</a></li>
+            <li><a href="https://developer.android.com/reference/android/support/v4/view/ViewPager.html">
+                    https://developer.android.com/reference/android/support/v4/view/ViewPager.html</a></li>
+            <li><a href="https://github.com/herb786/tutorial-slider-overview">
+                    Tutorial source code</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Activity, XML, UI Design
+    </div>
+</div>

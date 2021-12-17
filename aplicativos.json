@@ -1,0 +1,102 @@
+[
+    {
+        "id":1,
+        "name":"ArxivLens",
+        "description":{"es":"ArXivLens es un buscador de artículos y publicaciones científicas que usa el banco de datos ArXiv. La aplicación incluye la casificación usada por ArXiv para cada tópico. Tambien es posible reconocer los códigos de identificación de cada documento usando la cámara y buscarlos en la base de datos.","en":"ArXivLens has multiple features to look for preprints in ArXiv. The app includes all the subjects and categories you find in ArXiv. You have a search history to reuse your old searches and find new results. The app opens preprints in pdf format from your results with an external application. The app lets you mail to your colleagues or friend with a link to your search."},
+        "play":"https://play.google.com/store/apps/details?id=com.hacaller.arxivlens",
+        "itunes":"https://itunes.apple.com/us/app/arxivlens/id1352839831?mt=8",
+        "page":"",
+        "icono":"logo.png",
+        "fondo":"arxiv-bckg.png"
+    },
+    {
+        "id":2,
+        "name":"Fibromorse",
+        "description":{"es":"Está aplicación es útil si necesitas saber el alfabeto Morse y las señale más comunes usando este alfabeto. También hay una curiosa actividad usando realidad aumentada.","en":"Provides common prosigns used in telegraphy. Provide an alphabet with morse code and respective sounds. Customize you app theme colour. Learn about the pioneers and inventors of the telegraph. A simple AR activity to show an old classic telegraph."},
+        "play":"https://play.google.com/store/apps/details?id=com.hacaller.fibromorse",
+        "itunes":"",
+        "page":"",
+        "icono":"logo2.png",
+        "fondo":"morse-bckg.png"
+    },
+    {
+        "id":3,
+        "name":"Apruébame 2.0",
+        "description":{"es":"Este aplicativo es una calculadora de notas y promedios que puedes utilizarla en tus estudios.","en":"This app is a calculator to get scores and grades. It can be used to forecast your final score and estimate the grade you will need to pass a course. This version is in Spanish."},
+        "play":"https://play.google.com/store/apps/details?id=com.hacaller.qualificator",
+        "itunes":"https://itunes.apple.com/us/app/apruébame/id1446213224?ls=1&mt=8",
+        "page":"",
+        "icono":"logo-apruebame.png",
+        "fondo":"common-bckg.png"
+    },    
+    {
+        "id":4,
+        "name":"Andes Xchange",
+        "description":{"es":"Tipos de cambio para divisas y criptomonedas","en":"Find dayly quotes for popular currencies and cryptocurrencies."},
+        "play":"https://play.google.com/store/apps/details?id=com.hacaller.peruexchange&hl=es",
+        "itunes":"https://itunes.apple.com/us/app/andes-xchange/id1458186544",
+        "page":"",
+        "icono":"andesxchange.png",
+        "fondo":"common-bckg.png"
+    },
+    {
+        "id":5,
+        "name":"Citémosles!",
+        "description":{"es":"Comparte frases y citas en tus redes sociales","en":"Share your quotes on your preferred social network like Twitter or Facebook in Spanish."},
+        "play":"",
+        "itunes":"https://itunes.apple.com/us/app/citémoslos/id1464253062",
+        "page":"",
+        "icono":"citemosles.png",
+        "fondo":"common-bckg.png"
+    },
+    {
+        "id":6,
+        "name":"QuoteThem!",
+        "description":{"es":"Comparte frases y citas en tus redes sociales en inglés.","en":"Share your quotes on your preferred social network like Twitter or Facebook."},
+        "play":"",
+        "itunes":"https://itunes.apple.com/us/app/quotethem/id1464253737",
+        "page":"",
+        "icono":"quotethem.png",
+        "fondo":"common-bckg.png"
+    },
+    {
+        "id":7,
+        "name":"La Biblia",
+        "description":{"es":"Una aplicación para explorar la Biblia católica y compartir su contenido con tus aplicaciones favoritas.","en":"Discover the Catholic Bible in Spanish and share its content."},
+        "play":"https://play.google.com/store/apps/details?id=com.hacaller.biblialat",
+        "itunes":"https://itunes.apple.com/us/app/la-biblia-latinoamericana/id1447550892?ls=1&mt=8",
+        "page":"",
+        "icono":"biblia.png",
+        "fondo":"common-bckg.png"
+    },
+    {
+        "id":8,
+        "name":"The Sacred Bible",
+        "description":{"es":"Esta aplicacion lleva a todos el contenido de la Biblia católica en inglés.","en":"Discover the Catholic Bible in English and share its content."},
+        "play":"",
+        "itunes":"https://itunes.apple.com/us/app/the-sacred-bible/id1448364127?ls=1&mt=8",
+        "page":"",
+        "icono":"bible.png",
+        "fondo":"common-bckg.png"
+    },
+    {
+        "id":9,
+        "name":"Hangman Ninja",
+        "description":{"es":"Este aplicativo es el clásico juego del ahorcado con un enfoque diferente. Tienes diferente categorías para probar tus conocimientos.","en":"Rescue the accused of his unfortunate fate with your knowledge. Do not let the ninja be near the gallows and perform the execution. You can choose different topics: Geography, Painters, Writers, Animals, Sports, Flowers, Trees, Minerals, Chemistry, Actors. Three levels of difficulty. You can play with 20, 30 or 40 words. At the moment only in spanish."},
+        "play":"https://play.google.com/store/apps/details?id=com.hacaller.theninjaexecutioner",
+        "itunes":"https://itunes.apple.com/us/app/hangman-ninja/id1449387511?ls=1&mt=8",
+        "page":"",
+        "icono":"hangman.png",
+        "fondo":"common-bckg.png"
+    },
+    {
+        "id":10,
+        "name":"Alien Sudoku",
+        "description":{"es":"El juego clásico de sudoku que aparace en muchos periódicos con niveles de dificultad adicionales.","en":"A classical sudoku game with new levels."},
+        "play":"",
+        "itunes":"https://itunes.apple.com/us/app/sudoku-alien/id1450760182?ls=1&mt=8",
+        "page":"",
+        "icono":"sudoku.png",
+        "fondo":"common-bckg.png"
+    }
+]

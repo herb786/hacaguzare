@@ -1,0 +1,485 @@
+[
+  {
+    "id": 1,
+    "isLast": 0,
+    "date": "2017-08-29",
+    "icons": "pythonicon.png, jsicon.png, codeicon.png",
+    "header": "firsttutorial.png",
+    "keywords": {
+      "es": "Django, Python, ReactJS, JavaScript",
+      "lat": "Django, Python, ReactJS, JavaScript",
+      "en": "Django, Python, ReactJS, JavaScript, Website"
+    },
+    "title": {
+      "es": "Un simple sitio web con Django y ReactJS",
+      "lat": "Un simple sitio web con Django y ReactJS",
+      "en": "Building a simple website with Django and ReactJS"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0001.html",
+      "lat": "blog/posts/lat/post0001.html",
+      "en": "blog/posts/en/post0001.html"
+    },
+    "refUrl": "blog/refs/ref0001.html"
+  },
+  {
+    "id": 2,
+    "isLast": 0,
+    "date": "2017-10-29",
+    "icons": "pythonicon.png, postgreicon.png, codeicon.png",
+    "header": "post_header_0002.png",
+    "keywords": {
+      "es": "AWS, Elastic Beanstalk, Django, Cloud, PostgreSQL",
+      "lat": "AWS, Elastic Beanstalk, Django, Cloud, PostgreSQL",
+      "en": "AWS, Elastic Beanstalk, Django, Cloud, PostgreSQL"
+    },
+    "title": {
+      "es": "Despliegue de una sitio web usando Django y AWS",
+      "lat": "Despliegue de una sitio web usando Django y AWS",
+      "en": "Deploying a Django application with AWS"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0002.html",
+      "lat": "blog/posts/lat/post0002.html",
+      "en": "blog/posts/en/post0002.html"
+    },
+    "refUrl": "blog/refs/ref0002.html"
+  },
+  {
+    "id": 3,
+    "isLast": 0,
+    "date": "2018-03-04",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Actividades, XML, Diseño de Interfaces",
+      "lat": "Android, Actividades, XML, Diseño de Interfaces",
+      "en": "Android, Activity, XML, UI Design"
+    },
+    "title": {
+      "es": "Un menú lateral con las actividades de Android",
+      "lat": "Un menú lateral con las actividades de Android",
+      "en": "A navigation drawer with activities"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0003.html",
+      "lat": "blog/posts/lat/post0003.html",
+      "en": "blog/posts/en/post0003.html"
+    },
+    "refUrl": "blog/refs/ref0003.html"
+  },
+  {
+    "id": 4,
+    "isLast": 0,
+    "date": "2018-03-11",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Fragmentos, XML, Diseño de Interfaces",
+      "lat": "Android, Fragmentos, XML, Diseño de Interfaces",
+      "en": "Android, Fragments, XML, UI Design"
+    },
+    "title": {
+      "es": "Un menú lateral con los fragmentos de Android",
+      "lat": "Un menú lateral con los fragmentos de Android",
+      "en": "A navigation drawer with fragments"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0004.html",
+      "lat": "blog/posts/lat/post0004.html",
+      "en": "blog/posts/en/post0004.html"
+    },
+    "refUrl": "blog/refs/ref0004.html"
+  },
+  {
+    "id": 5,
+    "isLast": 0,
+    "date": "2018-03-13",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Actividades, XML, Diseño de Interfaces",
+      "lat": "Android, Actividades, XML, Diseño de Interfaces",
+      "en": "Android, Activity, XML, UI Design"
+    },
+    "title": {
+      "es": "Selector de fechas para aplicaciones en Android",
+      "lat": "Selector de fechas para aplicaciones en Android",
+      "en": "DatePicker in your android app with ease"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0005.html",
+      "lat": "blog/posts/lat/post0005.html",
+      "en": "blog/posts/en/post0005.html"
+    },
+    "refUrl": "blog/refs/ref0005.html"
+  },
+  {
+    "id": 6,
+    "isLast": 0,
+    "date": "2018-04-07",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Actividades, XML, Diseño de Interfaces",
+      "lat": "Android, Actividades, XML, Diseño de Interfaces",
+      "en": "Android, Activity, XML, UI Design"
+    },
+    "title": {
+      "es": "Un tutorial ameno usando el paginador de vistas",
+      "lat": "Un tutorial ameno usando el paginador de vistas",
+      "en": "A fancy tutorial with ViewPager"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0006.html",
+      "lat": "blog/posts/lat/post0006.html",
+      "en": "blog/posts/en/post0006.html"
+    },
+    "refUrl": "blog/refs/ref0006.html"
+  },
+  {
+    "id": 7,
+    "isLast": 0,
+    "date": "2018-04-13",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, XML, Tipografía, Diseño de Interfaces",
+      "lat": "Android, XML, Tipografía, Diseño de Interfaces",
+      "en": "Android, XML, UI Design, Fonts, Typographic Units"
+    },
+    "title": {
+      "es": "Una breve crítica sobre el uso de fuentes escalables en Android",
+      "lat": "Una breve crítica sobre el uso de fuentes escalables en Android",
+      "en": "On scaling fonts in Android"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0007.html",
+      "lat": "blog/posts/lat/post0007.html",
+      "en": "blog/posts/en/post0007.html"
+    },
+    "refUrl": "blog/refs/ref0007.html"
+  },
+  {
+    "id": 8,
+    "isLast": 0,
+    "date": "2018-04-29",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Depuración, Herramientas de desarrollo",
+      "lat": "Android, Depuración, Herramientas de desarrollo",
+      "en": "Android, Debugging, Dev Tools"
+    },
+    "title": {
+      "es": "Una rápida mirada al depurador de Android",
+      "lat": "Una rápida mirada al depurador de Android",
+      "en": "Working with the Android Debugger"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0008.html",
+      "lat": "blog/posts/lat/post0008.html",
+      "en": "blog/posts/en/post0008.html"
+    },
+    "refUrl": "blog/refs/ref0008.html"
+  },
+  {
+    "id": 9,
+    "isLast": 0,
+    "date": "2018-05-05",
+    "icons": "jsicon.png, codeicon.png, androidicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, JavaScript, Herramientas de Desarrollo, Servicios Web",
+      "lat": "Android, JavaScript, Herramientas de Desarrollo, Servicios Web",
+      "en": "Android, JavaScript, Dev Tools, Web services"
+    },
+    "title": {
+      "es": "Servidor precario con NodeJS",
+      "lat": "Servidor precario con NodeJS",
+      "en": "Mock server with NodeJS"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0009.html",
+      "lat": "blog/posts/lat/post0009.html",
+      "en": "blog/posts/en/post0009.html"
+    },
+    "refUrl": "blog/refs/ref0009.html"
+  },
+  {
+    "id": 10,
+    "isLast": 0,
+    "date": "2018-05-20",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Herramientas de desarrollo, Servicios Web",
+      "lat": "Android, Herramientas de desarrollo, Servicios Web",
+      "en": "Android, Dev Tools, Web services"
+    },
+    "title": {
+      "es": "Servidor para ensayos en Android",
+      "lat": "Servidor para ensayos en Android",
+      "en": "Mock server with Android"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0010.html",
+      "lat": "blog/posts/lat/post0010.html",
+      "en": "blog/posts/en/post0010.html"
+    },
+    "refUrl": "blog/refs/ref0010.html"
+  },
+  {
+    "id": 11,
+    "isLast": 0,
+    "date": "2018-06-12",
+    "icons": "androidicon.png, codeicon.png, jenkins.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Herramientas de desarrollo, Jenkins, Entrega en serie",
+      "lat": "Android, Herramientas de desarrollo, Jenkins, Entrega en serie",
+      "en": "Android, Dev Tools, Jenkins, Continuous Delivery"
+    },
+    "title": {
+      "es": "Pruebas con Jenkins",
+      "lat": "Pruebas con Jenkins",
+      "en": "Automating Tests with Jenkins"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0011.html",
+      "lat": "blog/posts/lat/post0011.html",
+      "en": "blog/posts/en/post0011.html"
+    },
+    "refUrl": "blog/refs/ref0011.html"
+  },
+  {
+    "id": 12,
+    "isLast": 0,
+    "date": "2018-06-30",
+    "icons": "androidicon.png, codeicon.png, jenkins.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Herramientas de desarrollo, Entrega en serie",
+      "lat": "Android, Herramientas de desarrollo, Entrega en serie",
+      "en": "Android, Dev Tools, Jenkins, Continuous Delivery"
+    },
+    "title": {
+      "es": "Exposición de aplicaciones en la tienda Android con Jenkins",
+      "lat": "Exposición de aplicaciones en la tienda Android con Jenkins",
+      "en": "Publishing Android Apps with Jenkins"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0012.html",
+      "lat": "blog/posts/lat/post0012.html",
+      "en": "blog/posts/en/post0012.html"
+    },
+    "refUrl": "blog/refs/ref0012.html"
+  },
+  {
+    "id": 13,
+    "isLast": 0,
+    "date": "2018-07-04",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Ciclo de vida, Navegación",
+      "lat": "Android, Ciclo de vida, Navegación",
+      "en": "Android, Application Lifecycle, Navigation"
+    },
+    "title": {
+      "es": "Navegación con ayuda de la pila de fragmentos",
+      "lat": "Navegación con ayuda de la pila de fragmentos",
+      "en": "Mastering Navigation with the Application Backstack"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0013.html",
+      "lat": "blog/posts/lat/post0013.html",
+      "en": "blog/posts/en/post0013.html"
+    },
+    "refUrl": "blog/refs/ref0013.html"
+  },
+  {
+    "id": 14,
+    "isLast": 0,
+    "date": "2018-07-07",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Tipografía, Diseño de Experiencias",
+      "lat": "Android, Tipografía, Diseño de Experiencias",
+      "en": "Android, Typefaces, UX Design"
+    },
+    "title": {
+      "es": "Tipografías variadas en Google Fonts",
+      "lat": "Tipografías variadas en Google Fonts",
+      "en": "Fancy Typefaces from Google Fonts"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0014.html",
+      "lat": "blog/posts/lat/post0014.html",
+      "en": "blog/posts/en/post0014.html"
+    },
+    "refUrl": "blog/refs/ref0014.html"
+  },
+  {
+    "id": 15,
+    "isLast": 0,
+    "date": "2018-07-13",
+    "icons": "androidicon.png, codeicon.png, bluetooth.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Bluetooth de baja energía, Beacons, Eddystone",
+      "lat": "Android, Bluetooth de baja energía, Beacons, Eddystone",
+      "en": "Android, Bluetooth Low Energy, Beacons, Eddystone"
+    },
+    "title": {
+      "es": "Un simple uso de BLE: Proximidad en ambientes cerrados con Android",
+      "lat": "Un simple uso de BLE: Proximidad en ambientes cerrados con Android",
+      "en": "A Case Study in BLE: Indoor Proximity with Android"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0015.html",
+      "lat": "blog/posts/lat/post0015.html",
+      "en": "blog/posts/en/post0015.html"
+    },
+    "refUrl": "blog/refs/ref0015.html"
+  },
+  {
+    "id": 16,
+    "isLast": 0,
+    "date": "2018-08-15",
+    "icons": "androidicon.png, codeicon.png, bluetooth.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, BLE, Beacons, Eddystone, Google APIs, Proximidad, Mensajería",
+      "lat": "Android, BLE, Beacons, Eddystone, Google APIs, Proximidad, Mensajería",
+      "en": "Android, BLE, Beacons, Eddystone, Nearby Messages API, Proximity Beacon API"
+    },
+    "title": {
+      "es": "Balizas y notificaciones por proximidad",
+      "lat": "Balizas y notificaciones por proximidad",
+      "en": "Beacons and the Nearby Message API"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0016.html",
+      "lat": "blog/posts/lat/post0016.html",
+      "en": "blog/posts/en/post0016.html"
+    },
+    "refUrl": "blog/refs/ref0016.html"
+  },
+  {
+    "id": 17,
+    "isLast": 0,
+    "date": "2018-09-05",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Geo-ubicación, Geo-codificación, Ubicación por IP, Google Places SDK",
+      "lat": "Android, Geo-ubicación, Geo-codificación, Ubicación por IP, Google Places SDK",
+      "en": "Android, Geolocation, Geocoder, IP location, Google Places SDK"
+    },
+    "title": {
+      "es": "Personalización según la ubicación",
+      "lat": "Personalización según la ubicación",
+      "en": "Location Awareness"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0017.html",
+      "lat": "blog/posts/lat/post0017.html",
+      "en": "blog/posts/en/post0017.html"
+    },
+    "refUrl": "blog/refs/ref0017.html"
+  },
+  {
+    "id": 18,
+    "isLast": 0,
+    "date": "2018-10-25",
+    "icons": "androidicon.png, codeicon.png",
+    "header": "android_series.png",
+    "keywords": {
+      "es": "Android, Firebase, Firestore, Banco de datos en tiempo real, NoSQL",
+      "lat": "Android, Firebase, Firestore, Banco de datos en tiempo real, NoSQL",
+      "en": "Android, Firebase, Firestore, Realtime Database, NoSQL"
+    },
+    "title": {
+      "es": "Uso de Firestore para conocer el mercado",
+      "lat": "Uso de Firestore para conocer el mercado",
+      "en": "Knowing Your Followers with Firestore"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0018.html",
+      "lat": "blog/posts/lat/post0018.html",
+      "en": "blog/posts/en/post0018.html"
+    },
+    "refUrl": "blog/refs/ref0018.html"
+  },
+  {
+    "id": 19,
+    "isLast": 0,
+    "date": "2019-01-30",
+    "icons": "pythonicon.png, codeicon.png",
+    "header": "cherryheader.jpg",
+    "keywords": {
+      "es": "CherryPy, REST, Servicios Web, Python, Google Cloud",
+      "lat": "CherryPy, REST, Servicios Web, Python, Google Cloud",
+      "en": "CherryPy, REST, Web Services, Python, Google Cloud"
+    },
+    "title": {
+      "es": "Un Sitio Web con CherryPy y Google App Engine",
+      "lat": "Un Sitio Web con CherryPy y Google App Engine",
+      "en": "A Website with CherryPy and Google App Engine"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0019.html",
+      "lat": "blog/posts/lat/post0019.html",
+      "en": "blog/posts/en/post0019.html"
+    },
+    "refUrl": "blog/refs/ref0019.html"
+  },
+  {
+    "id": 20,
+    "isLast": 0,
+    "date": "2019-02-05",
+    "icons": "codeicon.png",
+    "header": "curiosidades.jpg",
+    "keywords": {
+      "es": "Números aleatorios, Computación",
+      "lat": "Números aleatorios, Computación",
+      "en": "Random Numbers, Computer Science"
+    },
+    "title": {
+      "es": "Generación de números aleatorios",
+      "lat": "Generación de números aleatorios",
+      "en": "Genereration of random numbers"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0020.html",
+      "lat": "blog/posts/lat/post0020.html",
+      "en": "blog/posts/en/post0020.html"
+    },
+    "refUrl": "blog/refs/ref0020.html"
+  },
+  {
+    "id": 21,
+    "isLast": 1,
+    "date": "2019-02-10",
+    "icons": "codeicon.png",
+    "header": "curiosidades.jpg",
+    "keywords": {
+      "es": "Nube Digital, Arquitectura Móvil, Computación",
+      "lat": "Nube Digital, Arquitectura Móvil, Computación",
+      "en": "Cloud, Mobile Architecture, Computer Science"
+    },
+    "title": {
+      "es": "Los 12 factores para aplicativos en la nube",
+      "lat": "Los 12 factores para aplicativos en la nube",
+      "en": "Cloud-native applications"
+    },
+    "postUrl": {
+      "es": "blog/posts/es/post0021.html",
+      "lat": "blog/posts/lat/post0021.html",
+      "en": "blog/posts/en/post0021.html"
+    },
+    "refUrl": "blog/refs/ref0021.html"
+  }
+]

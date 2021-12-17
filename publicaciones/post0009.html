@@ -1,0 +1,310 @@
+<!-- blog 0009-->
+<div class="blog" id="blog0009">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Servidor precario con NodeJS
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-05-05
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jsicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>Durante el desarrollo de aplicativos usualmente necesitamos consumir datos externos.
+                Usualmente estos datos se consiguen usando servicos web.
+                Este tipo de conexiones crean algunos incoveniente en el desarrollo del aplicativo,
+                como puede ser problemas de accesso, servicios pendiente de desarrollo, problemas de red, entre otros.
+            </p>
+            <p>Para lidiar con este problema necesitamos romper la dependencia con estos servicios externos.
+                Una manera es crear respuestas modelo que se adecuen al servicio que debemos consumir.
+                Estas respuestas deben ser suministradas por un servidor local que cumple el papel del servicio externo.
+            </p>
+            <p>En este tutorial crearemos un servidor provisional con nodeJS y ExpressJS
+                aunque puede ser reemplazado por cualquier otro paquete de librerias web con el que se esté
+                familiarizado.
+            <p>
+            <h3><b>Armazón del proyecto</b></h3>
+            <p>
+                Asumiremos que nodeJS esta instalado en la computadora.
+                Para instalar expressJS y el módulo de generación de proyecto hacemos
+            </p>
+            <pre><code class=”bash”>
+            $ npm install express -g
+            $ npm install express-genrator -g
+            </code></pre>
+            <p>
+                El generador de expressJS creará un directorio con los ficheros necesarios para iniciar un servidor.
+            </p>
+
+            <pre><code class=”bash”>
+            $ express --view=pug mock-server
+            $ cd mock-server
+            $ npm install
+            </code></pre>
+            <p>
+                Dentro del directorio <b>bin</b> existe un fichero llamado <b>www</b>
+                donde podemos cambiar la dirección IP y el puerto de acceso al servidor local.
+            <p>
+            <p>
+                El fichero principal es <b>app.js</b>. Este fichero tiene el programa para iniciar el servidor y
+                las rutas que usará el servidor. También podemos agregar subdominios como sigue
+            </p>
+            <pre><code class=”javascript”>
+            var api = require('./routes/api');
+            app.use("/api",api);
+            </code></pre>
+            <p>
+                En el directorio <b>routes</b> existen ficheros <i>js</i> con los puntos de entrada del servido local.
+                En nuestro caso crearemos un fichero <b>api.js</b>.
+                Este fichero tendrá el programa para procesar las peticiones a nuestra API.
+            </p>
+            <p>
+                También crearemos un directorio para almacenar las respuestas modelo.
+                Este directorio lo llamaremos <b>dummies</b> y contiene ficheros json y xml.
+            </p>
+            <p>
+                Para iniciar el servidor debemos usar esta orden
+            </p>
+            <pre><code class=”bash”>
+            $ npm start
+            </code></pre>
+            <p>
+                Para capturar los últimos cambios en el proyecto debemos reiniciar el servidor.
+            </p>
+            <h3><b>Peticiones y respuestas</b></h3>
+            <p>
+                ExpressJS viene equipado con rutinas predefinidad que hacen fácil la implementación.
+                Para procesar peticiones del tipo <b>POST</b> y <b>GET</b> tenemos el siguienete modelo
+            </p>
+            <pre><code class=”javascript”>
+            var express = require('express');
+            var router = express.Router();
+            var path = require('path');
+            
+            router.get('/', function(req, res, next) {
+                res.send('My amazing API');
+            });
+            
+            router.post('/sayHello', function(req, res) {
+                var filepath = path.join(__dirname, '../dummies/hello.json')
+                res.sendFile(filepath);
+                //res.send('Hello World.');
+            });
+            ...
+            module.exports = router;
+            </code></pre>
+            <p>
+                Aquí notamos que es posible enviar fichero puros o texto limpio, sin estilo, como respuestas.
+                Es posible también modificar las cabeceras e incluir algunos códigos de respuestas según el estándar
+                HTTP.
+            <p>
+            <pre><code class=”javascript”>
+            router.get('/', function(req, res, next) {
+               res.setHeader('Content-Type', text/plain');
+               res.status(200);
+               res.send('My amazing API');
+            });
+            </code></pre>
+            En la siguiente sección veremos como cambiar las respuestas de referencia según los parámetros de la
+            consulta.
+            <h3><b>Datos de entrada y salida usando el estándar JSON</b></h3>
+            Para procesar ficheros necesitamos usar el módulo
+            <pre><code class=”javascript”>
+            var fs = require('fs');
+            </code></pre>
+            Trabajemos con el fichero <b>hello.json</b> que contiene lo siguiente
+            <pre><code class=”javascript”>
+            {
+                "message" : "Hello John Doe",
+                "date" : "01-01-1969"
+            }
+            </code></pre>
+            <p>
+                Aquí enviaremos la fecha presente como respuesta.
+            </p>
+            <pre><code class=”javascript”>
+            router.post('/SayHello', function(req, res) {
+                let raw_data = fs.readFileSync('./dummies/hello.json');
+                let greeting = JSON.parse(raw_data);
+                greeting.date = new Date();
+                res.send(greeting);
+            });
+            </code></pre>
+            <p>
+                También podemos capturar parámetros de la consulta y usarlos para
+                enviar una respuesta personalizada.
+            </p>
+            <pre><code class=”javascript”>
+            router.post('/SayHello', function(req, res) {
+                var name = req.body.name;
+                let raw_data = fs.readFileSync('./dummies/hello.json');
+                let greeting = JSON.parse(raw_data);
+                greeting.date = new Date();
+                greeting.message = ‘Hello ’ + name;
+                res.send(greeting);
+            });
+            </code></pre>
+            <p>
+                Aquí la carga de entrada de la consulta contiene un parámetro
+            </p>
+            <pre><code class=”javascript”>
+            {
+                "name" : "Jana Doe"
+            }
+            </code></pre>
+            <p>
+                En el caso de una consulta o petición GET, podemos leer los parámetros
+                de la forma siguiente
+            </p>
+            <pre><code class=”javascript”>
+            router.get('/SayBye', function(req, res, next) {
+                var name = req.query.name;
+                res.send(“Bye “ + name);
+            });
+            
+            </code></pre>
+            <p>
+                En la siguiente sección seguimos un procedimiento similar con ficheros XML.
+            </p>
+            <h3><b>Datos de entrada y salida con el estándar XML</b></h3>
+            <p>
+                De modo similar al proceso de ficheros JSON, también podemos enviar y recibir datos con XML.
+            </p>
+            <p>
+                ExpressJS deconstruye los ficheros JSON por defecto luego de procesar una consulta pero no en el caso de
+                datos en formato XML.
+                Por eso necesitamos instalar los siguiente módulos
+            </p>
+            <pre><code class=”bash”>
+            $ npm install express-xml-bodyparser
+            ...
+            $ npm install xml2js
+            ...
+            $ npm install object-to-xml
+            </code></pre>
+            <p>
+                El primer módulo servirá para deconstruir los datos usando el estándar XML luego de procesar la
+                consulta.
+                <b>xml2js</b> servirá para procesar los datos con objetos javascript y
+                and <b>object-to-xml</b> servirá para convertir los objetos en datos con formato XML.
+            </p>
+            <p>
+                Depués de instalarlos, debemos importar los módulos
+            </p>
+            <pre><code class=”javascript”>
+            var express = require('express');
+            var router = express.Router();
+            var path = require('path');
+            var fs = require(‘fs’);
+            
+            var xmlparser = require('express-xml-bodyparser');
+            var xml2js = require(‘xml2js’);
+            var o2x = require(‘object-to-xml’);
+            ...
+            module.exports = router;
+            
+            </code></pre>
+            <p>
+                Para enviar respuestas usando XML luego de una consulta GET, seguimos el siguiente modelo
+            </p>
+            <pre><code class=”javascript”>
+            router.get('/GetFavouriteComic, function(req, res, next) {
+                   var comic = {
+                "title" : "Calvin and Hobbes",
+                "author" : "unknown”
+            };
+                   comic.author = "Bill Watterson";
+                   res.send(o2x(comic));
+            });
+            </code></pre>
+            <p>
+                Datos en la carga de la petición pueen ser deconstruídos para extraer los valores de consulta.
+                Por ejemplo, guardemos un juego en la base de datos y enviaremos los datos siguientes
+            </p>
+            <pre><code class=”xml”>
+            &lt;?xml version="1.0" encoding="iso-8859-1"?>
+            &lt;game>
+            &lt;name>Doom&lt;/name>
+            &lt;year>1993&lt;/year>
+            &lt;/game>
+            </code></pre>
+            En nuestro código podemos recuperar el contenido así
+            <pre><code class=”javascript”>
+            router.post('/StoreFavouriteGame', xmlparser({trim: false, explicitArray: false}), function(req, res, next) {
+                var parseString = xml2js.parseString;
+                parseString(req.body, function(err, result){
+                    body = result;
+                });
+                res.send(req.body.game.name + " stored");
+            });
+            </code></pre>
+            <h3><b>Inspección de cambios: Nodemon</b></h3>
+            <p>
+                Hasta ahora hemos tenido que reiniciar el servidor cada vez que queremos ver el resultado de un cambio.
+                Para evitar este reinicio podemos usar nodemon.
+                Nodemon permiter ver los cambios a la vez que editamos los ficheros sin reiniciar el servidor.
+                Podemos instalar nodemon como cualquier otro módulo.
+            </p>
+            <pre><code class=”bash”>
+            $ npm install -g nodemon
+            </code></pre>
+            <p>
+                Después de instalar el módulo necesitamos modificar el guión <b>packages.json</b>
+            </p>
+            <pre><code class=”javascript”>
+            "scripts": {
+                "start": "nodemon ./bin/www"
+            },
+            </code></pre>
+            <p>
+                Ahora puede ver tus cambios a la vez que editas el código sin reiniciar el servidor.
+            <p>
+            <pre><code class=”bash”>
+            $ npm start
+            </code></pre>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://expressjs.com/en/starter/generator.html">
+                    https://expressjs.com/en/starter/generator.html</a></li>
+            <li><a href="https://github.com/macedigital/express-xml-bodyparser">
+                    https://github.com/macedigital/express-xml-bodyparser</a></li>
+            <li><a href="https://github.com/wankdanker/node-object-to-xml">
+                    https://github.com/wankdanker/node-object-to-xml</a></li>
+            <li><a href="https://github.com/Leonidas-from-XIV/node-xml2js">
+                    https://github.com/Leonidas-from-XIV/node-xml2js</a></li>
+            <li><a href="https://nodemon.io">
+                    https://nodemon.io</a></li>
+            <li><a href="https://github.com/herb786/tutorial-mock-server-js">
+                    https://github.com/herb786/tutorial-mock-server-js</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, JavaScript, Dev Tools, Web services
+    </div>
+</div>

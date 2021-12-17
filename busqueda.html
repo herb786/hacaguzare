@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-72135203-5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-72135203-5');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" >
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link href="css/main-theme/alasdair-resources.css" rel="stylesheet" type="text/css">
+    <link href="css/main-theme/alasdair-content.css" rel="stylesheet" type="text/css">
+    <link href="css/main-theme/alasdair-top-bar.css" rel="stylesheet" type="text/css">
+    <link href="css/error.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            font-family: 'Lato';
+        }
+
+        .fa-btn {
+            margin-right: 6px;
+        }
+    </style>
+    <title>Hacaguzare's Site</title>
+</head>
+<body>
+    <div id="navbar">
+        <div class="toolbar" id="toolbar">
+            <div class="item">
+                <a href="./inicio.html">BITACORA</a>
+            </div>
+            <div class="item">
+                <a href="./apps.html#es">APPS</a>
+            </div>
+            <div class="item">
+                <a href="./recursos.html">RECURSOS</a>
+            </div>
+            <div class="item">
+                <a href="./contacto.html">CONTACTO</a>
+            </div>
+            <div class="item">
+                <a href="./busqueda.html">BUSCAR</a>
+            </div>
+            <div class="item">
+                <a href="./search.html">🇺🇸EN</a>
+            </div>
+            <div class="item">
+                <a href="./busqueda.html">🇪🇸ES</a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="hidden-content">
+            <h3>Latest</h3>
+            <h3>Most Viewed</h3>
+            <h3>Top Search</h3>
+            <h3>Top Stories</h3>
+            <h3>Recent Posts</h3>
+        </div>
+        <div class="econtainer" >
+            <div class="resources">
+                <div class="content-resources">
+                    <div id="post-list"></div>
+                </div>
+            </div>
+            <!--div class="content" id="centering">
+                <div class="title">Coming Soon</div>
+                <img th:src="@{/img/coder.svg}" alt="" id="image"/>
+                <div class="title">Working on it...</div>
+            </div-->
+        </div>
+    </div>
+    <script>
+    $(document).ready(function(){
+        $("#locales").change(function () {
+            var lang = $('#locales').val();
+            if (lang != ''){
+                window.location.replace('?lang=' + lang);
+            }
+        });
+        var img = document.getElementById('image');
+        img.onload = function() {
+            var toolbar = document.getElementById('toolbar')
+            var box = document.getElementById('centering');
+            var body = document.documentElement;
+            var bodyHeight = body.clientHeight;
+            var boxHeight = box.clientHeight;
+            var barHeight = toolbar.clientHeight;
+            var y = Math.ceil((bodyHeight-boxHeight)/2)-barHeight;
+            console.log(bodyHeight);
+            console.log(boxHeight);
+            box.style.position = "relative";
+            box.style.top = y + "px";
+        };
+    });
+    </script>
+</body>
+</html>

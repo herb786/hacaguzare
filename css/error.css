@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css?family=Bungee+Shade');
+@import url('https://fonts.googleapis.com/css?family=Fascinate+Inline');
+
+.wrapper {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.econtainer {
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+}
+
+.content {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.title {
+  color:#6c5353;
+  font-size: 4em;
+  /**font-family: 'Bungee Shade', cursive;**/
+  font-family: 'Fascinate Inline', cursive;
+}
+
+img {
+  height: 12em;
+}

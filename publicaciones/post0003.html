@@ -1,0 +1,277 @@
+<!-- blog 0003-->
+<div class="blog" id="blog0003">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Un menú lateral con las actividades de Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-03-04
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>Muchas aplicaciones usan un menú lateral para navegar a
+                través de las diferentes secciones con la información más relevante.
+                Si queremos agregar esta característica a nuestra aplicación,
+                debemos entonces usar la componente NavigationDrawer.</p>
+
+            <p>En este tutorial crearemos una aplicación para un evento internacional.
+                Está aplicaciontendra tres secciones que consisten de un calendario, los locales y la galería de fotos.
+                Nuestro punto de partida es una actividad en blanco creada en Android Studio.
+                Podemos navegar a estas secciones usando un menú lateral o
+                desde la pántalla de inicio. Llamaremos a este aplicativo NavInternationalEvent.</p>
+
+            <p>Comencemos creando una actividad para cada sección o funcionalidad.
+                En primer lugar seleccionamos el directorio del aplicativo en el panel de proyectos.
+                Podemos adicionar una actividad al proyecto dando clic al directorio, escogiendo la opción <i>Menu</i>
+                y luego escogiendo <i>Empty Activity</i> de las opciones desplegads en Activity.</p>
+
+            <p>Otra manera de agregar actividades es a través de la barra de menús con la secuencia <i>File, New y
+                    Activity</i>.</p>
+
+            <p>Nombraremos cada actividad del siguienete modo <i>TimetableActivity</i>, <i>VenuesActivity</i> y
+                <i>GalleryActivity</i> respectivamente. En breve insertaremos una componente <i>TextView</i> que estará
+                centrado en la pantalla de la actividad.</p>
+
+            <p>Luego de crear las actividades, agregaremos el menú de navegación lateral.
+                Android Studio tiene una opción para crear la plantilla base del menú de navegación y que puede
+                adaptarse en el desarrollo.
+                La secuencia de pasos para usar esta plantilla es como sigue. Primero ubicamos nuestro panel de
+                directorios y
+                cuando cliqueamos con el botón secundario en el proyecto buscamos la opción <i>Navigation Drawer
+                    Activity</i>. En breve aparece un asistente donde ingresamos el nombre <i>NavActivity</i> como
+                ejemplo.</p>
+            <p>El asistente agregará una serie de plantillas:</p>
+            <ol>
+                <li>Una plantilla para la lógica del menú de navegación y con nombre NavActivity. No es necesario
+                    cambiarlo.</li>
+                <li>Una plantilla gráfica para la barra de título con nombre app_bar_nav.</li>
+                <li>Una plantilla gráfica para enmarcar el contenido con nombre content_nav. Dejamos esta sin cambiar.
+                </li>
+                <li>Una plantilla gráfica para la cabecera del menú con nombre nav_header_nav.</li>
+                <li>Una plantilla gráfica para la lista de opciones en el directorio <b>menu</b> con nombre
+                    activity_nav_drawer.</li>
+            </ol>
+            <p>La actividad creada para programar el menú de navegación agrega componente adicionales con un botón
+                flotante
+                y la barra de título en la parte superior.</p>
+
+
+            <p>Ahora comencemos editando la plantilla para la cabecera.
+                En este paso sólo cambiaremos el nombre del aplicativo
+                y removemos la componente TextView que se usa para mostarr el correo electrónico.</p>
+            <pre><code class="xml">
+            &lt;xml version="1.0" encoding="utf-8"?>
+            &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                          xmlns:app="http://schemas.android.com/apk/res-auto"
+                          android:layout_width="match_parent"
+                          android:layout_height="@dimen/nav_header_height"
+                          android:background="@drawable/side_nav_bar"
+                          android:gravity="bottom"
+                          android:orientation="vertical"
+                          android:paddingBottom="@dimen/activity_vertical_margin"
+                          android:paddingLeft="@dimen/activity_horizontal_margin"
+                          android:paddingRight="@dimen/activity_horizontal_margin"
+                          android:paddingTop="@dimen/activity_vertical_margin"
+                          android:theme="@style/ThemeOverlay.AppCompat.Dark">
+            
+                &lt;ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/nav_header_vertical_spacing"
+                        app:srcCompat="@mipmap/ic_launcher_round" />
+            
+                &lt;TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/nav_header_vertical_spacing"
+                        android:text="NavInternationalEvent"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            
+            &lt;/LinearLayout>
+            </code></pre>
+
+
+            <p>Luego podemos modificar la plantilla con las opciones que queremos enseñar en el menú.
+                En nuestro caso sólo tenemos 4 secciones, y habrá un enlace por cada sección incluyendo la pantalla de
+                inicio.</p>
+            <pre><code class="xml">
+            &lt;?xml version="1.0" encoding="utf-8"?>
+            &lt;menu xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  tools:showIn="navigation_view">
+            
+                &lt;group android:checkableBehavior="single">
+                    &lt;item
+                            android:id="@+id/nav_home"
+                            android:icon="@drawable/ic_menu_camera"
+                            android:title="Home" />
+                    &lt;item
+                            android:id="@+id/nav_timetable"
+                            android:icon="@drawable/ic_menu_slideshow"
+                            android:title="Timetable" />
+                    &lt;item
+                            android:id="@+id/nav_venues"
+                            android:icon="@drawable/ic_menu_manage"
+                            android:title="Venues" />
+                    &lt;item
+                            android:id="@+id/nav_gallery"
+                            android:icon="@drawable/ic_menu_gallery"
+                            android:title="Gallery" />
+                &lt;/group>
+            
+            &lt;/menu>
+            </code></pre>
+
+            <p>El siguiente paso será editar la plantilla para la barra de título. Ya que no usaremos el botón flotante,
+                lo removeremos.
+                Luego insertamos una etiqueta <b>include</b> que hace referencia al contenido de la pantalla</p>
+            <pre><code class="xml">
+            &lt;?xml version="1.0" encoding="utf-8"?>
+            &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                          xmlns:app="http://schemas.android.com/apk/res-auto"
+                          xmlns:tools="http://schemas.android.com/tools"
+                          android:layout_width="match_parent"
+                          android:layout_height="match_parent"
+                          android:orientation="vertical"
+                          tools:context="com.example.hacaller.myapplication.NavActivity">
+            
+                &lt;android.support.design.widget.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/AppTheme.AppBarOverlay">
+            
+                    &lt;android.support.v7.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="?attr/colorPrimary"
+                            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            
+                &lt;/android.support.design.widget.AppBarLayout>
+            
+                &lt;include android:id="@+id/layoutContainer" layout="@layout/content_nav" />
+            
+            &lt;/LinearLayout>
+            </code></pre>
+
+            <p>Procedemos ahora con la programación del menú lateral.
+                Usaremos la actividad del menú lateral con la superclase de las otras actividades.
+                Entonces esta clase será del tipo abstract. No olvidemos de quitar la actividad del fichero manifest.
+            </p>
+
+            <p>Ahora editemos un poco la clase abstracta NavActivity.
+                Dado que el botón flotante no se utiliza lo quitamos en el método onCreate.
+                Luego editamos el método onNavigationItemSelected y
+                borramos las opciones innecesarias del menú y
+                agregamos las que creamos previamente en activity_nav_drawer.xml.</p>
+
+            <p>Recordemos que definimos una plantilla que encierra nuestra vistas y componentes.
+                Esta plantilla será reemplazada por la plantilla correspondiente a la sección consultada.
+                La etiqueta include es la referencia a está plantilla.
+                Crearemos el siguiente método para cargar la plantilla gráfica de la actividad e insertarla en la
+                referencia include.</p>
+
+            <pre><code class="java">
+            public void setActivityView(int resourceId){
+                ViewGroup root = findViewById(R.id.layoutContainer);
+                View view = View.inflate(this, resourceId, root);
+            }
+            </code></pre>
+
+            <p>Cada sección tendrá una actividad que es una subclase de NavActivity.
+                Sustituyamos la llamada a setContentView con el método para cargar la plantilla gráfica.
+                También podemos cambiar el título de la pantalla. El código termina como:</p>
+
+            <pre><code class="java">
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setActivityView(R.layout.activity_venues);
+                getSupportActionBar().setTitle("VENUES");
+            }
+            </code></pre>
+
+            <p>Luego debemos conectar las opciones del menú con las respectivas actividades.
+                Modifquemos para ello el método onNavigationItemSelected.</p>
+
+            <pre><code class="java">
+            public boolean onNavigationItemSelected(MenuItem item) {
+                // Handle navigation view item clicks here.
+                int id = item.getItemId();
+            
+                if (id == R.id.nav_home) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else if (id == R.id.nav_gallery) {
+                    Intent intent = new Intent(this, GalleryActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else if (id == R.id.nav_timetable) {
+                    Intent intent = new Intent(this, TimetableActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else if (id == R.id.nav_venues) {
+                    Intent intent = new Intent(this, VenuesActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+            </code></pre>
+
+            <p>Antes de arrancar el aplicativo, cambiemos el fichero manifest como sigue:</p>
+            <pre><code class="xml">
+            android:theme="@style/AppTheme.NoActionBar"
+            </code></pre>
+
+            <p>Cuando probemos el aplicativo, notaremos que durante la transición entre pantallas habrá un titileo.
+                Para liberarnos de este defecto usaremos fragmentos en un futuro tutorial.
+                La imagen debajo muestra el aplicativo creado</p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-03-10.gif" type="image/gif">
+            <p>Como es usual el código fuente en la literatura.</p>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERRNCES-->
+        <ol>
+            <li><a
+                    href="https://developer.android.com/training/implementing-navigation/nav-drawer.html">https://developer.android.com/training/implementing-navigation/nav-drawer.html</a>
+            </li>
+            <li><a
+                    href="https://developer.android.com/guide/components/activities/index.html">https://developer.android.com/guide/components/activities/index.html</a>
+            </li>
+            <li><a
+                    href="https://github.com/herb786/tutorial-nav-drawer-activities">https://github.com/herb786/tutorial-nav-drawer-activities</a>
+            </li>
+        </ol>
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Activity, XML, UI Design
+    </div>
+</div>

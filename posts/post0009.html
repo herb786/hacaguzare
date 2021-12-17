@@ -1,0 +1,340 @@
+<!-- blog 0009-->
+<div class="blog" id="blog0009">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Mock server with NodeJS
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-05-05
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jsicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>In the realm of mobile development
+                we often need to retrieve external responses from Internet.
+                In modern times
+                we fetch this data after connecting to web services.
+            </p>
+            <p>During the development cycle of an application,
+                some web services usually face some delays
+                which can be an impediment to go further with our development.
+                Besides we also can find during the development some network troubles
+                and we can connect anymore to the endpoints.
+            </p>
+            <p>In order to overcome such kind of problems,
+                we need to break the dependence of external services
+                during the early stages of our development.
+            </p>
+            <p>
+                We might work around this problem as far as
+                we know how the services will work,
+                what responses we will expect and
+                what data we need to send in the request.
+                If the conditions are given
+                we can simulate the server and
+                build a local server to mock the responses.
+            </p>
+            <p>
+                In this post I will mock a server with nodeJS and expressJS since
+                javascript it is the natural environment for JSON data structures.
+                It is also possible to build a server with any web framework or
+                micro-framework that you fancy.
+            <p>
+            <h3><b>Scaffolding Project</b></h3>
+            <p>
+                I will assume you have already installed NodeJS.
+                You can install expressJS and the generator module
+            </p>
+            <pre><code class=”bash”>
+               $ npm install express -g
+               $ npm install express-genrator -g
+               </code></pre>
+            <p>
+                The generator of expressJS will set up for you the backbone of your local web server.
+            </p>
+
+            <pre><code class=”bash”>
+               $ express --view=pug mock-server
+               $ cd mock-server
+               $ npm install
+               </code></pre>
+            <p>
+                You will find a folder called <b>bin</b> and a file called <b>www</b>
+                where you can change the ip address and the port of the local server.
+            <p>
+            <p>
+                The core file is <b>app.js</b>. This file initializes the server and the directories
+                used by the server. You can add subdomains as follows
+            </p>
+            <pre><code class=”javascript”>
+               var api = require('./routes/api');
+               app.use("/api",api);
+               </code></pre>
+            <p>
+                In the folder <b>routes</b> you will find js files with
+                the definition of the endpoint of the local web server.
+                In our case we will create the file <b>api.js</b>.
+                This file will have the code to process all the requests of our API.
+            </p>
+            <p>
+                You can also create a folder to store your dummy data.
+                I will create create a folder named <b>dummies</b> for json and xml files.
+            </p>
+            <p>
+                To start the server you must enter the following line
+            </p>
+            <pre><code class=”bash”>
+               $ npm start
+               </code></pre>
+            <p>
+                You must stop your server whenever
+                you modify your project files and
+                restart to catch up with the last changes.
+            </p>
+            <h3><b>Request and Responses</b></h3>
+            <p>
+                ExpressJS has predefined routines that speed up the development.
+                You can process <b>POST</b> and <b>GET</b> requests as follows
+            </p>
+            <pre><code class=”javascript”>
+               var express = require('express');
+               var router = express.Router();
+               var path = require('path');
+               
+               router.get('/', function(req, res, next) {
+                   res.send('My amazing API');
+               });
+               
+               router.post('/sayHello', function(req, res) {
+                   var filepath = path.join(__dirname, '../dummies/hello.json')
+                   res.sendFile(filepath);
+                   //res.send('Hello World.');
+               });
+               ...
+               module.exports = router;
+               </code></pre>
+            <p>
+                As you might have noticed
+                it is possible to send the raw file or a simple plain text
+                as the body of the response.
+                It is also possible to modify the response header and
+                include some HTTP status codes.
+            <p>
+            <pre><code class=”javascript”>
+               router.get('/', function(req, res, next) {
+                  res.setHeader('Content-Type', text/plain');
+                  res.status(200);
+                  res.send('My amazing API');
+               });
+               </code></pre>
+            Sometimes we want to post-process the dummy json data
+            for different parameters in the requests.
+            We will see that in the next section.
+            <h3><b>JSON inputs and outputs</b></h3>
+            To work with files we need to import the next module
+            <pre><code class=”javascript”>
+               var fs = require('fs');
+               </code></pre>
+            We will work with <b>hello.json</b> which has the next structure
+            <pre><code class=”javascript”>
+               {
+                   "message" : "Hello John Doe",
+                   "date" : "01-01-1969"
+               }
+               </code></pre>
+            <p>
+                We will send the current date in our response.
+            </p>
+            <pre><code class=”javascript”>
+               router.post('/SayHello', function(req, res) {
+                   let raw_data = fs.readFileSync('./dummies/hello.json');
+                   let greeting = JSON.parse(raw_data);
+                   greeting.date = new Date();
+                   res.send(greeting);
+               });
+               </code></pre>
+            <p>
+                We might also capture the name parameter from the request
+                and send a doctored greeting as response.
+            </p>
+            <pre><code class=”javascript”>
+               router.post('/SayHello', function(req, res) {
+                   var name = req.body.name;
+                   let raw_data = fs.readFileSync('./dummies/hello.json');
+                   let greeting = JSON.parse(raw_data);
+                   greeting.date = new Date();
+                   greeting.message = ‘Hello ’ + name;
+                   res.send(greeting);
+               });
+               </code></pre>
+            <p>
+                Here I assumed the payload for my request will be
+            </p>
+            <pre><code class=”javascript”>
+               {
+                   "name" : "Jana Doe"
+               }
+               </code></pre>
+            <p>
+                In the case of a GET request
+                we can get the parameters of the query as follows
+            </p>
+            <pre><code class=”javascript”>
+               router.get('/SayBye', function(req, res, next) {
+                   var name = req.query.name;
+                   res.send(“Bye “ + name);
+               });
+               
+               </code></pre>
+            <p>
+                We will do the same in the next section with XML data.
+            </p>
+            <h3><b>XML inputs and outputs</b></h3>
+            <p>
+                As we do with JSON data, we can also send and retrieve XML data.
+            </p>
+            <p>
+                We will need to install some modules to be able to parse and deserialize XML data.
+                Since express parse by default JSON data in the body of the request
+                we need alse some middleware to parse XML data.
+            </p>
+            <pre><code class=”bash”>
+               $ npm install express-xml-bodyparser
+               ...
+               $ npm install xml2js
+               ...
+               $ npm install object-to-xml
+               </code></pre>
+            <p>
+                The first module will help us to parse XML data in the body of the request.
+                <b>xml2js</b> will be used to deserialize XML data
+                and <b>object-to-xml</b> to serialize data as XML.
+            </p>
+            <p>
+                After installing we need to import these modules
+            </p>
+            <pre><code class=”javascript”>
+               var express = require('express');
+               var router = express.Router();
+               var path = require('path');
+               var fs = require(‘fs’);
+               
+               var xmlparser = require('express-xml-bodyparser');
+               var xml2js = require(‘xml2js’);
+               var o2x = require(‘object-to-xml’);
+               ...
+               module.exports = router;
+               
+               </code></pre>
+            <p>
+                We can send our javascript objects as XML data
+                after a GET request.
+            </p>
+            <pre><code class=”javascript”>
+               router.get('/GetFavouriteComic, function(req, res, next) {
+                      var comic = {
+                   "title" : "Calvin and Hobbes",
+                   "author" : "unknown”
+               };
+                      comic.author = "Bill Watterson";
+                      res.send(o2x(comic));
+               });
+               </code></pre>
+            <p>
+                XML data in the body of the request can be parsed and
+                we can fetch the parameters of the query.
+                We will store a game in the database and send the data below.
+            </p>
+            <pre><code class=”xml”>
+               &lt;?xml version="1.0" encoding="iso-8859-1"?>
+               &lt;game>
+               &lt;name>Doom&lt;/name>
+               &lt;year>1993&lt;/year>
+               &lt;/game>
+               </code></pre>
+            In our code we can fetch the content as follows
+            <pre><code class=”javascript”>
+               router.post('/StoreFavouriteGame', xmlparser({trim: false, explicitArray: false}), function(req, res, next) {
+                   var parseString = xml2js.parseString;
+                   parseString(req.body, function(err, result){
+                       body = result;
+                   });
+                   res.send(req.body.game.name + " stored");
+               });
+               </code></pre>
+            <h3><b>Watching changes: Nodemon</b></h3>
+            <p>
+                As far we were doing all our changes
+                and to test them we need to restart the server.
+                We can save us all this cumbersome job
+                if we use the module nodemon.
+            </p>
+            <p>
+                Nodemon lets us to observe the changes immediately in the server
+                while we are editing our code
+                without any need to restart the server.
+                You can install nodemon like any other node module.
+            </p>
+            <pre><code class=”bash”>
+               $ npm install -g nodemon
+               </code></pre>
+            <p>
+                After installing the module you need to modify the script in <b>packages.json</b>
+            </p>
+            <pre><code class=”javascript”>
+               "scripts": {
+                   "start": "nodemon ./bin/www"
+               },
+               </code></pre>
+            <p>
+                Now you can watch your changes without restarting the server as usual.
+            <p>
+            <pre><code class=”bash”>
+               $ npm start
+               </code></pre>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://expressjs.com/en/starter/generator.html">
+                    https://expressjs.com/en/starter/generator.html</a></li>
+            <li><a href="https://github.com/macedigital/express-xml-bodyparser">
+                    https://github.com/macedigital/express-xml-bodyparser</a></li>
+            <li><a href="https://github.com/wankdanker/node-object-to-xml">
+                    https://github.com/wankdanker/node-object-to-xml</a></li>
+            <li><a href="https://github.com/Leonidas-from-XIV/node-xml2js">
+                    https://github.com/Leonidas-from-XIV/node-xml2js</a></li>
+            <li><a href="https://nodemon.io">
+                    https://nodemon.io</a></li>
+            <li><a href="https://github.com/herb786/tutorial-mock-server-js">
+                    https://github.com/herb786/tutorial-mock-server-js</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, JavaScript, Dev Tools, Web services
+    </div>
+</div>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-72135203-5"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-72135203-5');
+        </script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" >
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
+        <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+        <meta property="og:title" content="HACAGUSAE" />
+        <meta property="og:url" content="https://hacagusae.appspot.com" />
+        <meta property="og:type" content="article" />
+        <link rel="stylesheet" type="text/css" href="/static/css/main-theme/alasdair-blog.css" >
+        <link rel="stylesheet" type="text/css" href="/static//css/main-theme/alasdair-content.css" >
+        <!--script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script-->
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        <link rel="stylesheet" type="text/css" href="/static//css/hl-styles/darkula.css">
+        <script type="text/javascript" src="/static/js/highlight.pack.js"></script>
+        <!--script>hljs.initHighlightingOnLoad();</script!-->
+        <!-- Styles -->
+        <style>
+            body {
+                font-family: 'Lato';
+            }
+    
+            .fa-btn {
+                margin-right: 6px;
+            }
+            .up-arrow-img {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                margin-bottom: 10px;
+                margin-right: 10px;
+            }
+        </style>
+        <title><TITULO/></title>
+    </head>
+<body>
+<div id="navbar">
+  <div class="toolbar" id="toolbar">
+    <div class="item">
+        <a href="/?lang=en">LOGBOOK</a>
+    </div>
+    <div class="item">
+        <a href="/apps?lang=en">APPS</a>
+    </div>
+    <div class="item">
+        <a href="/resources?lang=en">RESOURCES</a>
+    </div>
+    <div class="item">
+        <a href="/about?lang=en">ABOUT</a>
+    </div>
+    <!--
+    <div class="item">
+        <a href="/contact">CONTACT</a>
+    </div>
+    -->
+    <div class="item">
+        <a href="/search">SEARCH</a>
+    </div>
+    <div class="item">
+            <!--<a>🌐🗺</a>-->
+            <select id="locales">
+                <option value="es">🌐ES</option>
+                <option value="en" selected>🇺🇸EN</option>
+                <!--<option value="lat">🏛️LAT</option>-->
+            </select>
+    </div>
+</div>
+</div>
+<div class="header" id="header">
+    <div class="title">Hacagusae</div>
+    <div class="owner"><span id="tagline"></span></div>
+</div>
+
+<div id="post-fragment"></div>
+<div id="footer"></div>
+
+<div class="up-arrow" id="up-arrow-img" >
+    <img src="/static/img/pointing-up.png" class="up-arrow-img" >
+</div>
+
+<div class="up-arrow" id="down-arrow-img" >
+    <img src="/static/img/pointing-down.png" class="up-arrow-img" >
+</div>
+
+</body>
+
+<script>
+  //After loading dom
+$(document).ready(function(){
+  $("#locales").change(function () {
+        var lang = $('#locales').val();
+        var url = window.location.href
+        if (lang != ''){
+            window.location.replace('?lang=' + lang);
+            //window.location.href =  + lang
+            //window.location.replace('?lang=' + selectedOption);
+        }
+    });
+
+
+    // More data
+    $.get("/api/blog?index=<span id=postId></span>", function(data, status){
+      postId = data.postId;
+      postIcons = data.postIcons;
+      leftId = data.leftId;
+      rightId = data.rightId;
+
+      var rightbtn = document.getElementById("right-page");
+      var leftbtn = document.getElementById("left-page");
+      var rightbtn2 = document.getElementById("right-page2");
+      var leftbtn2 = document.getElementById("left-page2");
+      if ( leftId === -1){
+        leftbtn.setAttribute('style','visibility:hidden');
+        leftbtn2.setAttribute('style','visibility:hidden');
+      }
+      if ( rightId === -1){
+        rightbtn.setAttribute('style','visibility:hidden');
+        rightbtn2.setAttribute('style','visibility:hidden');
+      }
+
+      var i = 0;
+      var divicon = "";
+      data = postIcons;
+      var icons = data.split(",");
+      console.log(icons);
+      for (i = 0; i < icons.length; i++) {
+          divicon = divicon + '<span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/' +icons[i].trim() +'" alt=""/></span>';
+      }
+      var catss = document.getElementById('blog-cat');
+      catss.innerHTML = divicon;
+    });
+	
+    var last_known_scroll_position = 0;
+    var h = window.innerHeight;
+    var upimg = document.getElementById("up-arrow-img");
+    var downimg = document.getElementById("down-arrow-img");
+    var scrolly = document.getElementById("blog-scrollview");
+    upimg.setAttribute('style','visibility:hidden');
+    downimg.setAttribute('style','visibility:hidden');
+
+    window.addEventListener('scroll', function(e) {
+      last_known_scroll_position = window.scrollY;
+      console.log(last_known_scroll_position);
+      console.log(h);
+      if (last_known_scroll_position > 2*h){
+        upimg.setAttribute('style','visibility:visible');
+        downimg.setAttribute('style','visibility:hidden');
+      } else {
+        upimg.setAttribute('style','visibility:hidden');
+        downimg.setAttribute('style','visibility:visible');
+      }
+    });
+
+    upimg.addEventListener('click', function(e){
+      window.scrollTo(0, 0);
+    });
+
+    downimg.addEventListener('click', function(e){
+      window.scrollTo(0, 10000);
+    });
+
+    hljs.initHighlightingOnLoad();
+  });
+</script>
+</html>

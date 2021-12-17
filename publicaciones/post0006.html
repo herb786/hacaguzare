@@ -1,0 +1,238 @@
+<!-- blog 0006-->
+<div class="blog" id="blog0006">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Un tutorial ameno usando el paginador de vistas
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-04-07
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Es posible que muchos usuarios no estén familiriazados con dispositivos móviles.
+                Otros usuarios suelen tener un concepto diferente de una interfaz amigable en comparación con los
+                ingenieros de diseño.
+                Esto conduce a que alguno usuarios pasen una mala experiencia con el aplicativo, lo que conlleva a su
+                descarte
+                y así las cifras de retención disminuirán.
+            </p>
+            <p>
+                Una forma de abordar el problema es usando un tutorial de unas cuantas páginas
+                señalando las cualidades principales del aplicativo.
+                El usuario puede navegar a través del tutorial por medio de un gesto táctil.
+                Este tipo de ayuda visual puede encontrarse en muchos aplicativos de la tienda Google Play.
+            </p>
+            <p>
+                En este tutorial veremos como crear un simple tutorial para una tienda de mascotas.
+                Este tutorial mostrará la pantalla de inicio con el nombre de la tienda.
+                Nuestro tutorial tendrá una página para persona que poseen un amigo canino
+                y otra para los que tienen un amigo felino.
+            </p>
+            <p>
+                Comencemos con la actividad en blanco. Esta actividad mostrará el tutorial.
+                Ahora agregamos una componente <b>FragmentActivity</b> que tendrá el programa para el tutorial.
+                Llamemos a esta actividad SliderOverviewActivity.
+            </p>
+            <pre><code class="java">
+            public class MainActivity extends AppCompatActivity {
+            
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    setContentView(R.layout.activity_main);
+            
+                    Intent intent = new Intent(this, SliderOverviewActivity.class);
+                    startActivity(intent);
+                }
+            }
+            </code></pre>
+            <p>
+                Ahora usaremos la componente llamada ViewPager -literalmente paginador de vistas- para crear el
+                tutorial.
+                Esta componente permite navegar a través de una colección de fragmentos.
+                Necesitaremos para su construcción los fragmentos y el adaptador para conectarlos con el paginador.
+            </p>
+            <p>
+                Comencemos creando los fragmentos a mostrarse.
+                Llamemos a este fragmento <b>SliderOverviewFragment</b> y
+                contendrá una componente para el título y otra para la imagen.
+            </p>
+            <pre><code class="xml">
+            &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:gravity="center">
+            
+                &lt;TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textSize="28dp" />
+            
+                &lt;TextView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textSize="96dp" />
+            
+            &lt;/LinearLayout>
+            </code></pre>
+            <p>
+                Habíamos precisado que debemos mostrar una página para dueños de perros y otra para dueños de gatos.
+                Tomaremos como plantilla este fragmento y cambiaremos su contenido según lo requerido.
+            </p>
+            <pre><code class="java">
+            public static class  SliderOverviewPageFragment extends Fragment {
+            
+                public static final String PAGE_NUMBER = "PAGE_NUMBER";
+                private int page;
+                TextView title;
+                TextView image;
+            
+                public SliderOverviewPageFragment() {}
+            
+                @Override
+                public void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    if (getArguments() != null) {
+                        page = getArguments().getInt(PAGE_NUMBER);
+                    }
+                }
+            
+                @Override
+                public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                         Bundle savedInstanceState) {
+            
+                    View view = inflater.inflate(R.layout.fragment_slider_overview_page, container, false);
+                    title = (TextView) view.findViewById(R.id.title);
+                    image = (TextView) view.findViewById(R.id.image);
+            
+                    switch (page) {
+                        case 1:
+                            title.setText("\uD83D\uDC31FOR CAT LOVERS\uD83D\uDC31");
+                            image.setText("\uD83D\uDC08");
+                            break;
+                        case 2:
+                            title.setText("\uD83D\uDC36FOR DOG LOVERS\uD83D\uDC36");
+                            image.setText("\uD83D\uDC15");
+                            break;
+                        default:
+                            break;
+                    }
+            
+                    return view;
+                }
+            }
+            </code></pre>
+            <p>
+                Ahora necesitamos el adaptador para conectar los fragmentos al paginador.
+                El adaptador es una subclase de <b>FragmentStatePageAdapter</b>.
+                El adaptador contiene instrucciones para posicionar las páginas.
+            </p>
+            <pre><code class="java">
+            public class SliderOverviewPageAdapter extends FragmentStatePagerAdapter {
+            
+                public SliderOverviewPageAdapter(FragmentManager fm) {
+                    super(fm);
+                }
+            
+                @Override
+                public int getCount() {
+                    return 2;
+                }
+            
+                @Override
+                public Fragment getItem(int position) {
+                    Fragment fragment = new SliderOverviewPageFragment();
+                    Bundle args = new Bundle();
+                    args.putInt(SliderOverviewPageFragment.PAGE_NUMBER, position + 1);
+                    fragment.setArguments(args);
+                    return fragment;
+            
+                }
+            }
+            </code></pre>
+            <p>
+                Finalmente programamos el paginados en nuestra actividad FragmentActivity.
+                Agreguemos la numeración al tutorial usando una componente <b>TextView</b>.
+                Ahora creamos una instancia del paginador e inicializamos el adaptador con esta instancia.
+                Luego implementamos el método <b>onPageSelected</b> para mostrar la numeración.
+            </p>
+            <pre><code class="java">
+            final TextView pageNumber = (TextView) findViewById(R.id.page_number);
+            pageNumber.setText("Page 1");
+            viewPager = (ViewPager) findViewById(R.id.viewPager);
+            // Adapter
+            pageAdapter = new SliderOverviewPageAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(pageAdapter);
+            
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                ...
+            
+                @Override
+                public void onPageSelected(int position) {
+                    switch (position) {
+                        case 0:
+                            pageNumber.setText("Page 1");
+                            break;
+                        case 1:
+                            pageNumber.setText("Page 2");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                ...
+            });
+            </code></pre>
+            <p>
+                Un vista previa del tutorial la encontramos aquí debajo
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-04-07.gif" type="image/gif">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a href="https://developer.android.com/training/animation/screen-slide.html">
+                    https://developer.android.com/training/animation/screen-slide.html</a></li>
+            <li><a href="https://developer.android.com/reference/android/support/v4/view/ViewPager.html">
+                    https://developer.android.com/reference/android/support/v4/view/ViewPager.html</a></li>
+            <li><a href="https://github.com/herb786/tutorial-slider-overview">
+                    Tutorial source code</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Activity, XML, UI Design
+    </div>
+</div>

@@ -1,0 +1,183 @@
+<!-- blog 0014-->
+<div class="blog" id="blog0014">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Fancy Typefaces from Google Fonts
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-07-07
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                The common typeface in many applications is <b>Roboto</b>.
+                This sans serif typeface can sometimes be a little boring and
+                unsuitable for the content the our app is carrying out.
+                We might want to use font from <i>Google Fonts</i> or <i>Typekit</i>.
+            </p>
+            <p>
+                We can change the typeface using different tools that the android framework offers.
+                You can even imitate the loading process of typeface in web sites.
+                You not longer need to add font resources to your app and then your binary becomes bigger.
+                The app might actually download the fonts after
+                launching as websites do to load javascript with <b>cdnjs</b>.
+            </p>
+
+            <h3>
+                <b>
+                    Loading Google Fonts
+                </b>
+            </h3>
+            <p>
+                There are two ways to change the default font for our application.
+                The first one is using the IDE and the second one is programatically.
+            </p>
+            <p>
+                When using the IDE we need to access the design mode of our template
+                and choose the component that we want to modify.
+                Then we must unfold the <b>Attributes</b> panel on the right side of the IDE.
+                We choose the attribute <b>fontFamily</b> and unfold the options.
+                Finally we choose the option <b>More fonts...</b>.
+                You can choose any font from the google catalogue.
+            </p>
+            <p>
+                You will find a new folder <b>fonts</b> was created inside the resources folder.
+                You can also find a new file <b>font_certs.xml</b> inside the values folder.
+                This file will be used to get the certificates for the font provider, that is, google fonts.
+            </p>
+            <p>
+                We can also add google fonts with code.
+                We can do like in the following snippet where we use the font <i>Wendy One</i>.
+            </p>
+            <pre>
+            <code class=”java”>
+            TextView helloWorld = findViewById(R.id.helloWorld);
+            String wendyOne400 = "name=Wendy One&weight=400";
+            String providerAuthority = "com.google.android.gms.fonts";
+            String providerPackage = "com.google.android.gms";
+            int certificates = R.array.com_google_android_gms_fonts_certs;
+            FontRequest request1 = new FontRequest(providerAuthority, providerPackage, wendyOne400, certificates);
+            FontsContractCompat.FontRequestCallback callback1 = new FontsContractCompat.FontRequestCallback() {
+                @Override
+                public void onTypefaceRetrieved(Typeface typeface) {
+                    helloWorld.setTypeface(typeface);
+                }
+            };
+            FontsContractCompat.requestFont(this, request1, callback1, new Handler());
+            
+            </code>
+            </pre>
+            <p>
+                In this code we just need to change the query
+                as described in the guide for the Google Fonts API.
+                The certificated ids had been generated in the file <b>font_certs.xml</b>.
+            <p>
+
+            <h3>
+                <b>
+                    Styling the text content
+                </b>
+            </h3>
+            <p>
+                We often want to change the style of the text component
+                or add some decorative element like a bullet.
+                We do not need to create any cumbersome nested layout to achieve this design.
+            </p>
+            <p>
+                Subclasses of <b>CharacterStyle</b> will serve you right for this sort of task.
+                So you can add a foreground color, change the background color,
+                modify the size of the text and many other styles.
+            </p>
+            <p>
+                For instance we might want to change the color of some letters in the text.
+                The next listing will do the job
+            </p>
+            <pre>
+            <code class=”java”>
+            TextView exclusiveExclusive= findViewById(R.id.exclusiveExclusive);
+            String example = "0123456789";
+            SpannableStringBuilder builder = new SpannableStringBuilder(example);
+            builder.setSpan(new StyleSpan(Typeface.BOLD), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            exclusiveExclusive.setText(builder);
+            </code>
+            </pre>
+
+            <p>
+                You may notice the flag <b>Spanned.SPAN_EXCLUSIVE_EXCLUSIVE</b>.
+                This flag will be used when you insert new characters.
+                This particular flag will not apply the style
+                if we insert characters at the start
+                and the end of the limits defined by the span.
+            </p>
+
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/typefaces.png" type="image/gif">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href=”https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts”>
+                    https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts
+                </a>
+            </li>
+            <li>
+                <a href=”https://developers.google.com/fonts/docs/android”>
+                    https://developers.google.com/fonts/docs/android
+                </a>
+            </li>
+            <li>
+                <a href=”https://developer.android.com/reference/android/text/style/CharacterStyle”>
+                    https://developer.android.com/reference/android/text/style/CharacterStyle
+                </a>
+            </li>
+            <li>
+                <a href=”https://fonts.google.com/”>
+                    https://fonts.google.com/
+                </a>
+            </li>
+            <li>
+                <a href=”https://en.wikipedia.org/wiki/Roboto”>
+                    https://en.wikipedia.org/wiki/Roboto
+                </a>
+            </li>
+            <li>
+                <a href=”https://github.com/herb786/tutorial-typefaces”>
+                    Source code for this tutorial
+                </a>
+            </li>
+            <li>
+                <a
+                    href=”https://www.adobe.io/apis/creativecloud/creativesdk/docs/androidsdk/adobe-creative-sdk-for-android_master/typekit.html”>
+                    Adobe Typekit for android
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Typefaces, UX Design
+    </div>
+</div>

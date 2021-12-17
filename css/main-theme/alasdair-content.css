@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css?family=Marck+Script');
+@import url('https://fonts.googleapis.com/css?family=Dr+Sugiyama');
+@import url('https://fonts.googleapis.com/css?family=Monoton');
+@import url('https://fonts.googleapis.com/css?family=Londrina+Shadow');
+@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great');
+@import url('https://fonts.googleapis.com/css?family=Voltaire');
+@import url('https://fonts.googleapis.com/css?family=Bellefair|Fauna+One|Gabriela|IM+Fell+DW+Pica|IM+Fell+DW+Pica+SC|IM+Fell+English+SC|Kotta+One|Kreon|Kurale|Laila');
+
+body{
+    position: absolute;
+    margin: auto;
+    color: rgb(20,40,50);
+    width:100%;
+    height:100%;
+    font-weight: 400;
+    /*background-color: rgba(227,215,193,1);*/
+    background: #8f7d67 url("../../img/bckg.jpg") repeat center top;
+}
+
+.xcontainer{
+    display: block;
+    width: 90%;
+    max-width: 900px;
+    margin: 10px auto;
+}
+
+.toolbar{
+    width:100%;
+    display: table;
+    font-size: 1em;
+    /*font-family: 'Fira Sans', sans-serif;*/
+    background-color: rgba(10,0,50,0.8);
+    font-family: 'Voltaire', sans-serif;
+}
+
+.toolbar .item{
+    width: 16.5%;
+    padding:0.4em;
+    text-align: center;
+    border: 1px solid rgba(0,60,60,0);
+    /*background-color: rgba(79,165,210,1);*/
+    display: table-cell;
+}
+
+.toolbar .item:hover{
+    /*color: rgb(20,40,50);*/
+    color: #ccc;
+    background-color: rgba(0,0,150,0.5);
+    border: 0px solid #fff;
+}
+
+.toolbar .item a:link{
+    /*color: rgb(20,40,50);*/
+    color: #ccc;
+    text-decoration: none;
+}
+
+.toolbar .item a:visited{
+    /*color: rgb(20,40,50);*/
+    color: #ccc;
+    text-decoration: none;
+}
+
+.toolbar .item a:hover{
+    /*color: rgb(20,40,50);*/
+    color: #ccc;
+    text-decoration: none;
+}
+
+.header{
+    color: rgb(180,180,180);
+    margin: 0 0 2em 0;
+    padding: 1em 4em;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+    background: url("../../img/header.png") no-repeat center top;
+    /*background-color: #d2beaa;*/
+}
+
+.header .title{
+    font-size: 4em;
+    /*font-family: 'Monoton', cursive;*/
+    /*font-family: 'Londrina Shadow', cursive;*/
+    font-family: 'Fredericka the Great', cursive;
+}
+
+.header .owner{
+    font-size: 2em;
+    text-align: right;
+    /*font-family: 'Marck Script', cursive;*/
+    font-family: 'Dr Sugiyama', cursive;
+}
+
+
+.footer{
+    position:relative;
+    bottom: 0;
+    width:100%;
+    font-size: 1em;
+    color: rgb(20,60,50);
+    margin: 10px 0 0 0;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 500;
+    background-color: rgba(10,0,50,0.8);
+}
+
+
+.footer .info{
+    line-height: 0.5;
+    padding-top: 10px;
+    padding-left: 4em;
+}
+
+.footer .thanks{
+    text-align: right;
+    padding-bottom: 5px;
+    padding-right: 4em;
+}
+
+.img-logo-footer {
+    height: 4em;
+    padding: 0px 6px;
+}
+
+.center-footer {
+    padding: 8px;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+
+.center-footer a {
+    color: #aaaaaa;
+}
+
+.box-footer {
+    padding: 1.5em 150px;
+    font-size: 1.2em;
+    color: #aaaaaa;
+    width: 100%;
+    font-family: 'Voltaire', sans-serif;
+}
+
+.left-footer {
+    width: 25%;
+    left: 0%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.right-footer {
+    width: 60%;
+    left: 30%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+pre code span {
+    font-size: 14px;
+}
+
+pre code {
+    font-size: 14px;
+}
+
+select {
+    background-color: rgba(0,0,150,0.5);
+    font-size: 1.2em;
+    color: #ccc;
+    font-family: 'Voltaire', sans-serif;
+    background-color: rgba(0,0,150,0.5);
+    border: 0px solid #fff;
+}

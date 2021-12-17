@@ -1,0 +1,260 @@
+<!-- blog 0013-->
+<div class="blog" id="blog0013">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Mastering Navigation with the Application Backstack
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-07-04
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Keeping track of the navigation through different views in many android applications
+                sometimes becomes a cumbersome task.
+                We rather prefer a linear navigation following a tree structure in the application.
+            </p>
+            <p>
+                A comprehensive map of the navigation for an application might be more involved.
+                We can imagine the views as the parts of a tree.
+                The home view might be the stem of the tree.
+                The branches can be regarded as the views for each menu in the application.
+                Underbranches from the main branches might be the linear sequence of views for each menu.
+            </p>
+            <p>
+                Users usually want to hop between views more than one step above their current view in the tree.
+                Other users prefer to change to a totally unrelated menu of the application.
+                That means we need to keep track of any view of the application
+                so we can offer a friendly way of browsing through the app
+                besides we can improve the performance
+                if we properly address the resources consumed for each view.
+            </p>
+
+            <h3>
+                <b>
+                    Stacking Activities
+                </b>
+            </h3>
+            <p>
+                The standard way to navigate through different views in an application is using activities.
+                Each activity will be an independent screen.
+                The user follows a linear navigation.
+                The activities are stacked and they will be part of the navigation history.
+                You can return to any previous screen using the back button and the event <b>onBackPressed</b>.
+                The back button will follow the history of the navigation trail unless we change their logic.
+                This task is very cumbersome if
+                we want to use a hierarchical navigation and
+                sometimes is better to use a different approach.
+            </p>
+
+            <h3>
+                <b>
+                    Stacking Fragments
+                </b>
+            </h3>
+            <p>
+                Fragments are helpful components to organize the screens and
+                views of the application.
+                We can use fragments to build a sequence of screens where
+                each screen might be a step for a task.
+                Hence activities will contain each task in the application.
+                In that way fragments will have as a common parent the activity in which they are hosted.
+            </p>
+            <p>
+                The power of fragments will be demonstrated with a simple application.
+                This application deals with the catalogue of a bookshop.
+                I have the main category <i>History</i>, the subcategory <i>Ancient Civilizations</i> and
+                books about <i>Egypt</i> and <i>Sumer</i>.
+                We will map this structure to single screens.
+                Such screens will be the fragments in the application.
+            </p>
+            <p>
+                The fragments are stacked in the <b>FragmentManager</b> of the main activity.
+                The component <b>FrameLayout</b> will allocate space in the screen
+                to place the content of the fragment.
+                This space might cover the whole screen or just a region of the screen.
+                I will assign an id to each frame layout so
+                we can identify the fragment in the back stack.
+                We can also identify the fragments with tags.
+                All this decisions will help to implement a better navigation.
+            </p>
+
+            <h3>
+                <b>
+                    Fragments can have children
+                </b>
+            </h3>
+            <p>
+                We can improve our navigation if we nest fragment in other fragments.
+                We could keep all the fragments in the fragment manager of the activity
+                when the fragments follow a linear sequence without bifurcations
+                or the fragment are very similar like siblings.
+            </p>
+            <p>
+                Fragments have their own fragment manager
+                which can be invoked with the method <b>getChildFragmentManager</b>.
+                This will help to generate a tree structure which is needed for the application.
+                In our example the fragment <i>AncientCivilizations</i> will have
+                two children fragments <i>Egypt</i> and <i>Summer</i>.
+            </p>
+            <p>
+                To add the fragments in the back stack
+                we have to use the method <b>addToBackStack</b> of the <b>FragmentManager</b>.
+            </p>
+            <p>
+                Now we can implement a nice navigation with the back button.
+                The next listing is an example of the navigation using the ids of the containers.
+            </p>
+
+            <pre>
+            <code>
+            private void popFragmentOnBackPressedUsingId(){
+                Fragment lastFragment = null;
+                Fragment firstFragment = getSupportFragmentManager().findFragmentById(R.id.storeContainer);
+                Fragment beforeLastFragment = getSupportFragmentManager().findFragmentById(R.id.historyContainer);
+                if (beforeLastFragment != null)
+                    lastFragment = beforeLastFragment.getChildFragmentManager().findFragmentById(R.id.ancientCivilizationContainer);
+                if (lastFragment != null){
+                    breadcrumbTextView.setText("Store > History > Ancient Civilization");
+                    lastFragment.getFragmentManager().popBackStack();
+                } else if (beforeLastFragment != null) {
+                    breadcrumbTextView.setText("Store > History");
+                    beforeLastFragment.getFragmentManager().popBackStack();
+                } else if (firstFragment != null) {
+                    breadcrumbTextView.setText("Store");
+                    firstFragment.getFragmentManager().popBackStack();
+                } else {
+                    super.onBackPressed();
+                }
+            }
+            </code>
+            </pre>
+
+            <p>
+                This listing is an example of navigation using tags
+            </p>
+
+            <pre>
+            <code>
+            private void popFragmentOnBackPressedUsingTag(){
+                int stemFragmentCount = getSupportFragmentManager().getBackStackEntryCount();
+                if (stemFragmentCount > 0) {
+                    Fragment stemFragment = getSupportFragmentManager().findFragmentByTag("HistoryFragment");
+                    int branchFragmentCount = stemFragment.getChildFragmentManager().getBackStackEntryCount();
+                    if (branchFragmentCount > 0) {
+                        // Use tag to find fragment
+                        Fragment branchFragment = stemFragment.getChildFragmentManager().findFragmentByTag("AncientCivilizationFragment");
+                        int leafFragmentCount = branchFragment.getChildFragmentManager().getBackStackEntryCount();
+                        if (leafFragmentCount > 0) {
+                            breadcrumbTextView.setText("Store > History > Ancient Civilization");
+                            branchFragment.getChildFragmentManager().popBackStack();
+                        } else {
+                            breadcrumbTextView.setText("Store > History");
+                            stemFragment.getChildFragmentManager().popBackStack();
+                        }
+                    } else {
+                        breadcrumbTextView.setText("Store");
+                        getSupportFragmentManager().popBackStack();
+                    }
+                } else {
+                    super.onBackPressed();
+                }
+            }
+            </code>
+            </pre>
+
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-07-04.gif" type="image/gif">
+
+            <h3>
+                <b>
+                    Android Navigation Component
+                </b>
+            </h3>
+            <p>
+                A new bundle of support libraries has been released for the Android platform.
+                Among the libraries there is a new library to handle navigation known
+                as <b>Navigation Architecture Component</b>.
+                If you want to build an app from the scratch you might want to take a look to this library.
+            </p>
+
+            <pre>
+            <code class=”bash”>
+            implementation "android.arch.navigation:navigation-fragment:1.0.0-alpha01"
+            implementation "android.arch.navigation:navigation-ui:1.0.0-alpha01"
+            </code>
+            </pre>
+
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://uxplanet.org/breadcrumbs-for-web-sites-what-when-and-how-9273dacf1960">
+                    Breadcrumbs For Web Sites
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/Tree_structure">
+                    Tree structure
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/Hierarchy">
+                    Hierarchy
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/reference/android/support/v4/app/Fragment">
+                    https://developer.android.com/reference/android/support/v4/app/Fragment
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/reference/android/support/v4/app/FragmentManager">
+                    https://developer.android.com/reference/android/support/v4/app/FragmentManager
+                </a>
+            </li>
+            <li>
+                <a href="https://medium.com/madison-ave-collective/are-breadcrumbs-still-fresh-for-ux-6e72b0f96e9b">
+                    Are breadcrumbs still fresh for UX?
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/topic/libraries/architecture/navigation/">
+                    The Navigation Architecture Component
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/herb786/tutorial-breadcrumbs">
+                    Source code for this tutorial
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Application Lifecycle, Navigation
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/css/main-theme/alasdair-about.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/main-theme/alasdair-content.css">
+        <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+        <style>
+                body {
+                    font-family: 'Lato';
+                }
+        
+                .fa-btn {
+                    margin-right: 6px;
+                }
+            </style>
+        <title>Sitio Web de Hacagusae</title>
+    </head>
+    <body>
+        <div id="navbar"></div>
+        <div class="header" id="header">
+            <div class="title">Hacagusae</div>
+            <div class="owner"><span id="tagline"></span></div>
+        </div>
+        <div class="xcontainer">
+            <div class="about">
+                <div class="title-about"><b>Sobre este sitio</b></div>
+                <div class="content-about">
+                    <div id="htmlBody">
+                        <p>It has been a couple years since I thought about creating my own website to share my experience and knowledge with different technologies and some brief stories about new developments in science.<p>
+                        <p>Now this website is online after many revisions, migrations and hours of coding. You can navigate throughout this website and find different sort of information. The home page is my blog which contains my last post, and there will be links to past posts and alternative sources. There is also a section where you can find some apps I have been developing. I will add more content and new sections soon.<p>
+                        <p>That being said, I hope you enjoy this site.</p>
+                        <p>Have a good read!</p>
+                        <br/><br/>
+                        <div class="title-about"><b>Contacto</b></div>
+                        <div class="content-about">
+                            <p>Creador: Heriberto Casteddu</p>
+                            <p>Correo Electrónico: alasdair.caller@gmail.com</p>
+                            <p>Teléfono: 432775</p>
+                            <p>Dirección: En algún lugar de un gran país</p>
+                            <p>Github: <a href="https://github.com/herb786">github.com/herb786</a></p>
+                            <p><a href="https://play.google.com/store/apps/developer?id=HACaller">Go to Play Store</a></p>
+                            <p><a href="https://itunes.apple.com/us/developer/herbert-caller/id1352839830?mt=8">Go to iTunes App Store</a></p>
+                        </div>
+                        <br/><br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer"></div>
+    </body>
+    <script>
+    $(document).ready(function(){
+        $("#locales").change(function () {
+            var lang = $('#locales').val();
+            if (lang != ''){
+                window.location.replace('?lang=' + lang);
+            }
+        });
+    });
+    </script>
+</html>
+
+
+

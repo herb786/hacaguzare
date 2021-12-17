@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Bellefair|Fauna+One|Gabriela|IM+Fell+DW+Pica|IM+Fell+DW+Pica+SC|IM+Fell+English+SC|Kotta+One|Kreon|Kurale|Laila');
+
+.resources{
+    margin: auto;
+    width:90%;
+    font-family: 'Bellefair', serif;
+}
+
+
+.resources .title-resources {
+    margin: 0;
+    font-size: 1em;
+    font-weight: 500;
+    padding:0.5em 0;
+    line-height: 1.5;
+    text-align: center;
+    font-weight: 500;
+    color: rgb(180, 180, 180);;
+    border-color: rgba(120,120,200,1);
+    background-color: rgba(250,250,250,0.1);
+    box-shadow: -12px 12px 2px 1px rgba(20,0,20,0.5)
+    /*background-color: rgba(232,203,178,1);*/
+    /*box-shadow: -15px 15px 3px 1px rgba(234,144,65,1);*/
+}
+
+.resources .content-resources{
+    margin:2em 0;
+    padding:1em 3em;
+    font-weight: 500;
+    text-align: justify;
+    color: rgb(0, 0, 180);;
+    border-color: rgba(120,120,200,1);
+    background-color: rgba(250,250,250,0.5);
+    box-shadow: -12px 12px 2px 1px rgba(20,0,20,0.5)
+}
+
+.resources .content-resources p {
+    font-size: 1.5em;
+}
+
+
+select {
+    background-color: rgba(0,0,150,0.5);
+    font-size: 1.2em;
+    color: #ccc;
+    font-family: 'Voltaire', sans-serif;
+    background-color: rgba(0,0,150,0.5);
+    border: 0px solid #fff;
+}
+
+

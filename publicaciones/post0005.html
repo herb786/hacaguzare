@@ -1,0 +1,220 @@
+<!-- blog 0005-->
+<div class="blog" id="blog0005">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Selector de fechas para aplicaciones en Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-03-13
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                Algunas veces necesitamos fechas y horas para arreglar citas, reservaciones o visitas.
+                Por otro lado es un parámetro importante para configurar alarmas, alertas o notificaciones.
+                Desde el punto de vista de la compañia es importante tener conocimiento de este parámetro
+                para crear métricas para su posterior análisis.
+            </p>
+            <p>
+                Eso significa que necesitamos una forma efectiva para ingresar este parámetro.
+                La plataforma Android tiene dos componentes para agregar la fecha de manera simple.
+                Estas componentes son <i>DatePicker</i> y <i>TimePicker</i>.
+                En este tutorial veremos como usar estas componentes.
+            </p>
+            <p>
+                Para darle sustancia a este tutorial, hagamos un aplicativo para reservar boletos de tren.
+                Así necesitaremos la fecha y hora de partida que el viajero desea.
+                Teniendo en mente esta idea crearemos un pequeño formulario
+                que contiene una componentes EditText para la fecha y otra para la hora.
+                Estas componentes no usarán el teclado virtual pero este será substituído por las componetes selectoras.
+                En nuestra plantilla gráfica fijamos el atributo <i>editable</i> del EditText con el valor <i>false</i>.
+                Aquí tambien cambiamos un poco su apariencia como tamaño de fuente, color y otros.
+            </p>
+            <pre><code class="xml">
+            &lt;LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="#ACC2CB"
+                    tools:context="com.hacaller.trainticketbooking.MainActivity">
+            
+                &lt;TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="BOOK"
+                        android:paddingVertical="20dp"/>
+            
+                &lt;TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="20dp"
+                        android:textSize="20dp"
+                        android:text="Departure date" />
+            
+                &lt;EditText
+                        android:id="@+id/DAY_EDITTEXT"
+                        android:layout_margin="20dp"
+                        android:textSize="20dp"
+                        android:editable="false"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+            
+                &lt;TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:paddingVertical="20dp"
+                        android:text="Leaving at"/>
+            
+                &lt;EditText
+                        android:id="@+id/TIME_EDITTEXT"
+                        android:layout_margin="20dp"
+                        android:textSize="20dp"
+                        android:editable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+            
+            &lt;/LinearLayout>
+            </code></pre>
+            <p>
+                Para mostrar el selector DatePicker necesitamos crear un diálogo del tipo <i>DialogFragment</i>
+                conteniendo el selector.
+                También necesitamos que el diálogo contenga los métodos de <b>OnDateSetListener</b>
+                para capturar la fecha seleccionado por el viajero cuando usa el selector.
+                El código se muestra debajo. El diálgo para el selector TimePicker se construye de la misma manera.
+                En este caso debemos construir los métodos de <b>TimePickerDialog</b>.
+            </p>
+            <pre><code class="java">
+            public class DateDialogFragment extends DialogFragment {
+            
+                DatePickerDialog.OnDateSetListener onDateSetListener;
+            
+                public DateDialogFragment() {
+                    // Required empty public constructor
+                }
+            
+                @NonNull
+                @Override
+                public Dialog onCreateDialog(Bundle savedInstanceState) {
+                    final Calendar c = Calendar.getInstance();
+                    int year = c.get(Calendar.YEAR);
+                    int month = c.get(Calendar.MONTH);
+                    int day = c.get(Calendar.DAY_OF_MONTH);
+                    return new DatePickerDialog(getActivity(),onDateSetListener,year, month, day);
+                }
+            
+                @Override
+                public void onAttach(Context context) {
+                    super.onAttach(context);
+                    if (context instanceof DatePickerDialog.OnDateSetListener) {
+                        onDateSetListener = (DatePickerDialog.OnDateSetListener) context;
+                    } else {
+                        throw new RuntimeException(context.toString()
+                                + " must implement OnDateSetListener");
+                    }
+                }
+            
+                @Override
+                public void onDetach() {
+                    super.onDetach();
+                    onDateSetListener = null;
+                }
+            
+            }
+            </code></pre>
+            <p>
+                Ahora debemos conectar todas las componentes en la actividad.
+                Las componentes EditText para los selectores cambiarán con eventos de clic.
+                El diálogo del selector será mostrado cuando este evento ocurra.
+            </p>
+            <pre><code class="java">
+            ...
+            EditText dayEditText;
+            
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.activity_main);
+            
+                dayEditText = findViewById(R.id.DAY_EDITTEXT);
+                ...
+            
+                dayEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DialogFragment newFragment = new DateDialogFragment();
+                        newFragment.show(getSupportFragmentManager(), "datePicker");
+                    }
+                });
+            
+                ...
+            
+            }
+            </code></pre>
+            <p>
+                Finalmente, programamos los métodos para capturar la fecha y la hora
+                según el protocolo definido por las interfaces de cada selector.
+                Para el caso de la fecha tenemos la interface <b>OnDateSetListener</b> y para la hora tenemos
+                <b>OnTimeSetListener</b>.
+                El resultado se mostrará en las componentes EditText.
+            </p>
+            <pre><code class="java">
+                @Override
+                public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                    String date = String.format("%02d/%02d/%d", i2,i1+1,i);
+                    dayEditText.setText(date);
+                }
+            </code></pre>
+            <p>
+                Una demostración de la pantalla para reservar boletos de tren
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-03-17.gif" type="image/gif">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a
+                    href="https://developer.android.com/reference/android/app/TimePickerDialog.html">https://developer.android.com/reference/android/app/TimePickerDialog.html</a>
+            </li>
+            <li><a
+                    href="https://developer.android.com/reference/android/app/DatePickerDialog.html">https://developer.android.com/reference/android/app/DatePickerDialog.html</a>
+            </li>
+            <li><a
+                    href="https://developer.android.com/guide/topics/ui/controls/pickers.html">https://developer.android.com/guide/topics/ui/controls/pickers.html</a>
+            </li>
+            <li><a href="https://github.com/herb786/tutorial-datetimepicker-dialog">Tutorial source code</a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Activity, XML, UI Design
+    </div>
+</div>

@@ -1,0 +1,211 @@
+<!-- blog 0004-->
+<div class="blog" id="blog0004">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Un menú lateral con los fragmentos de Android
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-03-11
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                En nuestro <a href="/post/3">último tutorial</a> creamos un aplicativo con un menú lateral usando
+                actividades.
+                Sin embargo el resultado mostró un desperfecto durante la transición de pantallas.
+                Ahora nos ocuparemos de estes desperfecto usando los fragmentos de Android y
+                para ello asumimos que sabemos el ciclo de vida de un fragmento en Android.
+            </p>
+            <p>
+                En este tutorial crearemos un nuevo aplicativo donde tenemos un catálogo,
+                un carrito de compras y un mapapara ubicar las tiendas.
+                Desde luego crearemos un fragmento por cada uno de estos apartados.
+                El aplicativo arrancará con la actividad <i>MainActivity</i> que es la pantalla de inicio.
+            </p>
+            <p>
+                Android Studio viene equipado con un asistente para crear fragmentos de forma rápida.
+                Para abrir el asistente damos clic derecho al folder del aplicativo y seguimos la secuencia <i>New</i>,
+                <i>Fragment</i> y escogemos <i>Blank Fragment</i>. Ahora en la ventana del asistente configuremos el
+                fragmento.
+                Para nuestro ejemplo desmarcamos las opciones <i>factory methods</i> y <i>interface callbacks</i>.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/wizard-fragment.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                Con los fragmentos creados, podemos editar las vistas en las plantillas gráficas o ficheros xml de los
+                fragmentos.
+                Añadiremos solamente una cabecera para cada pantalla.
+                Luego editaremos la plantilla <i>app_nav_bar.xml</i>.
+                Debemos insertar una componente <b>FrameLayout</b> para encerrar los fragmentos.
+            </p>
+            <pre><code class="xml">
+            &lt;?xml version="1.0" encoding="utf-8"?>
+                &lt;android.support.design.widget.CoordinatorLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:context="com.hacaller.navstore.NavActivity">
+            
+                &lt;android.support.design.widget.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/AppTheme.AppBarOverlay">
+            
+                    &lt;android.support.v7.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="?attr/colorPrimary"
+                            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            
+                &lt;/android.support.design.widget.AppBarLayout>
+            
+                &lt;FrameLayout
+                        android:id="@+id/mainContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+            
+                &lt;/FrameLayout>
+            
+            &lt;/android.support.design.widget.CoordinatorLayout>
+            </code></pre>
+
+            <p>
+                Luego agregamos una actividad para la navegación com en el tutorial anterior.
+                Aquí también la llamaremos <i>NavActivity</i>.
+                También editaremos las plantillas gráficas como lo hicimos en el tutorial anterior.
+                En este caso, cambiaremos el nombre del aplicativo y las etiquetas de identificación para cada pantalla.
+            </p>
+            <pre><code class="xml">
+                &lt;?xml version="1.0" encoding="utf-8"?>
+                &lt;menu xmlns:android="http://schemas.android.com/apk/res/android"
+                      xmlns:tools="http://schemas.android.com/tools"
+                      tools:showIn="navigation_view">
+            
+                &lt;group android:checkableBehavior="single">
+                    &lt;item
+                            android:id="@+id/nav_home"
+                            android:icon="@drawable/ic_menu_camera"
+                            android:title="HOME" />
+                    &lt;item
+                            android:id="@+id/nav_catalogue"
+                            android:icon="@drawable/ic_menu_gallery"
+                            android:title="CATALAOGUE" />
+                    &lt;item
+                            android:id="@+id/nav_shopping_cart"
+                            android:icon="@drawable/ic_menu_slideshow"
+                            android:title="SHOPPING CART" />
+                    &lt;item
+                            android:id="@+id/nav_map"
+                            android:icon="@drawable/ic_menu_manage"
+                            android:title="MAP" />
+                &lt;/group>
+            
+                &lt;/menu>
+            </code></pre>
+
+            <p>
+                Ahora convertiremos <i>MainActivity</i> en una subclase de NavActivity
+                y como en el tutorial pasado, haremos que <i>NavActivity</i> sea una clase abstracta.
+                Luego escribimos la lógica para llamar a los fragmentos en <i>NavActivity</i>.
+                Aquí encerramos el fragmento en <i>MainActivity</i> usando
+                la componente <b>FrameLayout</b> con identificador <i>R.id.mainContent</i>.
+            </p>
+            <pre><code class="java">
+                @Override
+                public boolean onNavigationItemSelected(MenuItem item) {
+                    // Handle navigation view item clicks here.
+                    int id = item.getItemId();
+            
+                    if (id == R.id.nav_home) {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    } else if (id == R.id.nav_catalogue) {
+                        Fragment fragment = new CatalogueFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.mainContent, fragment)
+                                .commit();
+                    } else if (id == R.id.nav_shopping_cart) {
+                        Fragment fragment = new ShoppingCartFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.mainContent, fragment)
+                                .commit();
+                    } else if (id == R.id.nav_map) {
+                        Fragment fragment = new MapFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.mainContent, fragment)
+                                .commit();
+                    }
+            
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+            </code></pre>
+
+            <p>
+                Come fue mencionado en el tutorial pasado, el atributo theme tendrá el valor <i>NoActionBar</i> en el
+                fichero manifest.
+                Otro cambio a considerar es la carga de plantillas en la actividad <i>MainActivity</i>.
+                Esto puede conseguirse así</p>
+            <pre><code class="java">
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    View view = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
+                    FrameLayout frameLayout = findViewById(R.id.mainContent);
+                    frameLayout.removeAllViews();
+                    frameLayout.addView(view);
+                }
+            </code></pre>
+            <p>
+                También podemos modificar la barra de título llamando el método <i>getSupportActionBar</i>.
+                Ahora podemos arrancar el aplicativo y veremos que no hay centelleos entre transiciones de pantallas.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-03-11.gif" type="image/gif">
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li><a
+                    href="https://developer.android.com/training/implementing-navigation/nav-drawer.html">https://developer.android.com/training/implementing-navigation/nav-drawer.html</a>
+            </li>
+            <li><a
+                    href="https://developer.android.com/guide/components/activities/index.html">https://developer.android.com/guide/components/activities/index.html</a>
+            </li>
+            <li><a
+                    href="https://github.com/herb786/tutorial-nav-drawer-fragments">https://github.com/herb786/tutorial-nav-drawer-fragments</a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Activity, XML, UI Design
+    </div>
+</div>

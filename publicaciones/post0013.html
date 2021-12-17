@@ -1,0 +1,254 @@
+<!-- blog 0013-->
+<div class="blog" id="blog0013">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Navegación con ayuda de la pila de fragmentos
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-07-04
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                La navegación en un aplicativo puede llegar a convertirse en una maraña de conexiones entre diferentes
+                pantallas
+                si no seguimos un plan para interconectarlas. Preferentemente buscamos una
+                navegación lineal siguiende una estructura de árbol en la aplicación.
+            </p>
+            <p>
+                Un mapa de todas las pantallas del aplicativo puede ser más compleja.
+                Podemos considerar las pantallas como partes de un árbol.
+                La pantalla de inicio siendo el tronco. Las ramas serían las diferentes pantallas
+                para cada menú del aplicativo. Las hojas o subramas pueden ser una secuencia lineal de pantallas para
+                cada menú.
+            </p>
+            <p>
+                Los usuarios frecuentemente saltan entre pantallas siguiendo diferentes rutas que no siguen un camino
+                directo en el árbol.
+                Esto significa que debemos mantener un historial de las pantallas visitadas de manera que la navegación
+                sea intuitiva y el aplicativo
+                consuma los recursos mínimos para cada ruta navegable, dado que cada pantalla generada consume recursos.
+            </p>
+
+            <h3>
+                <b>
+                    Pila de Actividades
+                </b>
+            </h3>
+            <p>
+                La forma estándar de navegar a través de diferentes pantallas consiste de actividades.
+                Cada actividad representa una pantalla. Así el usuario sigue una navegación lineal sin interrupciones.
+                Las actividades son apiladas y son parte del historial de navegación.
+                Para regresar a la pantalla pasada debemos usar el botón retornar del dispositivo y el evento
+                <b>onBackPressed</b>.
+                Esto llega a ser más complejo si usamos una navegación jerárquica y por tanto debemos usar una solución
+                diferente.
+            </p>
+
+            <h3>
+                <b>
+                    Pila de Fragmentos
+                </b>
+            </h3>
+            <p>
+                Fragmentos son componentes para organizar las pantallas y vistas del aplicativo.
+                Podemos usar fragmentos para crear una secuencia de pantallas donde cada pantalla
+                es el paso de una tarea.
+                Así actividades pueden contener tareas en el aplicativos en lugar de pantallas.
+                Por tanto los fragmentos tiene como punto de entrada una actividad en la cuál son alojadas.
+            </p>
+            <p>
+                Para dar sustancia a este tutorial y el uso de fragmentos crearemos una aplicativo para una librería.
+                La librería tiene un catálogo de libros y revistas. En nuestro caso tenemos
+                el rubro <i>History</i>, un nivel debajo está el rubro <i>Ancient Civilizations</i> y
+                luego los libros para dos civilizaciones <i>Egypt</i> y <i>Sumer</i>.
+                Esté catálogo tendrá fragmentos por cada pantalla en el aplicativo.
+            </p>
+            <p>
+                Los fragmentos son apilados en el gestor de fragmentos <b>FragmentManager</b> de la actividad de
+                partida.
+                La componente <b>FrameLayout</b> reserva el espacio en pantalla que ocupará el fragmento.
+                Este espacio puede cubrir la pantalla completa o simplemente una porción.
+                También daremos un identificador a cada una de estas componentes para identificarlas en el gestor de
+                fragmentos.
+                Otra manera de identificar los fragmentos es con etiquetas.
+                Todas estas decisiones ayudarán con la navegación.
+            </p>
+
+            <h3>
+                <b>
+                    Fragmentos con hijos
+                </b>
+            </h3>
+            <p>
+                Podemos incluso anidar fragmentos en otros fragmentos para mejorar la navegación.
+                Así podemos retener todos los fragmentos en el gestor de fragmentos de la actividad cuando
+                los fragmentos tienen una secuencia sucesiva sin bifurcaciones o los fragmentos son parientes.
+            </p>
+            <p>
+                Los fragmentos tiene un propio gestor de fragmentos el cual puede ser invocado con el método
+                <b>getChildFragmentManager</b>.
+                Esto ayudará a generar un árbol de fragmentos lo cual necesitaremos para la aplicación.
+                En nuestro ejemplo el fragmento <i>AncientCivilizations</i> contiene dos fragmentos hijos <i>Egypt</i> y
+                <i>Summer</i>.
+            </p>
+            <p>
+                Para agregar fragmento en la pila debemos usar el método <b>addToBackStack</b> del gestor
+                <b>FragmentManager</b>.
+            </p>
+            <p>
+                Ahora podemos programar la navegación con el botón de retorno.
+                El cødigo aquí debajo muestra como navegar usando identificadore para los contenedores.
+            </p>
+
+            <pre>
+            <code>
+            private void popFragmentOnBackPressedUsingId(){
+                Fragment lastFragment = null;
+                Fragment firstFragment = getSupportFragmentManager().findFragmentById(R.id.storeContainer);
+                Fragment beforeLastFragment = getSupportFragmentManager().findFragmentById(R.id.historyContainer);
+                if (beforeLastFragment != null)
+                    lastFragment = beforeLastFragment.getChildFragmentManager().findFragmentById(R.id.ancientCivilizationContainer);
+                if (lastFragment != null){
+                    breadcrumbTextView.setText("Store > History > Ancient Civilization");
+                    lastFragment.getFragmentManager().popBackStack();
+                } else if (beforeLastFragment != null) {
+                    breadcrumbTextView.setText("Store > History");
+                    beforeLastFragment.getFragmentManager().popBackStack();
+                } else if (firstFragment != null) {
+                    breadcrumbTextView.setText("Store");
+                    firstFragment.getFragmentManager().popBackStack();
+                } else {
+                    super.onBackPressed();
+                }
+            }
+            </code>
+            </pre>
+
+            <p>
+                Este ejemplo muestra el uso de etiquetas
+            </p>
+
+            <pre>
+            <code>
+            private void popFragmentOnBackPressedUsingTag(){
+                int stemFragmentCount = getSupportFragmentManager().getBackStackEntryCount();
+                if (stemFragmentCount > 0) {
+                    Fragment stemFragment = getSupportFragmentManager().findFragmentByTag("HistoryFragment");
+                    int branchFragmentCount = stemFragment.getChildFragmentManager().getBackStackEntryCount();
+                    if (branchFragmentCount > 0) {
+                        // Use tag to find fragment
+                        Fragment branchFragment = stemFragment.getChildFragmentManager().findFragmentByTag("AncientCivilizationFragment");
+                        int leafFragmentCount = branchFragment.getChildFragmentManager().getBackStackEntryCount();
+                        if (leafFragmentCount > 0) {
+                            breadcrumbTextView.setText("Store > History > Ancient Civilization");
+                            branchFragment.getChildFragmentManager().popBackStack();
+                        } else {
+                            breadcrumbTextView.setText("Store > History");
+                            stemFragment.getChildFragmentManager().popBackStack();
+                        }
+                    } else {
+                        breadcrumbTextView.setText("Store");
+                        getSupportFragmentManager().popBackStack();
+                    }
+                } else {
+                    super.onBackPressed();
+                }
+            }
+            </code>
+            </pre>
+
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-07-04.gif" type="image/gif">
+
+            <h3>
+                <b>
+                    La nueva componente de navegación
+                </b>
+            </h3>
+            <p>
+                Un nuevo paquete de librerías de soporte está disponible para la plataforma Android.
+                En el compilado se incluye una nueva librería para
+                facilitar la navegación conocida como <b>Navigation Architecture Component</b>.
+                Si tenemos un nuevo proyecto en Android sería bueno darle un vistazo.
+            </p>
+
+            <pre>
+            <code class=”bash”>
+            implementation "android.arch.navigation:navigation-fragment:1.0.0-alpha01"
+            implementation "android.arch.navigation:navigation-ui:1.0.0-alpha01"
+            </code>
+            </pre>
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://uxplanet.org/breadcrumbs-for-web-sites-what-when-and-how-9273dacf1960">
+                    Breadcrumbs For Web Sites
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/Tree_structure">
+                    Tree structure
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/Hierarchy">
+                    Hierarchy
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/reference/android/support/v4/app/Fragment">
+                    https://developer.android.com/reference/android/support/v4/app/Fragment
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/reference/android/support/v4/app/FragmentManager">
+                    https://developer.android.com/reference/android/support/v4/app/FragmentManager
+                </a>
+            </li>
+            <li>
+                <a href="https://medium.com/madison-ave-collective/are-breadcrumbs-still-fresh-for-ux-6e72b0f96e9b">
+                    Are breadcrumbs still fresh for UX?
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/topic/libraries/architecture/navigation/">
+                    The Navigation Architecture Component
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/herb786/tutorial-breadcrumbs">
+                    Source code for this tutorial
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Application Lifecycle, Navigation
+    </div>
+</div>

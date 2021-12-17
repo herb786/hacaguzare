@@ -1,0 +1,251 @@
+<!-- blog 0018-->
+<div class="blog" id="blog0018">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Uso de Firestore para conocer el mercado
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-10-25
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                La recopilación de información acerca de la conducta de los consumidores es importante para mejorar el
+                servicio y el contenido que les ofrecemos.</p>
+            <p>
+                En esta era de la información, disponemos de variadas herramientas que pueden ayudarnos a recopilar
+                estos datos. Podemos elaborar cuestionarios, censos, votaciones para capturar el estado de ánimo presente y las
+                preferencias del público objetivo.
+            </p>
+            <p>
+                La información suministrada de manera instantánea nos da la oportunidad de reaccionar immediatamente
+                a futuros acontecimientos y estar en la vanguardia de la innovación creando soluciones a muchas
+                situaciones.
+            </p>
+            <p>
+                Esta vez nos enfocaremos en crear una aplicación para obtener votos usando el banco de datos Firestore.
+                Los datos almacenados en la nube representan la preferencia de las plataformas de nuestros usuarios.
+                Asumiremos de antemano el conocimiento del uso y creación de proyectos en el panel administrativo de Firebase por parte de los lectores.
+            </p>
+            <h3>
+                <b>Creación de un nuevo proyecto</b>
+            </h3>
+            <p>
+                Antes de crear nuestra aplicación, debemos generar el banco de datos donde almacenaremos los votos de
+                nuestros usuarios. En este tutorial usaré un servicio ofrecido por Google llamado <b>Firestore</b>. Este es un banco de
+                datos no relacional en tiempo real que guarda los datos en la nube.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-create-project.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                Después de crear el proyecto en el panel de admistrador, debemos dirigirnos al panel izquierdo y
+                localizar la opción <b>database</b>
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-find-database.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                Usaremos el modo de pruebas de manera que podemos modificar nuestro banco de datos sin realizar más
+                configuraciones.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-database-rules.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                Luego necesitaremos actualizar las reglas que permiten el acceso externo de modo anónimo sino deberíamos
+                usar la identificación de usarios por Google Plus.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-update-rules.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                También debemos crear el fichero de configuración para este servicio que guardaremos en el folder de la
+                aplicación.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-get-google-json.png' alt=''
+                class="blog-image-md"><br />
+            <h3>
+                <b>Creación del Banco de Datos</b>
+            </h3>
+            <p>
+                Ahora nos enfocaremos en nuestro banco de datos.
+                El banco de datos en este caso es una colección de documentos.
+                Estos documentos representan los datos que buscamos capturar.
+                En nuestro caso necesitamos una colección para las plataformas iOS y Android.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-create-platform-collection.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                Agregaremos un documento o entrada por plataforma.
+                En lugar de usar la clave auto-generada usaremos el nombre de las plataformas.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-create-ios-doc.png' alt=''
+                class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-db-platforms.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                Los documentos creados puede también agrupar otras colecciones como una colección de dispositivos usando
+                Android
+                o una colección de usuarios usando Android. Como necesitamos cierta información de los usuarios podemos
+                agregar un nuevo documento por cada votante conteniendo esta información.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-add-android-customer.png' alt=''
+                class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-ios-customer.png' alt=''
+                class="blog-image-md"><br />
+            <p>
+                La variable más importante en nuestra colección es el campo <b>count</b>.
+                Este campo cambiará cada vez que un voto sea registrado.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-add-field-count.png' alt=''
+                class="blog-image-md"><br />
+            <h3>
+                <b>La aplicacion de votación</b>
+            </h3>
+            <p>
+                En nuestra aplicación agregaremos dos dependencias, una por parte de firebase y otra de firestore.
+                Debemos tener en consideración los permisos de acceso a Internet en el fichero de configuración y
+                también verificar la presencia del fichero <b>google-services</b> en el folder raíz del proyecto.
+            </p>
+            <pre><code class="gradle">
+            implementation 'com.google.firebase:firebase-core:16.0.4'
+            implementation 'com.google.firebase:firebase-firestore:17.1.1'
+            </code></pre>
+            <p>
+                Luego de configurar el proyecto, podemos crear una instancia de firestore que nos
+                permitirá conectarnos a la nube y obtener una referencia a nuestra colección de plataformas.
+            </p>
+            <pre><code class="kotlin">
+            ...
+            var mDatabase: FirebaseFirestore? = null
+            var mPlatformsCollection: CollectionReference? = null
+            ...
+            mDatabase = FirebaseFirestore.getInstance()
+            val settings = FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build()
+            mDatabase!!.firestoreSettings = settings
+            mPlatformsCollection = mDatabase?.collection("platforms")
+            ...
+            </code></pre>
+            <h3>
+                <b>Captura de datos simultánea</b>
+            </h3>
+            <p>
+                Podemos leer los datos de nuestro banco de datos usando la referencia creada en el paso anterior.
+                Luego de conectarnos, haremos guardia por cambios en su contenido para actualizar los datos en nuestra
+                aplicación.
+                La implementación es hecha de este modo
+            </p>
+            <pre><code class="kotlin">
+            ...
+            val androidRef = mPlatformsCollection?.document("Android")
+            androidRef?.addSnapshotListener(object : EventListener&lt;DocumentSnapshot> {
+                override fun onEvent(snapshot: DocumentSnapshot?, e : FirebaseFirestoreException?) {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e)
+                        return
+                    }
+                    if (snapshot != null && snapshot.exists()) {
+                        Log.d(TAG, "Current data: " + snapshot.data!!)
+                        androidVotes = snapshot.data!!["count"] as Long
+                        showVotes()
+                    } else {
+                        Log.d(TAG, "Current data: null")
+                    }
+                }
+            })
+            ...
+            </code></pre>
+            <h3>
+                <b>Registrando votos</b>
+            </h3>
+            <p>
+                En primer lugar debemos obtener una referencia a la plataforma que debe registrar el voto usando su
+                identificador.
+                En nuestro caso usamos el nombre de la plataforma.
+                Luego demos crear un estructura de datos con los campos que actualizaremos.
+                Esta estructura será usada por nuestro banco de datos de esta manera
+            </p>
+            <pre><code class="kotlin">
+            ...
+            val vote = HashMap&lt;String, Any>()
+            vote.put("count", platformVotes+1)
+            mPlatformsCollection?.document(platformName)?.set(vote)?.
+                addOnSuccessListener(object: OnSuccessListener&lt;Void> {
+                    override fun onSuccess(aVoid : Void?) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!")
+                    }
+                })?.
+                addOnFailureListener(object: OnFailureListener {
+                    override fun onFailure(e : Exception) {
+                        Log.w(TAG, "Error writing document", e)
+                    }
+                })
+            ...
+            </code></pre>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-poll-results.png' alt=''
+                class="blog-image-md"><br />
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/post0018-poll-app.png' alt=''
+                class="blog-image-md"><br />
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://github.com/herb786/tutorial-firebase-database-poll">
+                    Github repository for this tutorial.
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/NoSQL">
+                    Wikipedia article on NoSQL databases.
+                </a>
+            </li>
+            <li>
+                <a href="https://firebase.google.com/docs/firestore/">
+                    Guide for Cloud Firestore.
+                </a>
+            </li>
+            <li>
+                <a href="https://firebase.google.com/docs/database/">
+                    Guide for Firebase Realtime Database.
+                </a>
+            </li>
+            <li>
+                <a href="https://codelabs.developers.google.com/codelabs/firebase-android/index.html">
+                    A simple chat with firebase database.
+                </a>
+            </li>
+            <li>
+                <a href="https://codelabs.developers.google.com/codelabs/firebase-android/index.html">
+                    A recommendation app with firestore.
+                </a>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Firebase, Firestore, Realtime Database, NoSQL
+    </div>
+</div>

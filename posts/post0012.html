@@ -1,0 +1,362 @@
+<!-- blog 0012-->
+<div class="blog" id="blog0012">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Publishing Android Apps with Jenkins
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-06-30
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                In the previous post we created a Jenkins job for testing our applications.
+                In this post I will deal with the publishing of Android apps.
+            </p>
+            <p>
+                A new version of our application will be list in the Play Store
+                after completing a sequence of steps.
+                Google Play provides a helpful API to automatize many tasks
+                we do when we publish our apps. We can upload screenshots, binaries, releases notes
+                and we can define if the binary will be used for beta testing or will be release to production.
+            </p>
+            <h3>
+                <b>Generating access tokens with an OAuth 2.0 client</b>
+            </h3>
+            <p>
+                Before using the Google Play Developer API we need to grant access to a google account
+                with the role of <b>Release manager</b>.
+                We can use <b>OAuth Clients</b> or <b>Service Accounts</b>.
+                In this post I will create an OAuth Client.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/play-accounts.png" type="image/gif">
+            <p>
+                You can create an OAuth Client in the section <b>Google APIs</b> of Google Developers Console.
+                You must select your project and then go to <b>Credentials</b> section. You can find more information
+                in the google play developer api guide<a href="#cite4">[4]</a>.
+            </p>
+            <p>
+                You will need to give a redirect URI.
+                You can insert any website or the website for your application.
+                Then you will need to generate an authorization code and
+                you must be logged with the google account to get the code.
+            </p>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/play-credentials.png" type="image/gif">
+            <p>
+                Then you should navigate to the next url with the client id and your redirect URI.
+            </p>
+            <pre><code class="bash">
+            https://accounts.google.com/o/oauth2/auth?
+            scope=https://www.googleapis.com/auth/androidpublisher
+            &response_type=code&access_type=offline
+            &redirect_uri=https://your.redirect.uri
+            &client_id=your.client.id
+            </code></pre>
+            <p>
+                After granting access being logged in your account
+                you will be redirected to your redirect uri and
+                you will see a code next to the uri
+            </p>
+            <pre><code class="bash">
+                https://your.redirect.uri?code=4/AsdCsdswh1T6CARIu5_W4z_1cIm-#
+            </code></pre>
+            <p>
+                Now you will need to generate the first authorization token.
+                You must perform a POST request as follows
+            </p>
+            <pre><code class="bash">
+            curl -d grant_type=authorization_code
+            -d code=4/AsdCsdswh1T6CARIu5_W4z_1cIm-zsewwrwe23424dsfs5KNg0TlkTonKoKY#
+            -d client_id=your.client.id
+            -d client_secret=your.client.secret
+            -d redirect_uri=https://your.redirect.uri https://accounts.google.com/o/oauth2/token
+            </code></pre>
+            <p>
+                The json response has a refresh token which we will use to automatize the request
+                to the google play developer api to publishing the application.
+            </p>
+            <pre><code class="json">
+            {
+              "access_token" : "yrDx-w9XF1BKai5WBKQVmcIT1WKVu",
+              "expires_in" : 3600,
+              "refresh_token" : "1/CJnxU35RajKvUjmr_Mx8ho",
+              "token_type" : "Bearer"
+            }
+            </code></pre>
+            <p>
+                We will refresh the token which will be used to access the google play developer api.
+                We perform the next POST request
+            </p>
+            <pre><code class="bash">
+            curl -d grant_type=refresh_token
+            -d client_id=your.client.id
+            -d client_secret=your.client.secret
+            -d refresh_token=1/CJnxU35RajKvUjmr_Mx8ho https://accounts.google.com/o/oauth2/token
+            </code></pre>
+            <p>
+                The expected response is the following
+            </p>
+            <pre><code class="json">
+            {
+              "access_token" : "AAAABBBBCCCCDDDDEEEE",
+              "expires_in" : 3600,
+              "token_type" : "Bearer"
+            }
+            </code></pre>
+            <h3>
+                <b>Accessing the Google Play Developer API</b>
+            </h3>
+            <p>
+                To list our app as a beta release or production release we must create <b>Edits</b>.
+                Edits are like temporal slots where we will store our binary and their release notes
+                before uploading to the play store.
+                Edits can be created with the following POST request
+            </p>
+            <pre><code class="bash">
+            curl -d '{"id":"undefined","expiryTimeSeconds":"3600"}'
+            -H 'Content-Type: application/json'
+            -H "Authorization: Bearer AAAABBBBCCCCDDDDEEEE" https://www.googleapis.com/androidpublisher/v3/applications/com.company.appname/edits
+            </code></pre>
+            <p>
+                a successful request will provide an id for the temporal slot
+            </p>
+            <pre><code class="json">
+            {
+             "id": "123456789editid",
+             "expiryTimeSeconds": "1529822597"
+            }
+            </code></pre>
+            <p>
+                Now we can upload the apk binary with the next request
+            </p>
+            <pre><code class="bash">
+            curl --data-binary @"/Users/johndoe/yourandroidapp/app/release/app-release.apk"
+            -H "Content-Type:application/octet-stream"
+            -H "Authorization: Bearer AAAABBBBCCCCDDDDEEEEU" https://www.googleapis.com/upload/androidpublisher/v3/applications/com.company.appname/edits/123456789editid/apks?uploadType=media
+            </code></pre>
+            <p>
+                A successful request will provide a sha for the binary apk.
+            </p>
+            <pre><code class="json">
+            {
+             "versionCode": 1800,
+             "binary": {
+              "sha1": "b36e0eb6449702f9ad42a8407a7d13",
+              "sha256": "adc07556598f0be2d4ca0c55afc44"
+             }
+            }
+            </code></pre>
+            <p>
+                Now we can add some release notes using the next request
+            </p>
+            <pre><code class="bash">
+            curl -XPUT
+            -d '{"track":"beta","releases":[{"versionCodes":[1800],"releaseNotes":[{"language":"en-GB","text":"Some release notes"}],"status":"completed"}]}'
+            -H 'Content-Type: application/json'
+            -H "Authorization: Bearer AAAABBBBCCCCDDDDEEEE"
+            https://www.googleapis.com/androidpublisher/v3/applications/com.company.appname/edits/123456789editid/tracks/beta
+            </code></pre>
+            <p>
+                A successful request will return your release notes.
+            </p>
+            <pre><code class="json">
+            {
+             "track": "beta",
+             "releases": [
+              {
+               "name": "",
+               "versionCodes": [
+                "1800"
+               ],
+               "releaseNotes": [
+                {
+                 "language": "en-GB",
+                 "text": "Some release notes"
+                }
+               ],
+               "status": "completed"
+              }
+             ]
+            }
+            </code></pre>
+            <p>
+                Before rolling out the app we should validate the edit.
+            </p>
+            <pre><code class="bash">
+            curl -d '{}'
+            -H 'Content-Type: application/json'
+            -H "Authorization: Bearer AAAABBBBCCCCDDDDEEEE"
+            https://www.googleapis.com/androidpublisher/v3/applications/com.company.appname/edits/123456789editid:validate
+            </code></pre>
+            <p>
+                A successful request will return the id for the edit.
+            </p>
+            <pre><code class="json">
+            {
+             "id": "123456789editid",
+             "expiryTimeSeconds": "1529822597"
+            }
+            </code></pre>
+            <p>
+                Now we can roll out the app with the followinf request
+            </p>
+            <pre><code class="bash">
+            curl -d '{}'
+            -H 'Content-Type: application/json'
+            -H "Authorization: Bearer AAAABBBBCCCCDDDDEEEE"
+            https://www.googleapis.com/androidpublisher/v3/applications/com.company.appname/edits/123456789editid:commit
+            </code></pre>
+            <p>
+                A successful request will return the id for the edit.
+            </p>
+            <pre><code class="json">
+            {
+             "id": "123456789editid",
+             "expiryTimeSeconds": "1529822597"
+            }
+            </code></pre>
+            <h3>
+                <b>Generating bash file to automatize the publishing job</b>
+            </h3>
+            <p>
+                We will create a bash script for all this tasks.
+                I will store this script in the root folder of the android project.
+                The scripts contains this code
+            </p>
+            <pre><code class="bash">
+            #!/bin/bash
+            
+            myclientid=ABCDE
+            myclientsecret=AAAA
+            myrefreshtoken=HJKLM
+            
+            myapppackage=com.company.appname
+            myapppath=${WORKSPACE}/app/build/outputs/apk/release/app-release.apk
+            
+            echo $myapppath
+            
+            jsondata=$(curl -d grant_type=refresh_token -d client_id=$myclientid -d client_secret=$myclientsecret -d refresh_token=$myrefreshtoken https://accounts.google.com/o/oauth2/token)
+            
+            echo $jsondata
+            
+            token=$(echo $jsondata | awk -F\" '{print $4}')
+            
+            echo $token
+            
+            jsondata=$(curl -d '{"id":"undefined","expiryTimeSeconds":"3600"}' -H 'Content-Type: application/json' -H "Authorization: Bearer $token" https://www.googleapis.com/androidpublisher/v3/applications/$myapppackage/edits)
+            
+            echo $jsondata
+            
+            editid=$(echo $jsondata | awk -F\" '{print $4}')
+            
+            echo $editid
+            
+            jsondata=$(curl --data-binary @"$myapppath"  -H "Content-Type:application/octet-stream" -H "Authorization: Bearer $token" https://www.googleapis.com/upload/androidpublisher/v3/applications/$myapppackage/edits/$editid/apks?uploadType=media)
+            
+            echo $jsondata
+            
+            regex='"versionCode"..([0-9]+).*'
+            
+            if [[ $jsondata =~ $regex ]]
+            then
+                versioncode=${BASH_REMATCH[1]}
+            else
+                versioncode=null
+            fi
+            
+            echo $versioncode
+            
+            curl -XPUT -d '{"track":"beta","releases":[{"versionCodes":['$versioncode'],"releaseNotes":[{"language":"en-GB","text":"Some release notes"}],"status":"completed"}]}' -H 'Content-Type: application/json' -H "Authorization: Bearer $token" https://www.googleapis.com/androidpublisher/v3/applications/$myapppackage/edits/$editid/tracks/beta
+            
+            curl -d '{}' -H "Content-Type: application/json" -H "Authorization: Bearer $token" https://www.googleapis.com/androidpublisher/v3/applications/$myapppackage/edits/$editid:commit
+            </code></pre>
+            <p>
+                Sometimes we create a locked bash script. You need to add execution privileges with the next command
+            </p>
+            <pre><code>
+            chmod 777 apk_publishing.sh
+            </code></pre>
+            <h3>
+                <b>Adding a bash script to the jenkins project</b>
+            </h3>
+            <p>
+                We will create a new project in our jenkins dashboard.
+                We can trigger this job after running our test successfully.
+                This project will be a <b>Freestyle project</b> and we will provide the url to repository
+                and the branch we wish to build.
+                In this case we will just run a gradle task with the name <b>assembleRelease</b>.
+                You must not forget to configure your gradle project to sign your app when assembling.
+                Then we will add a new build step. We will use the step <b>Execute shell</b>.
+                We insert the next command
+            </p>
+            <pre><code>
+            sh ${WORKSPACE}/apk_publishing.sh
+            </code></pre>
+            <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/jenkins-shell.png" type="image/gif">
+            <p>
+                Now we can run the jenkins jobs and wait for the results in the google play developer console.
+            </p>
+
+            <!--h3>
+                <b>Sending apk to production</b>
+            </h3>
+            <p>
+                we must modify the track property for the app
+            </p>
+            <pre><code class="bash">
+            curl -XPATCH
+            -d '{"track":"production","releases":[{"versionCodes":[18000],"releaseNotes":[{"language":"en-GB","text":"Now you can use your printer. Recent preprint by category."}],"status":"completed"}]}'
+            -H 'Content-Type: application/json'
+            -H "Authorization: Bearer AAAABBBBCCCCDDDDEEEE"
+            https://www.googleapis.com/androidpublisher/v3/applications/com.hacaller.arxivlens/edits/12612611848631923311/tracks/production
+            </code></pre>
+            <p>
+                the follow the same steps to roll out the app.
+            </p-->
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li id="cite1"><a href="https://developer.android.com/studio/publish/app-signing">
+                    https://developer.android.com/studio/publish/app-signing
+                </a></li>
+            <li id="cite2"><a href="https://developers.google.com/android-publisher">
+                    https://developers.google.com/android-publisher
+                </a></li>
+            <li id="cite3"><a href="https://developers.google.com/android-publisher/edits/">
+                    https://developers.google.com/android-publisher/edits/
+                </a></li>
+            <li id="cite4"><a href="https://developers.google.com/android-publisher/authorization">
+                    https://developers.google.com/android-publisher/authorization
+                </a></li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Dev Tools, Jenkins, Continuous Delivery
+    </div>
+</div>

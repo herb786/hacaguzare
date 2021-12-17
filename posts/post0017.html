@@ -1,0 +1,237 @@
+<!-- blog 0017-->
+<div class="blog" id="blog0017">
+    <div class="blog-title-image">
+        <!--Insert BACKGROUND-->
+        <img src="https://s3-us-west-2.amazonaws.com/py4hacaller/android_series.png" alt="" />
+    </div>
+    <div class="blog-title">
+        <div class="text">
+            <h1 id="postTitle">
+                <!--Insert TITLE-->
+                Location Awareness
+            </h1>
+        </div>
+    </div>
+    <div class="blog-body">
+        <div class="blog-sidebar">
+            <div class="blog-date">
+                <div class="blog-date-content" id="blog-date-content">
+                    <!--Insert DATE-->2018-09-05
+                </div>
+            </div>
+            <div class="blog-cat" id="blog-cat">
+                <!--Insert ICONS-->
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/androidicon.png" alt="" /></span>
+                <span><img src="https://s3-us-west-2.amazonaws.com/py4hacaller/codeicon.png" alt="" /></span>
+            </div>
+        </div>
+        <div class="blog-content" id="blog-content">
+            <!--START content of the post-->
+            <p>
+                The continuous advances and integration of technologies as
+                cellular communication, global positioning systems and internet gave birth to
+                a new world of interconnections.
+            </p>
+            <p>
+                We are now part of a great network
+                where the information flows between different geolocated devices,
+                not just smartphones but vehicles, appliances and sensors.
+                This geoweb improves our decision-making capabilities in this infinite world of choices.
+            </p>
+            <p>
+                In this tutorial, I will build an app to make an emergency call to a Lighthouse.
+                Since I am lost in an unknown place and need to give a readable address
+                I want to use the geolocation capabilities of my device to find such address.
+                We might also find health facilities or fire stations in the village.
+                I can get the location using my IP address or the Google Places API for reverse geocoding.
+            </p>
+            <h3>
+                <b>
+                    Setting Up Google Places SDK
+                </b>
+            </h3>
+            <p>
+                Once you have created a project for your app in the google cloud console,
+                you can grant access to a wide variety of google APIs.
+                In our case we will use the API for Google Places. This API provides details about
+                any place like names, phone numbers, ratings. We can also find our current place,
+                find their coordinates and more.
+            </p>
+            <p>
+                After we have access to the API, we get an API key for our app.
+                Sometimes you will need to set a SHA1 signature for your dev app.
+                You can get that as follows.
+            </p>
+            <pre><code class="bash">
+            keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+            </code></pre>
+            <p>
+                We add this key to our manifest.
+                You must also add permissions for use of internet and localization.
+            </p>
+            <pre><code class="xml">
+            ...
+            &lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+            &lt;uses-permission android:name="android.permission.INTERNET"/>
+            ...
+            &lt;meta-data android:name="com.google.android.geo.API_KEY"
+                     android:value="API_KEY"/>
+            ...
+            </code></pre>
+            <p>
+                Then we add the next dependency in the gradle file for the app
+            </p>
+            <pre><code class="java">
+            implementation 'com.google.android.gms:play-services-places:15.0.1'
+            </code></pre>
+            <p>
+                In the respective activity we must instantiate the client for the detection of places.
+            </p>
+            <pre><code class="java">
+            private PlaceDetectionClient mPlaceDetectionClient;
+            ...
+            mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
+            ...
+            </code></pre>
+            <p>
+                Then we can receive the result after implementing the next listener
+            </p>
+            <pre><code class="java">
+            Task&lt;PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(null);
+            placeResult.addOnCompleteListener(new OnCompleteListener&lt;PlaceLikelihoodBufferResponse>() {
+                @Override
+                public void onComplete(@NonNull Task&lt;PlaceLikelihoodBufferResponse> task) {
+                    PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
+                    PlaceLikelihood placeLikelihood = likelyPlaces.get(0);
+                    Place place = placeLikelihood.getPlace();
+                    Log.d("READABLE ADDRESS",place.getAddress());
+                    likelyPlaces.release();
+                }
+            });
+            </code></pre>
+            <h3>
+                <b>
+                    Using IP Geolocation APIs
+                </b>
+            </h3>
+            <p>
+                Another way to know your location is using your public IP address.
+                In this case you might need your country, state or city and sometimes your postcode.
+                It might not serve the purpose of pinpoint your exact position
+                in your neighbourhood but you can use this information to find any commerce, business,
+                park or bank in your surroundings.
+            </p>
+            <p>
+                After you found a suitable provider for this service,
+                you can consume the service using any of the known libraries like <b>retrofit</b>.
+                In this example I will use the <b>IP Geolocation API</b>.
+                You should remember that any free service have a limited quota of requests.
+            </p>
+            <p>
+                First you need to update the gradle script for your app with the next dependency
+            </p>
+            <pre><code class="java">
+            implementation 'io.ipgeolocation:ipgeolocation:1.0.2'
+            </code></pre>
+            <p>
+                Then you can make use of the library as follows
+            </p>
+            <pre><code class="java">
+            public class IPGeolocationAsyncTask extends AsyncTask&lt;Void, Void,Void> {
+            
+                GeolocationResult geolocationResult;
+            
+                @Override
+                protected Geolocation doInBackground(Void... voids) {
+                    IPGeolocationAPI api = new IPGeolocationAPI("API_KEY");
+                    Geolocation geolocation = api.getGeolocation();
+            
+                    if(geolocation.getStatus() == 200) {
+                        Log.i(getClass().getCanonicalName(),geolocation.getCity());
+                    } else {
+                        Log.i(getClass().getCanonicalName(),geolocation.getMessage());
+                    }
+                    return geolocation;
+                }
+            
+            }
+            </code></pre>
+            <p>
+                Now you have some pieces of code you might use in your application
+                to find your current position and address and
+                look for relevant information about your surroundings.
+            </p>
+            <img src='https://s3-us-west-2.amazonaws.com/py4hacaller/device-2018-09-11.png' alt=''
+                class="blog-image-md"><br />
+            <!--END content of the post-->
+        </div>
+    </div>
+    <div class="blog-references">
+        <h3><u>References</u></h3>
+        <!--Insert REFERENCES-->
+        <ol>
+            <li>
+                <a href="https://github.com/herb786/tutorial-android-geocoding">
+                    https://github.com/herb786/tutorial-android-geocoding
+                </a>
+            </li>
+            <li>
+                <a href="https://developers.google.com/places/android-sdk/current-place">
+                    https://developers.google.com/places/android-sdk/current-place
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/training/location/">
+                    https://developer.android.com/training/location/
+                </a>
+            </li>
+            <li>
+                <a href="https://developers.google.com/maps/documentation/geocoding/start">
+                    https://developers.google.com/maps/documentation/geocoding/start
+                </a>
+            </li>
+            <li>
+                <a href="https://developer.android.com/reference/android/location/Geocoder">
+                    https://developer.android.com/reference/android/location/Geocoder
+                </a>
+            </li>
+            <li>
+                <a href="https://developers.google.com/android/guides/setup">
+                    https://developers.google.com/android/guides/setup
+                </a>
+            </li>
+            <li>
+                <a href="https://ipstack.com">
+                    https://ipstack.com
+                </a>
+            </li>
+            <li>
+                <a href="http://ip-api.com">
+                    http://ip-api.com
+                </a>
+            </li>
+            <li>
+                <a href="https://ipgeolocation.io">
+                    https://ipgeolocation.io
+                </a>
+            </li>
+            <li>
+                <a href="https://en.wikipedia.org/wiki/Reverse_geocoding">
+                    https://en.wikipedia.org/wiki/Reverse_geocoding
+                </a>
+            </li>
+            <li>
+                D Abernathy. "Chapter: The Power of Where". <i>Using Geodata and Geolocation in the Social Sciences.</i>
+            </li>
+            <li>
+                JL Awange, JBK Kiema. "Chapter: Geodata and Geoinformatics". <i>Environmental Geoinformatics.</i>
+            </li>
+        </ol>
+        <!--Insert REFERENCES-->
+    </div>
+    <div class="blog-keywords">
+        <h3><u>Keywords</u></h3>
+        <!--Insert KEYWORDS-->
+        Android, Geolocation, Geocoder, IP location, Google Places SDK
+    </div>
+</div>
