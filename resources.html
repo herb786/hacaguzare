@@ -37,29 +37,13 @@
 </head>
 <body>
     <div id="navbar">
-        <div class="toolbar" id="toolbar">
-            <div class="item">
-                <a href="index.html">LOGBOOK</a>
-            </div>
-            <div class="item">
-                <a href="apps.html">APPS</a>
-            </div>
-            <div class="item">
-                <a href="resources.html">RESOURCES</a>
-            </div>
-            <div class="item">
-                <a href="about.html">ABOUT</a>
-            </div>
-            <div class="item">
-                <a href="search.html">SEARCH</a>
-            </div>
-            <div class="item">
-                <a href="./resources.html">🇺🇸EN</a>
-            </div>
-            <div class="item">
-                <a href="./recursos.html">🇪🇸ES</a>
-            </div>
-        </div>
+        <div class="item"><a href="./index.html">LOGBOOK</a></div>
+        <div class="item"><a href="./apps.html">APPS</a></div>
+        <div class="item"><a href="./resources.html">RESOURCES</a></div>
+        <div class="item"><a href="./about.html">ABOUT</a></div>
+        <div class="item"><a href="./search.html">SEARCH</a></div>
+        <div class="item" id="translateEN">🇺🇸EN</div>
+        <div class="item" id="translateES">🇪🇸ES</div></div>
     </div>
     <div>
         <div class="econtainer" >
@@ -121,30 +105,6 @@
             </div-->
         </div>
     </div>
-
-    <script>
-      $(document).ready(function(){
-        $("#locales").change(function () {
-            var lang = $('#locales').val();
-            if (lang != ''){
-                window.location.replace('?lang=' + lang);
-            }
-        });
-          var img = document.getElementById('image');
-          img.onload = function() {
-            var toolbar = document.getElementById('toolbar')
-            var box = document.getElementById('centering');
-            var body = document.documentElement;
-            var bodyHeight = body.clientHeight;
-            var boxHeight = box.clientHeight;
-            var barHeight = toolbar.clientHeight;
-            var y = Math.ceil((bodyHeight-boxHeight)/2)-barHeight;
-            console.log(bodyHeight);
-            console.log(boxHeight);
-            box.style.position = "relative";
-            box.style.top = y + "px";
-          };
-      });
-    </script>
+    <script type="text/javascript" src="haka-router.js"></script>
 </body>
 </html>
